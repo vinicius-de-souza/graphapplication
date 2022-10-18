@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include <chrono>
 #include "Grafo.h"
-#include "Node.h"
+#include "Aresta.h"
+#include "No.h"
 
 using namespace std;
 
@@ -52,8 +53,8 @@ Grafo* leitura(ifstream& input_file, int direcionado, int peso_aresta, int peso_
         while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight) {
 
             grafo->inserirAresta(idNoFonte, idNoAlvo, 0);
-            grafo->getNo(idNoFonte)->setWeight(nodeSourceWeight);
-            grafo->getNo(idNoAlvo)->setWeight(nodeTargetWeight);
+            grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
+            grafo->getNo(idNoAlvo)->setPeso(nodeTargetWeight);
 
         }
 
@@ -64,8 +65,8 @@ Grafo* leitura(ifstream& input_file, int direcionado, int peso_aresta, int peso_
         while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight) {
 
             grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
-            grafo->inserirNo(idNoFonte)->setPeso(nodeSourceWeight);
-            grafo->getNo(idNoAlvo)->setWeight(nodeTargetWeight);
+            grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
+            grafo->getNo(idNoAlvo)->setPeso(nodeTargetWeight);
 
         }
 

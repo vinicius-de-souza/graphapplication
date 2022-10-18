@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// Definition of the No class
+// Definição da Classe No
 class No{
 
     // Attributes
@@ -29,20 +29,20 @@ public:
     int getGrauEntrada();
     int getGrauSaida();
     float getPeso();
-    No* getProximoNo();
+    No* getProxNo();
     // Setters
-    void setProximoNo(No* No);
+    void setProxNo(No* No);
     void setPeso(float peso);
     // Other methods
-    bool buscaAresta(int target_id);
-    void inserirAresta(int target_id, float peso);
+    bool buscaAresta(int alvo_id);
+    void inserirAresta(int alvo_id, float peso);
     void removeTodasArestas();
-    int  removeAresta(int id, bool directed, No* target_No);
+    int  removeAresta(int id, bool direcionado, No* no_alvo);
     void incrementarGrauSaida();
     void decrementarGrauSaida();
     void incrementarGrauEntrada();
     void decrementarGrauEntrada();
-    Aresta* temArestaEntre(int target_id);
+    Aresta* temArestaEntre(int alvo_id);
     // Auxiliar methods
 
 };

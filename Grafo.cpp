@@ -36,7 +36,7 @@ Grafo::~Grafo()
     {
 
         proximo_no->removeTodasArestas();
-        No *no_auxiliar = proximo_no->getProximoNo();
+        No *no_auxiliar = proximo_no->getProxNo();
         delete proximo_no;
         proximo_no = no_auxiliar;
     }
