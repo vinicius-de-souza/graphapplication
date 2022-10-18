@@ -1,0 +1,50 @@
+#ifndef No_H_INCLUDED
+#define No_H_INCLUDED
+#include "Aresta.h" // Include of the Aresta class
+
+using namespace std;
+
+// Definition of the No class
+class No{
+
+    // Attributes
+private:
+    Aresta* primeira_aresta;
+    Aresta* ultima_aresta;
+    int id;
+    unsigned int grau_entrada;
+    unsigned int grau_saida;
+    float peso;
+    No* proximo_no;
+
+public:
+    // Constructor
+    No(int id);
+    // Destructor
+    ~No();
+    // Getters
+    Aresta* getPrimeiraAresta();
+    Aresta* getUltimaAresta();
+    int getId();
+    int getGrauEntrada();
+    int getGrauSaida();
+    float getPeso();
+    No* getProximoNo();
+    // Setters
+    void setProximoNo(No* No);
+    void setPeso(float peso);
+    // Other methods
+    bool buscaAresta(int target_id);
+    void inserirAresta(int target_id, float peso);
+    void removeTodasArestas();
+    int  removeAresta(int id, bool directed, No* target_No);
+    void incrementarGrauSaida();
+    void decrementarGrauSaida();
+    void incrementarGrauEntrada();
+    void decrementarGrauEntrada();
+    Aresta* temArestaEntre(int target_id);
+    // Auxiliar methods
+
+};
+
+#endif // No_H_INCLUDED
