@@ -1,5 +1,5 @@
-#ifndef GRAPH_H_INCLUDED
-#define GRAPH_H_INCLUDED
+#ifndef TRABALHO_GRAFO_H
+#define TRABALHO_GRAFO_H
 #include "No.h"
 #include <fstream>
 #include <stack>
@@ -51,9 +51,13 @@ public:
     float** floydMarshall();
     float* dijkstra(int id);
 
+    // extra
+    void geraListaAdjacencia(string output);
+    void auxGeraListaAdjacencia(ofstream &output_file);
+
 private:
     //Auxiliar methods
 
 };
 
-#endif // GRAPH_H_INCLUDED
+#endif //TRABALHO_GRAFO_H

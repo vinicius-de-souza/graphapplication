@@ -1,8 +1,6 @@
-#include "No.h"
-#include "Grafo.h"
-#include "Grafo.cpp"
-#include "Aresta.h"
-#include "Aresta.cpp"
+#include "../include/No.h"
+#include "../include/Grafo.h"
+#include "../include/Aresta.h"
 #include <iostream>
 
 using namespace std;
@@ -24,7 +22,7 @@ No::No(int id){
 // Destrutor
 No::~No(){
 
-     Aresta* proxima_aresta = this->primeira_aresta;
+    Aresta* proxima_aresta = this->primeira_aresta;
 
     while(proxima_aresta != nullptr){
 
@@ -181,16 +179,16 @@ int No::removeAresta(int id, bool directed, No* target_node){
 }
 
 bool No::buscaAresta(int target_id) {
-        // Verifies whether there are at least one Aresta in the node
-        if(this->primeira_aresta != nullptr){
-            // Searching for a specific Aresta of target id equal to target id
-            for(Aresta* aux = this->primeira_aresta; aux != nullptr; aux = aux->getProxAresta())
-                if(aux->getAlvoId() == target_id)
-                    return true;
+    // Verifies whether there are at least one Aresta in the node
+    if(this->primeira_aresta != nullptr){
+        // Searching for a specific Aresta of target id equal to target id
+        for(Aresta* aux = this->primeira_aresta; aux != nullptr; aux = aux->getProxAresta())
+            if(aux->getAlvoId() == target_id)
+                return true;
 
-        }
+    }
 
-        return false;
+    return false;
 
 }
 

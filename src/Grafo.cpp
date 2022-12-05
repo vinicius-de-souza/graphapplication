@@ -1,6 +1,6 @@
-#include "Grafo.h"
-#include "No.h"
-#include "Aresta.h"
+#include "../include/Grafo.h"
+#include "../include/No.h"
+#include "../include/Aresta.h"
 #include <iostream>
 #include <fstream>
 #include <stack>
@@ -91,34 +91,81 @@ No *Grafo::getUltimoNo()
 */
 void Grafo::inserirNo(int id)
 {
+    if(this->primeiro_no == nullptr){
+        No * novoNo = new No(id);
+        this->primeiro_no = novoNo;
+        this->ultimo_no = novoNo;
+        return;
+    }
+
+    if(this->getNo(id) == nullptr){
+        No * novoNo = new No(id);
+        this->ultimo_no->setProxNo(novoNo);
+        this->ultimo_no = this->ultimo_no->getProxNo();
+        return;
+    }
 
 }
 
+//
 void Grafo::inserirAresta(int id, int target_id, float weight)
 {
+    if(this->getNo(id) == nullptr){
+        this->inserirNo(id);
+    }
 
+    if(this->getNo(target_id) == nullptr){
+        this->inserirNo(target_id);
+    }
 
+    this->getNo(id)->inserirAresta(target_id, weight);
+
+    if(!this->getDirecionado())
+    {
+        this->getNo(target_id)->inserirAresta(id, weight);
+    }
 }
 
 void Grafo::removerNo(int id){
+    No * aux = this->getPrimeiroNo();
+    No * previo = nullptr;
+
+    No * noParaRemover = this->getNo(id);
+
+    while(aux->getId() != aux->getId()){
+
+        aux = aux->getProxNo();
+    }
 
 }
 
 bool Grafo::procurarNo(int id)
 {
+    No * aux = this->getNo(id);
 
+    if(aux != nullptr)
+        return true;
+
+    return false;
 }
 
 No *Grafo::getNo(int id)
 {
+    No * aux = this->getPrimeiroNo();
+    while(aux != nullptr){
+        if(aux->getId() == id)
+            return aux;
+        else
+            aux = aux->getProxNo();
+    }
 
-
+    return nullptr;
 }
 
 
 //Function that verifies if there is a path between two nodes
 bool Grafo::buscaProfundidade(int initialId, int targetId){
-
+    return false;
 }
 
 
@@ -128,34 +175,65 @@ void Grafo::breadthFirstSearch(ofstream &output_file){
 
 
 Grafo *Grafo::getComplementar(){
-
+    return nullptr;
 }
 
 
 
 //A function that returns a subjacent of a direcionado graph, which is a graph which the arcs have opposite directions to the original graph
 Grafo* Grafo::getSubjacente(){
-
+    return nullptr;
 }
 
 bool Grafo::grafoConectado(){
-
+    return false;
 }
 
 
 
 bool Grafo::temCircuito(){
-
+    return false;
 }
 
 
 
 float** Grafo::floydMarshall(){
-
+    return nullptr;
 }
 
 
 
 float* Grafo::dijkstra(int id){
+    return nullptr;
+}
+
+
+// extra
+
+void Grafo::geraListaAdjacencia(string output){
+    ofstream output_file;
+    output_file.open(output, ios::trunc);
+
+    if(output_file.is_open()){
+        auxGeraListaAdjacencia(output_file);
+    }
+    else{
+        cerr << endl << "Nao foi possivel abrir arquivo <" + output << ">.";
+    }
+}
+
+void Grafo::auxGeraListaAdjacencia(ofstream &output_file){
+
+    for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
+
+        output_file << auxNo->getId() << " - [";
+
+        for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+            output_file << " " << auxAresta->getAlvoId() << ",";
+        }
+
+        output_file << auxNo->getId() << "]" << endl;
+
+    }
 
 }

@@ -7,13 +7,13 @@
 #include <iomanip>
 #include <stdlib.h>
 #include <chrono>
-#include "Grafo.h"
-#include "Aresta.h"
-#include "No.h"
+#include "./include/Grafo.h"
+#include "./include/Aresta.h"
+#include "./include/No.h"
 
 using namespace std;
 
-Grafo* leitura(ifstream& input_file, int direcionado, int peso_aresta, int peso_no){
+Grafo * leitura(ifstream& input_file, int direcionado, int peso_aresta, int peso_no){
 
     //Variáveis para auxiliar na criação dos nós no Grafo
     int idNoFonte;
@@ -73,30 +73,6 @@ Grafo* leitura(ifstream& input_file, int direcionado, int peso_aresta, int peso_
     }
 
     return grafo;
-}
-
-Grafo* leituraInstancia(ifstream& input_file, int direcionado, int peso_aresta, int peso_no){
-
-    //Variáveis para auxiliar na criação dos nós no Grafo
-    int idNodeSource;
-    int idNodeTarget;
-    int order;
-    int numEdges;
-
-    //Pegando a ordem do grafo
-    input_file >> order >> numEdges;
-
-    //Criando objeto grafo
-    Grafo* graph = new Grafo(order, direcionado, peso_aresta, peso_no);
-
-    //Leitura de arquivo
-    while(input_file >> idNodeSource >> idNodeTarget) {
-
-        graph->inserirAresta(idNodeSource, idNodeTarget, 0);
-
-    }
-
-    return graph;
 }
 
 int menu(){
@@ -214,17 +190,35 @@ int mainMenu(ofstream& output_file, Grafo* grafo){
     return 0;
 }
 
-
-
 int main(int argc, char const *argv[]) {
 
     //Verificação se todos os parâmetros do programa foram entrados
     if (argc != 6) {
-
         cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
-        return 1;
 
+        bool direcionado, peso_vertice, peso_aresta = false;
+
+        cout<< "Direcionado: ";
+        cin >> direcionado;
+        cout<< "Peso vertice: ";
+        cin >> peso_vertice;
+        cout<< "Peso aresta: ";
+        cin >> peso_aresta;
+
+        ifstream arq_grafo;
+        arq_grafo.open("../input/grafo_nao_ponderado_personalizado_5_1.txt");
+
+        if(arq_grafo.is_open()) {
+            Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice);
+            grafo->geraListaAdjacencia("listaDeAdjacencia.txt");
+        }
+
+
+
+
+        return 1;
     }
+
 
     string program_name(argv[0]);
     string input_file_name(argv[1]);
@@ -244,7 +238,7 @@ int main(int argc, char const *argv[]) {
 
     if(input_file.is_open()){
 
-        graph = leituraInstancia(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+        graph = leitura(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
 
     }else
         cout << "Unable to open " << argv[1];

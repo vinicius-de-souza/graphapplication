@@ -1,9 +1,8 @@
-#ifndef Aresta_H_INCLUDED
-#define Aresta_H_INCLUDED
-
+#ifndef TRABALHO_ARESTA_H
+#define TRABALHO_ARESTA_H
 using namespace std;
 
-// Definindo a classe das Arestas 
+// Definindo a classe das Arestas
 class Aresta{
 private:
     int alvo_id;
@@ -28,4 +27,4 @@ public:
 
 };
 
-#endif // Aresta_H_INCLUDED
+#endif //TRABALHO_ARESTA_H

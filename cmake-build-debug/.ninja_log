@@ -1,0 +1,11 @@
+# ninja log v5
+4	2395	6919550352868640	CMakeFiles/Trabalho.dir/main.cpp.obj	111a04a6794b1fe6
+2395	2765	6919550356887886	Trabalho.exe	96ad7e8d1d42a92b
+4	1898	6919550033158278	CMakeFiles/Trabalho.dir/src/Grafo.cpp.obj	c89b04806a76a614
+37	2038	6919534253716365	CMakeFiles/Trabalho.dir/src/Aresta.cpp.obj	42cdec373795686a
+128	4112	6919548755055057	CMakeFiles/Trabalho.dir/src/No.cpp.obj	e6e5d4887a13f1b
+11	573	6919553056786817	CMakeFiles/Trabalho.dir/src/Aresta.cpp.obj	a6ec864394d4797b
+4	644	6919553057536893	CMakeFiles/Trabalho.dir/src/No.cpp.obj	711ff5735b2a7a22
+7	800	6919553059065099	CMakeFiles/Trabalho.dir/src/Grafo.cpp.obj	1349a36f4e460485
+1	815	6919553059216557	CMakeFiles/Trabalho.dir/main.cpp.obj	d10ca2cbe5e88afd
+815	958	6919553060625801	Trabalho.exe	da7786e5750ced7

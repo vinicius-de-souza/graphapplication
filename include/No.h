@@ -1,5 +1,5 @@
-#ifndef No_H_INCLUDED
-#define No_H_INCLUDED
+#ifndef TRABALHO_NO_H
+#define TRABALHO_NO_H
 #include "Aresta.h" // Include of the Aresta class
 
 using namespace std;
@@ -47,4 +47,4 @@ public:
 
 };
 
-#endif // No_H_INCLUDED
+#endif //TRABALHO_NO_H
