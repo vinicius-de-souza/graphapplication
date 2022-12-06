@@ -206,7 +206,7 @@ int main(int argc, char const *argv[]) {
         cin >> peso_aresta;
 
         ifstream arq_grafo;
-        arq_grafo.open("../input/grafo_nao_ponderado_personalizado_5_1.txt");
+        arq_grafo.open("../input/grafo_teste_nãoP_5_1.txt");
 
         if(arq_grafo.is_open()) {
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice);
