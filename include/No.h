@@ -7,7 +7,7 @@ using namespace std;
 // Definição da Classe No
 class No{
 
-    // Attributes
+    // Atributos
 private:
     Aresta* primeira_aresta;
     Aresta* ultima_aresta;
@@ -18,9 +18,9 @@ private:
     No* proximo_no;
 
 public:
-    // Constructor
+    // Construtor
     No(int id);
-    // Destructor
+    // Destrutor
     ~No();
     // Getters
     Aresta* getPrimeiraAresta();
@@ -33,7 +33,7 @@ public:
     // Setters
     void setProxNo(No* No);
     void setPeso(float peso);
-    // Other methods
+    // Outras funções
     bool buscaAresta(int alvo_id);
     void inserirAresta(int alvo_id, float peso);
     void removeTodasArestas();
@@ -43,8 +43,6 @@ public:
     void incrementarGrauEntrada();
     void decrementarGrauEntrada();
     Aresta* temArestaEntre(int alvo_id);
-    // Auxiliar methods
-
 };
 
 #endif //TRABALHO_NO_H

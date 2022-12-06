@@ -7,7 +7,7 @@ using namespace std;
 
 
 // Construtor
-No::No(int id){
+No::No(int id){ //Recebe o id _ De onde esse id vem na leitura de arquivos?
 
     this->id = id;
     this->grau_entrada = 0;
@@ -20,7 +20,7 @@ No::No(int id){
 };
 
 // Destrutor
-No::~No(){
+No::~No(){ //Deleta todas as arestas que são liagas a esse nó
 
     Aresta* proxima_aresta = this->primeira_aresta;
 
@@ -91,97 +91,79 @@ void No::setPeso(float peso){
 
 }
 
-// Other methods
+// Outras funções
 void No::inserirAresta(int alvo_id, float peso){
-    // Verifies whether there are at least one Aresta in the node
+    //Caso o nó já tenha pelo menos uma aresta
     if(this->primeira_aresta != nullptr){
-        // Allocating the new Aresta and keeping the integrity of the Aresta list
         Aresta* aresta = new Aresta(alvo_id);
         aresta->setpeso(peso);
         this->ultima_aresta->setProxAresta(aresta);
         this->ultima_aresta = aresta;
-
     }
     else{
-        // Allocating the new Aresta and keeping the integrity of the Aresta list
+        // Caso o nó ainda não tenha nenhuma aresta
         this->primeira_aresta = new Aresta(alvo_id);
         this->primeira_aresta->setpeso(peso);
         this->ultima_aresta = this->primeira_aresta;
-
     }
 
 }
 
-void No::removeTodasArestas(){
-    // Verifies whether there are at least one Aresta in the node
+void No::removeTodasArestas(){  
+    // Caso tenha arestas
     if(this->primeira_aresta != nullptr){
-
         Aresta* next = nullptr;
         Aresta* aux = this->primeira_aresta;
-        // Removing all Arestas of the node
-        while(aux != nullptr){
-
+        //Começa da primeira aresta e vai deletando todas
+        while(aux != nullptr){  //Esse raciocínio ta certo??
             next = aux->getProxAresta();
             delete aux;
-
+            aux = next->getProxAresta();
+            delete next;
         }
-
     }
-
+    // Caso não tenha arestas
     this->primeira_aresta = this->ultima_aresta = nullptr;
-
 }
 
-int No::removeAresta(int id, bool directed, No* target_node){
-    // Verifies whether the Aresta to remove is in the node
+int No::removeAresta(int id, bool directed, No* target_node){ //Está funcionando?
+    //Verifica se a aresta pedida pra ser removida existe 
     if(this->buscaAresta(id)){
 
         Aresta* aux = this->primeira_aresta;
         Aresta* previous = nullptr;
-        // Searching for the Aresta to be removed
+        // Procura a aresta para ser removida
         while(aux->getAlvoId() != id){
-
             previous = aux;
             aux = aux->getProxAresta();
-
         }
-        // Keeping the integrity of the Aresta list
-        if(previous != nullptr)
+        if(previous != nullptr) //Conecto o nó da aresta anterior com o nó da proxima aresta
             previous->setProxAresta(aux->getProxAresta());
-
-        else
+        else //Caso seja a primeira aresta a ser removida
             this->primeira_aresta = aux->getProxAresta();
-
-        if(aux == this->ultima_aresta)
+        if(aux == this->ultima_aresta) //Caso seja a ultima aresta
             this->ultima_aresta = previous;
-
-        if(aux->getProxAresta() == this->ultima_aresta)
+        if(aux->getProxAresta() == this->ultima_aresta) //
             this->ultima_aresta = aux->getProxAresta();
-
         delete aux;
-        // Verifies whether the graph is directed
-        if(directed)
+        if(directed) //Caso ele seja direcionado 
             this->decrementarGrauSaida();
-
         else{
-
             this->decrementarGrauEntrada();
             target_node->decrementarGrauEntrada();
-
         }
 
         return 1;
 
     }
-
+    // Caso não exista a aresta não faz nada
     return 0;
-
 }
 
 bool No::buscaAresta(int target_id) {
-    // Verifies whether there are at least one Aresta in the node
+    //Caso haja pelo menos uma aresta no nó
     if(this->primeira_aresta != nullptr){
-        // Searching for a specific Aresta of target id equal to target id
+        //Procurando a aresta
         for(Aresta* aux = this->primeira_aresta; aux != nullptr; aux = aux->getProxAresta())
             if(aux->getAlvoId() == target_id)
                 return true;
@@ -218,7 +200,7 @@ void No::decrementarGrauSaida(){
 
 }
 
-Aresta* No::temArestaEntre(int alvo_id)
+Aresta* No::temArestaEntre(int alvo_id) //Verifica se há aresta entre dois nós
 {
 
     for(Aresta *auxAresta = this->primeira_aresta; auxAresta != nullptr; auxAresta = auxAresta->getProxAresta())

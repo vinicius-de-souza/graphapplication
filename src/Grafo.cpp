@@ -14,10 +14,10 @@
 
 using namespace std;
 
-// Constructor
-Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no)
+// Construtor 
+Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no) //Como essa ordem é passada na hora da leitura do aquivo?
 {
-
+    // Inicializa o grafo
     this->ordem = ordem;
     this->direcionado = direcionado;
     this->peso_aresta = peso_aresta;
@@ -26,10 +26,10 @@ Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no)
     this->numero_arestas = 0;
 }
 
-// Destructor
+// Destrutor
 Grafo::~Grafo()
 {
-
+    // Exclui todos os nós e suas arestas
     No *proximo_no = this->primeiro_no;
 
     while (proximo_no != nullptr)
@@ -84,14 +84,11 @@ No *Grafo::getUltimoNo()
     return this->ultimo_no;
 }
 
-// Other methods
-/*
-    The outdegree attribute of nodes is used as a counter for the number of edges in the graph.
-    This allows the correct updating of the numbers of edges in the graph being direcionado or not.
-*/
-void Grafo::inserirNo(int id)
+// Outras funções 
+
+void Grafo::inserirNo(int id) 
 {
-    if(this->primeiro_no == nullptr){
+    if(this->primeiro_no == nullptr){ //Caso o grafo esteja vazio 
         No * novoNo = new No(id);
         this->primeiro_no = novoNo;
         this->ultimo_no = novoNo;
@@ -110,23 +107,23 @@ void Grafo::inserirNo(int id)
 //
 void Grafo::inserirAresta(int id, int target_id, float weight)
 {
-    if(this->getNo(id) == nullptr){
+    if(this->getNo(id) == nullptr){ //Caso ainda não exista o nó de onde sai a aresta
         this->inserirNo(id);
     }
 
-    if(this->getNo(target_id) == nullptr){
+    if(this->getNo(target_id) == nullptr){ //Caso ainda não exista o nó de entrada da aresta
         this->inserirNo(target_id);
     }
 
     this->getNo(id)->inserirAresta(target_id, weight);
 
-    if(!this->getDirecionado())
+    if(!this->getDirecionado()) //Caso seja um grafo direcionado 
     {
         this->getNo(target_id)->inserirAresta(id, weight);
     }
 }
 
-void Grafo::removerNo(int id){
+void Grafo::removerNo(int id){ //Remoção de nó
     No * aux = this->getPrimeiroNo();
     No * previo = nullptr;
 
@@ -139,7 +136,7 @@ void Grafo::removerNo(int id){
 
 }
 
-bool Grafo::procurarNo(int id)
+bool Grafo::procurarNo(int id)  //Fazer
 {
     No * aux = this->getNo(id);
 
@@ -163,52 +160,19 @@ No *Grafo::getNo(int id)
 }
 
 
-//Function that verifies if there is a path between two nodes
+// Fazer _ Booleano -> verifica se há um caminho entre dois nós passados por parâmetro 
 bool Grafo::buscaProfundidade(int initialId, int targetId){
     return false;
 }
 
 
-void Grafo::breadthFirstSearch(ofstream &output_file){
-
-}
-
-
-Grafo *Grafo::getComplementar(){
-    return nullptr;
-}
-
-
-
-//A function that returns a subjacent of a direcionado graph, which is a graph which the arcs have opposite directions to the original graph
-Grafo* Grafo::getSubjacente(){
-    return nullptr;
-}
-
+// Fazer _ Booleando -> verifica se o grafo é conexo ou não (será implementado dentro de outras funções)
 bool Grafo::grafoConectado(){
     return false;
 }
 
 
-
-bool Grafo::temCircuito(){
-    return false;
-}
-
-
-
-float** Grafo::floydMarshall(){
-    return nullptr;
-}
-
-
-
-float* Grafo::dijkstra(int id){
-    return nullptr;
-}
-
-
-// extra
+// Extra _ Criados para melhor visualização do programa
 
 void Grafo::geraListaAdjacencia(string output){
     ofstream output_file;
