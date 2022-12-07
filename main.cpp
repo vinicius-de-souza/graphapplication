@@ -215,13 +215,12 @@ int main(int argc, char const *argv[]) {
         cin >> peso_aresta;
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
-        arq_grafo.open("/input/grafo_teste_nãoP_5_1.txt"); //abertura do arquivo de teste 
+        arq_grafo.open("grafo_teste_nãoP_5_1.txt", ios::in); //abertura do arquivo de teste _ NÃO TA FUNCIONANDO
 
         if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
             cout << "ta chegando aqui";
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
             grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
-            cout << "ta chegando aqui";
         }
 
         //Faz parte do if _ Fechar o programa após a mensagem de erro 
