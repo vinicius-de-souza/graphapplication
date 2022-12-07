@@ -1,6 +1,6 @@
 #ifndef TRABALHO_NO_H
 #define TRABALHO_NO_H
-#include "Aresta.h" // Include of the Aresta class
+#include "Aresta.h" 
 
 using namespace std;
 

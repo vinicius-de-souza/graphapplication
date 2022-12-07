@@ -20,7 +20,7 @@ No::No(int id){ //Recebe o id _ De onde esse id vem na leitura de arquivos?
 };
 
 // Destrutor
-No::~No(){ //Deleta todas as arestas que são liagas a esse nó
+No::~No(){ //Deleta todas as arestas que são ligadas a esse nó
 
     Aresta* proxima_aresta = this->primeira_aresta;
 
