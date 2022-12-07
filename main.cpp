@@ -7,13 +7,19 @@
 #include <iomanip>
 #include <stdlib.h>
 #include <chrono>
-#include "./include/Grafo.h"
-#include "./include/Aresta.h"
-#include "./include/No.h"
+#include "include/Grafo.h"
+#include "include/Aresta.h"
+#include "include/No.h"
+#include "src/Grafo.cpp"
+#include "src/Aresta.cpp"
+#include "src/No.cpp"
 
 using namespace std;
 
-Grafo * leitura(ifstream& input_file, int direcionado, int peso_aresta, int peso_no){
+//ofstream classe do <fstream> para criar e escrever em arquivos
+//ifstream: classe do <fstream> para ler de arquivos  _ utilizado quando a ação é apenas ler arquivos 
+//Função para leitura do grafo, recebe como parâmetro 
+Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int peso_no){
 
     //Variáveis para auxiliar na criação dos nós no Grafo
     int idNoFonte;
@@ -192,12 +198,15 @@ int mainMenu(ofstream& output_file, Grafo* grafo){
 
 int main(int argc, char const *argv[]) {
 
-    //Verificação se todos os parâmetros do programa foram entrados
-    if (argc != 6) {
+    //Verificação se todos os parâmetros do programa foram corretamente inseridos 
+    //Na ordem esses parâmetros são: int argc _ quantidade de argumentos (devem ser 6) ; char const *argv[] _ nome do programa _ nome do arquivo de entrada _ nome do arquivo de saída _ se é direcionado (bool) _ se tem peso nas arestas (bool) _ se tem peso no nó (bool)
+    if (argc != 6) { //Caso não seja passado os parâmetros corretos, uma mensagem de erro é impressa 
         cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
 
+        //Adptação do código para testes 
         bool direcionado, peso_vertice, peso_aresta = false;
 
+        //Adiciona manualmente as informações 
         cout<< "Direcionado: ";
         cin >> direcionado;
         cout<< "Peso vertice: ";
@@ -205,17 +214,17 @@ int main(int argc, char const *argv[]) {
         cout<< "Peso aresta: ";
         cin >> peso_aresta;
 
-        ifstream arq_grafo;
-        arq_grafo.open("../input/grafo_teste_nãoP_5_1.txt");
+        ifstream arq_grafo; //Rotina para abertura do arquivo 
+        arq_grafo.open("/input/grafo_teste_nãoP_5_1.txt"); //abertura do arquivo de teste 
 
-        if(arq_grafo.is_open()) {
-            Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice);
-            grafo->geraListaAdjacencia("listaDeAdjacencia.txt");
+        if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
+            cout << "ta chegando aqui";
+            Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
+            grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
+            cout << "ta chegando aqui";
         }
 
-
-
-
+        //Faz parte do if _ Fechar o programa após a mensagem de erro 
         return 1;
     }
 
