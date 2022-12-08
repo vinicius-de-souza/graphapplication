@@ -19,7 +19,7 @@ using namespace std;
 // ofstream classe do <fstream> para criar e escrever em arquivos
 // ifstream: classe do <fstream> para ler de arquivos  _ utilizado quando a ação é apenas ler arquivos 
 //Função para leitura do grafo, recebe como parâmetro 
-Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int peso_no){
+Grafo * leitura(ifstream& input_file, bool direcionado, int peso_aresta, int peso_no){
 
     //Variáveis para auxiliar na criação dos nós no Grafo
     int idNoFonte;
@@ -34,7 +34,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
 
     //Leitura de arquivo
     
-    if(!grafo->getPesoAresta() && !grafo->getPesoNo()){
+    if(!grafo->getPesoAresta() && !grafo->getPesoNo()){  // Essa parte funciona
 
         while(input_file >> idNoFonte >> idNoAlvo) {
 
@@ -42,7 +42,18 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
 
         }
 
-    }else if(grafo->getPesoAresta() && !grafo->getPesoNo() ){
+    }
+    else if(grafo->getPesoNo() && !grafo->getPesoAresta()){ // ? Está funcionando?
+
+        float pesoIdNofonte, pesoIdNoAlvo;
+
+            while(input_file >> idNoFonte >> pesoIdNofonte >> idNoAlvo >> pesoIdNoAlvo) {
+
+                grafo->inserirAresta(idNoFonte, idNoAlvo, 0);
+
+        }
+    }
+    else if(grafo->getPesoAresta() && !grafo->getPesoNo() ){ //Devia estar funcionando
 
         float edgeWeight;
 
@@ -52,7 +63,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
 
         }
 
-    }else if(grafo->getPesoAresta() && !grafo->getPesoAresta()){
+    }/*else if(grafo->getPesoAresta() && !grafo->getPesoAresta()){
 
         float nodeSourceWeight, nodeTargetWeight;
 
@@ -64,11 +75,11 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
 
         }
 
-    }else if(grafo->getPesoNo() && grafo->getPesoAresta()){
+    }*/else if(grafo->getPesoNo() && grafo->getPesoAresta()){
 
         float nodeSourceWeight, nodeTargetWeight, edgeWeight;
 
-        while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight) {
+        while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight >> edgeWeight) {
 
             grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
             grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
