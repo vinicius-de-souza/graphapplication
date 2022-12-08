@@ -1,8 +1,14 @@
-digraph G graph G {
-    99 ->  85
- [label=" 1"]    99 ->  98
- [label=" 1"]    85 ->  56
- [label=" 1"]    72 ->  56
- [label=" 1"]    98 ->  72
- [label=" 1"]
+strict graph G { 
+ 
+
+    99 --  85 [label=" 1"]
+    99 --  98 [label=" 1"]
+    85 --  99 [label=" 1"]
+    85 --  56 [label=" 1"]
+    72 --  56 [label=" 1"]
+    72 --  98 [label=" 1"]
+    56 --  72 [label=" 1"]
+    56 --  85 [label=" 1"]
+    98 --  72 [label=" 1"]
+    98 --  99 [label=" 1"]
  }

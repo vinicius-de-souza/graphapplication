@@ -236,30 +236,32 @@ void Grafo::geraGrafoDot(string output){ //Geração do arquivo de sáida em .do
 void Grafo::auxGeraGrafoDot(ofstream &output_file){ //Recebe como parâmetro o aruivo de saida
 
     if(direcionado){
-        output_file << "digraph G ";
-        output_file << "graph G {\n";
+        output_file << "digraph G {\n";
         for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
 
             for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
-                output_file << "    " << auxNo->getId() << " -> ";
-                output_file << " " << auxAresta->getAlvoId() << "\n";
+                output_file << "\n" << "    " << auxNo->getId() << " -> ";
+                output_file << " " << auxAresta->getAlvoId();
                 if(peso_aresta){
                     output_file << " " << "[label=\" " << this->getPesoAresta() << "\"]";
                 }
         }
     }
-        output_file << "\n }";
+        output_file << "\n" << "\n }";
     }
     
     else{
-        output_file << "graph G {\n";
+        output_file << "strict graph G { \n \n";
         for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
 
             for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
-                output_file << "    " << auxNo->getId() << "--";
-                output_file << " " << auxAresta->getAlvoId() << "\n";
+                output_file << "\n" << "    " << auxNo->getId() << " -- ";
+                output_file << " " << auxAresta->getAlvoId();
+                if(peso_aresta){
+                    output_file << " " << "[label=\" " << this->getPesoAresta() << "\"]";
+                }
         }
     }
-        output_file << "\n }";
+        output_file << "\n" << "\n }";
     }
 }
