@@ -16,8 +16,8 @@
 
 using namespace std;
 
-//ofstream classe do <fstream> para criar e escrever em arquivos
-//ifstream: classe do <fstream> para ler de arquivos  _ utilizado quando a ação é apenas ler arquivos 
+// ofstream classe do <fstream> para criar e escrever em arquivos
+// ifstream: classe do <fstream> para ler de arquivos  _ utilizado quando a ação é apenas ler arquivos 
 //Função para leitura do grafo, recebe como parâmetro 
 Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int peso_no){
 
@@ -33,7 +33,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
     Grafo* grafo = new Grafo(ordem, direcionado, peso_aresta, peso_no);
 
     //Leitura de arquivo
-
+    
     if(!grafo->getPesoAresta() && !grafo->getPesoNo()){
 
         while(input_file >> idNoFonte >> idNoAlvo) {
@@ -158,7 +158,7 @@ int main(int argc, char const *argv[]) {
     if (argc != 6) { //Caso não seja passado os parâmetros corretos, uma mensagem de erro é impressa 
         cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
 
-        //Adptação do código para testes 
+        //Adaptação do código para testes 
         bool direcionado, peso_vertice, peso_aresta = false;
 
         //Adiciona manualmente as informações 
@@ -170,8 +170,7 @@ int main(int argc, char const *argv[]) {
         cin >> peso_aresta;
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
-        string path = "../input/grafo_teste_naoP_5_1";
-        arq_grafo.open(path, ios::in); //abertura do arquivo de teste _ NÃO TA FUNCIONANDO
+        arq_grafo.open("../input/grafo_teste_naoP_5_1", ios::in); //abertura do arquivo de teste _ NÃO TA FUNCIONANDO
 
         if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
             cout << "ta chegando aqui";
