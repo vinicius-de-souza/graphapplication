@@ -7,7 +7,7 @@ using namespace std;
 
 
 // Construtor
-No::No(int id){ //Recebe o id _ De onde esse id vem na leitura de arquivos?
+No::No(int id){ 
 
     this->id = id;
     this->grau_entrada = 0;

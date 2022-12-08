@@ -15,7 +15,7 @@
 using namespace std;
 
 // Construtor 
-Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no) //Como essa ordem é passada na hora da leitura do aquivo?
+Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no) 
 {
     // Inicializa o grafo
     this->ordem = ordem;
@@ -86,7 +86,7 @@ No *Grafo::getUltimoNo()
 
 // Outras funções 
 
-void Grafo::inserirNo(int id) 
+void Grafo::inserirNo(int id) //Inserção interna de nós _ não muda a ordem
 {
     if(this->primeiro_no == nullptr){ //Caso o grafo esteja vazio 
         No * novoNo = new No(id);
@@ -101,11 +101,28 @@ void Grafo::inserirNo(int id)
         this->ultimo_no = this->ultimo_no->getProxNo();
         return;
     }
-
 }
 
-//
-void Grafo::inserirAresta(int id, int target_id, float weight)
+void Grafo::inserir_No(int id) //Inserção de nós pelo usuário da main _ precisa mudar a ordem
+{
+    if(this->primeiro_no == nullptr){ //Caso o grafo esteja vazio 
+        No * novoNo = new No(id);
+        this->primeiro_no = novoNo;
+        this->ultimo_no = novoNo;
+        this->ordem = this->ordem + 1;
+        return;
+    }
+
+    if(this->getNo(id) == nullptr){
+        No * novoNo = new No(id);
+        this->ultimo_no->setProxNo(novoNo);
+        this->ultimo_no = this->ultimo_no->getProxNo();
+        this->ordem = this->ordem + 1;
+        return;
+    }
+}
+
+void Grafo::inserirAresta(int id, int target_id, float weight) //? Funcionando?
 {
     if(this->getNo(id) == nullptr){ //Caso ainda não exista o nó de onde sai a aresta
         this->inserirNo(id);
@@ -123,7 +140,7 @@ void Grafo::inserirAresta(int id, int target_id, float weight)
     }
 }
 
-void Grafo::removerNo(int id){ //Remoção de nó
+void Grafo::removerNo(int id){ //TODO: fazer função
     No * aux = this->getPrimeiroNo();
     No * previo = nullptr;
 
@@ -136,7 +153,7 @@ void Grafo::removerNo(int id){ //Remoção de nó
 
 }
 
-bool Grafo::procurarNo(int id)  //Fazer
+bool Grafo::procurarNo(int id)  //TODO: fazer função
 {
     No * aux = this->getNo(id);
 
@@ -146,7 +163,7 @@ bool Grafo::procurarNo(int id)  //Fazer
     return false;
 }
 
-No *Grafo::getNo(int id)
+No *Grafo::getNo(int id) //? Funcionando?
 {
     No * aux = this->getPrimeiroNo();
     while(aux != nullptr){
@@ -161,32 +178,33 @@ No *Grafo::getNo(int id)
 
 
 // Fazer _ Booleano -> verifica se há um caminho entre dois nós passados por parâmetro 
-bool Grafo::buscaProfundidade(int initialId, int targetId){
+bool Grafo::buscaProfundidade(int initialId, int targetId){ //TODO: fazer função
     return false;
 }
 
 
-// Fazer _ Booleando -> verifica se o grafo é conexo ou não (será implementado dentro de outras funções)
-bool Grafo::grafoConectado(){
+// Fazer _ Booleando -> verifica se o grafo é conexo ou não (será utilizado dentro de outras funções)
+bool Grafo::grafoConectado(){ //TODO: fazer função
     return false;
 }
 
 
 // Extra _ Criados para melhor visualização do programa
 
-void Grafo::geraListaAdjacencia(string output){
-    ofstream output_file;
+void Grafo::geraListaAdjacencia(string output){ //Geração da lista de adjacência dos nós
+    //Recebe como parâmetro o nome do arquivo de saída
+    ofstream output_file; //Rotina para abertura e escrita do arquivo 
     output_file.open(output, ios::trunc);
 
     if(output_file.is_open()){
         auxGeraListaAdjacencia(output_file);
     }
-    else{
+    else{ //Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
         cerr << endl << "Nao foi possivel abrir arquivo <" + output << ">.";
     }
 }
 
-void Grafo::auxGeraListaAdjacencia(ofstream &output_file){
+void Grafo::auxGeraListaAdjacencia(ofstream &output_file){ //Recebe como parâmetro o arquivo de saida
 
     for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
 
@@ -200,4 +218,48 @@ void Grafo::auxGeraListaAdjacencia(ofstream &output_file){
 
     }
 
+}
+
+
+void Grafo::geraGrafoDot(string output){ //Geração do arquivo de sáida em .dot
+    ofstream output_file; //Rotina para abertura e escrita do arquivo 
+    output_file.open(output, ios::trunc);
+
+    if(output_file.is_open()){
+        auxGeraGrafoDot(output_file);
+    }
+    else{ //Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
+        cerr << endl << "Nao foi possivel abrir arquivo <" + output << ">.";
+    }
+}
+
+void Grafo::auxGeraGrafoDot(ofstream &output_file){ //Recebe como parâmetro o aruivo de saida
+
+    if(direcionado){
+        output_file << "digraph G ";
+        output_file << "graph G {\n";
+        for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
+
+            for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+                output_file << "    " << auxNo->getId() << " -> ";
+                output_file << " " << auxAresta->getAlvoId() << "\n";
+                if(peso_aresta){
+                    output_file << " " << "[label=\" " << this->getPesoAresta() << "\"]";
+                }
+        }
+    }
+        output_file << "\n }";
+    }
+    
+    else{
+        output_file << "graph G {\n";
+        for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
+
+            for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+                output_file << "    " << auxNo->getId() << "--";
+                output_file << " " << auxAresta->getAlvoId() << "\n";
+        }
+    }
+        output_file << "\n }";
+    }
 }
