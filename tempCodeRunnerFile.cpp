@@ -1,1 +1,2 @@
 
+        //Adiciona manualmente as informações 

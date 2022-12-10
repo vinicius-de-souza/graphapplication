@@ -19,7 +19,7 @@ using namespace std;
 // ofstream classe do <fstream> para criar e escrever em arquivos
 // ifstream: classe do <fstream> para ler de arquivos  _ utilizado quando a ação é apenas ler arquivos 
 //Função para leitura do grafo, recebe como parâmetro 
-Grafo * leitura(ifstream& input_file, bool direcionado, int peso_aresta, int peso_no){
+Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int peso_no){
 
     //Variáveis para auxiliar na criação dos nós no Grafo
     int idNoFonte;
@@ -38,17 +38,19 @@ Grafo * leitura(ifstream& input_file, bool direcionado, int peso_aresta, int pes
 
         while(input_file >> idNoFonte >> idNoAlvo) {
 
+            grafo->setNumAresta();
             grafo->inserirAresta(idNoFonte, idNoAlvo, 0);
 
         }
 
     }
-    else if(grafo->getPesoNo() && !grafo->getPesoAresta()){ // ? Está funcionando?
+    else if(grafo->getPesoNo() && !grafo->getPesoAresta()){ // Essa parte funciona
 
         float pesoIdNofonte, pesoIdNoAlvo;
 
             while(input_file >> idNoFonte >> pesoIdNofonte >> idNoAlvo >> pesoIdNoAlvo) {
 
+                grafo->setNumAresta();
                 grafo->inserirAresta(idNoFonte, idNoAlvo, 0);
 
         }
@@ -59,6 +61,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, int peso_aresta, int pes
 
         while(input_file >> idNoFonte >> idNoAlvo >> edgeWeight) {
 
+            grafo->setNumAresta();
             grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
 
         }
@@ -81,6 +84,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, int peso_aresta, int pes
 
         while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight >> edgeWeight) {
 
+            grafo->setNumAresta();
             grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
             grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
             grafo->getNo(idNoAlvo)->setPeso(nodeTargetWeight);
@@ -187,6 +191,7 @@ int main(int argc, char const *argv[]) {
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
             grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
             grafo->geraGrafoDot("testedot.dot");
+            cout << grafo->procurarNo(2);
         }
         else{
             cout << "Erro na leitura do arquivo";

@@ -15,8 +15,7 @@
 using namespace std;
 
 // Construtor 
-Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no) 
-{
+Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no) {
     // Inicializa o grafo
     this->ordem = ordem;
     this->direcionado = direcionado;
@@ -43,42 +42,40 @@ Grafo::~Grafo()
 }
 
 // Getters
-int Grafo::getOrdem()
-{
-
+int Grafo::getOrdem(){ // * Funcionando 
     return this->ordem;
 }
-int Grafo::getNumeroArestas()
-{
 
+int Grafo::getNumeroArestas(){ // * Funcionando
     return this->numero_arestas;
 }
 
-bool Grafo::getDirecionado()
-{
+void Grafo::setNumAresta(){ // * Funcionando 
+    this->numero_arestas = this->numero_arestas + 1;
+}
 
+bool Grafo::getDirecionado() // * Funcionando
+{
     return this->direcionado;
 }
 
-bool Grafo::getPesoAresta()
+bool Grafo::getPesoAresta() // * Funcionando    
 {
-
     return this->peso_aresta;
 }
 
-bool Grafo::getPesoNo()
+bool Grafo::getPesoNo() // * Funcionando 
 {
 
     return this->peso_no;
 }
 
-No *Grafo::getPrimeiroNo()
+No *Grafo::getPrimeiroNo() // * Funcionando 
 {
-
     return this->primeiro_no;
 }
 
-No *Grafo::getUltimoNo()
+No *Grafo::getUltimoNo() // * Funcionando
 {
 
     return this->ultimo_no;
@@ -86,8 +83,8 @@ No *Grafo::getUltimoNo()
 
 // Outras funções 
 
-void Grafo::inserirNo(int id) //Inserção interna de nós _ não muda a ordem
-{
+void Grafo::inserirNo(int id){ //* Funcionando
+//Inserção interna de nós _ não muda a ordem
     if(this->primeiro_no == nullptr){ //Caso o grafo esteja vazio 
         No * novoNo = new No(id);
         this->primeiro_no = novoNo;
@@ -103,8 +100,9 @@ void Grafo::inserirNo(int id) //Inserção interna de nós _ não muda a ordem
     }
 }
 
-void Grafo::inserir_No(int id) //Inserção de nós pelo usuário da main _ precisa mudar a ordem
-{
+void Grafo::inserir_No(int id){ //* Funcionando
+//Inserção de nós pelo usuário da main _ precisa mudar a ordem
+
     if(this->primeiro_no == nullptr){ //Caso o grafo esteja vazio 
         No * novoNo = new No(id);
         this->primeiro_no = novoNo;
@@ -122,7 +120,7 @@ void Grafo::inserir_No(int id) //Inserção de nós pelo usuário da main _ prec
     }
 }
 
-void Grafo::inserirAresta(int id, int target_id, float weight) //? Funcionando?
+void Grafo::inserirAresta(int id, int target_id, float weight) // * Funcionando 
 {
     if(this->getNo(id) == nullptr){ //Caso ainda não exista o nó de onde sai a aresta
         this->inserirNo(id);
@@ -153,7 +151,7 @@ void Grafo::removerNo(int id){ //TODO: fazer função
 
 }
 
-bool Grafo::procurarNo(int id)  //TODO: fazer função
+bool Grafo::procurarNo(int id)  //* Funcionando
 {
     No * aux = this->getNo(id);
 
@@ -163,7 +161,7 @@ bool Grafo::procurarNo(int id)  //TODO: fazer função
     return false;
 }
 
-No *Grafo::getNo(int id) //? Funcionando?
+No *Grafo::getNo(int id) //* Funcionando
 {
     No * aux = this->getPrimeiroNo();
     while(aux != nullptr){
@@ -191,7 +189,8 @@ bool Grafo::grafoConectado(){ //TODO: fazer função
 
 // Extra _ Criados para melhor visualização do programa
 
-void Grafo::geraListaAdjacencia(string output){ //Geração da lista de adjacência dos nós
+void Grafo::geraListaAdjacencia(string output){ //* Funcionando
+//Geração da lista de adjacência dos nós
     //Recebe como parâmetro o nome do arquivo de saída
     ofstream output_file; //Rotina para abertura e escrita do arquivo 
     output_file.open(output, ios::trunc);
@@ -204,7 +203,8 @@ void Grafo::geraListaAdjacencia(string output){ //Geração da lista de adjacên
     }
 }
 
-void Grafo::auxGeraListaAdjacencia(ofstream &output_file){ //Recebe como parâmetro o arquivo de saida
+void Grafo::auxGeraListaAdjacencia(ofstream &output_file){ // * Funcionando
+    //Recebe como parâmetro o arquivo de saida
 
     for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
 
@@ -221,7 +221,8 @@ void Grafo::auxGeraListaAdjacencia(ofstream &output_file){ //Recebe como parâme
 }
 
 
-void Grafo::geraGrafoDot(string output){ //Geração do arquivo de sáida em .dot
+void Grafo::geraGrafoDot(string output){ //* Funcionando
+//Geração do arquivo de sáida em .dot
     ofstream output_file; //Rotina para abertura e escrita do arquivo 
     output_file.open(output, ios::trunc);
 
@@ -233,7 +234,8 @@ void Grafo::geraGrafoDot(string output){ //Geração do arquivo de sáida em .do
     }
 }
 
-void Grafo::auxGeraGrafoDot(ofstream &output_file){ //Recebe como parâmetro o aruivo de saida
+void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando 
+//Recebe como parâmetro o aruivo de saida
 
     if(direcionado){
         output_file << "digraph G {\n";

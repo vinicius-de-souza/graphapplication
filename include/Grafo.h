@@ -45,6 +45,7 @@ public:
     No* getNo(int id);
     bool buscaProfundidade(int idInicial, int idAlvo);
     bool grafoConectado();
+    void setNumAresta();
 
     // Extra _ Criados para melhor visualização do programa
     void geraListaAdjacencia(string output);
@@ -54,8 +55,6 @@ public:
     void auxGeraGrafoDot(ofstream &output_file);
     void geraGrafoDot(string output);
 
-private:
-    //Alguma função deve ser privada?
 
 };
 
