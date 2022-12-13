@@ -176,16 +176,19 @@ No *Grafo::getNo(int id) //* Funcionando
 
 float Grafo::getAresta(int idSaida, int idAlvo){
     No *auxNo = this->getNo(idSaida);
-    //for( auxNo; auxNo->getId()!= idSaida ; auxNo = auxNo->getProxNo()){}
     for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
         if(auxAresta->getAlvoId()==idAlvo){
             return auxAresta->getpeso();
-            } // bom dia 
+            } 
         }
 }
 
 // Fazer _ Booleano -> verifica se há um caminho entre dois nós passados por parâmetro 
 bool Grafo::buscaProfundidade(int initialId, int targetId){ //TODO: fazer função
+    
+        No *it = this->getNo(initialId);
+        //for(){}
+    
     return false;
 }
 
