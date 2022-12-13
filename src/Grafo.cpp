@@ -174,6 +174,15 @@ No *Grafo::getNo(int id) //* Funcionando
     return nullptr;
 }
 
+float Grafo::getAresta(int idSaida, int idAlvo){
+    No *auxNo = this->getPrimeiroNo();
+    for( auxNo; auxNo->getId()!= idSaida ; auxNo = auxNo->getProxNo()){}
+    for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+        if(auxAresta->getAlvoId()==idAlvo){
+            return auxAresta->getpeso();
+            }
+        }
+}
 
 // Fazer _ Booleano -> verifica se há um caminho entre dois nós passados por parâmetro 
 bool Grafo::buscaProfundidade(int initialId, int targetId){ //TODO: fazer função
@@ -245,7 +254,7 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando
                 output_file << "\n" << "    " << auxNo->getId() << " -> ";
                 output_file << " " << auxAresta->getAlvoId();
                 if(peso_aresta){
-                    output_file << " " << "[label=\" " << this->getPesoAresta() << "\"]";
+                    output_file << " " << "[label=\" " << this->getAresta(auxNo->getId(), auxAresta->getAlvoId()) << "\"]";
                 }
         }
     }
@@ -260,7 +269,7 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando
                 output_file << "\n" << "    " << auxNo->getId() << " -- ";
                 output_file << " " << auxAresta->getAlvoId();
                 if(peso_aresta){
-                    output_file << " " << "[label=\" " << this->getPesoAresta() << "\"]";
+                    output_file << " " << "[label=\" " << this->getAresta(auxNo->getId(), auxAresta->getAlvoId()) << "\"]";
                 }
         }
     }

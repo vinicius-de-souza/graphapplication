@@ -35,6 +35,7 @@ public:
     bool getPesoNo();
     No* getPrimeiroNo();
     No* getUltimoNo();
+    float getAresta(int idSaida, int idAlvo);
 
     //Outras funções necessárias
     void inserirNo(int id);

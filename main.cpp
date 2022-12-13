@@ -118,7 +118,7 @@ void selecionar(int selecao, Grafo* graph, ofstream& output_file){
 
     switch (selecao) {
 
-        //Inteseção
+        //Interseção
         case 1:{
 
             break;
@@ -191,7 +191,6 @@ int main(int argc, char const *argv[]) {
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
             grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
             grafo->geraGrafoDot("testedot.dot");
-            cout << grafo->procurarNo(2);
         }
         else{
             cout << "Erro na leitura do arquivo";
