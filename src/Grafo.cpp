@@ -175,12 +175,12 @@ No *Grafo::getNo(int id) //* Funcionando
 }
 
 float Grafo::getAresta(int idSaida, int idAlvo){
-    No *auxNo = this->getPrimeiroNo();
-    for( auxNo; auxNo->getId()!= idSaida ; auxNo = auxNo->getProxNo()){}
+    No *auxNo = this->getNo(idSaida);
+    //for( auxNo; auxNo->getId()!= idSaida ; auxNo = auxNo->getProxNo()){}
     for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
         if(auxAresta->getAlvoId()==idAlvo){
             return auxAresta->getpeso();
-            }
+            } // bom dia 
         }
 }
 
