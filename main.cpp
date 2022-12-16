@@ -64,6 +64,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
             grafo->setNumAresta();
             grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
 
+
         }
 
     }/*else if(grafo->getPesoAresta() && !grafo->getPesoAresta()){
