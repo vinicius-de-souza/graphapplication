@@ -190,7 +190,7 @@ int main(int argc, char const *argv[]) {
 
         if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
-            grafo->removerNo(2);
+            grafo->removerNo(1);
             grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
             //grafo->geraGrafoDot("testedot.dot");
         }

@@ -43,6 +43,7 @@ public:
     void incrementarGrauEntrada();
     void decrementarGrauEntrada();
     Aresta* temArestaEntre(int alvo_id);
+    void setPrimeiraAresta(Aresta* aresta);
 };
 
 #endif //TRABALHO_NO_H

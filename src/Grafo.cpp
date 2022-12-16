@@ -138,23 +138,39 @@ void Grafo::inserirAresta(int id, int target_id, float weight) // * Funcionando
     }
 }
 
-void Grafo::removerNo(int id){ //TODO: fazer função
-    No *noRemover = nullptr;
+void Grafo::removerNo(int id){ //* Funcionando
+    No *noRemover = this->getPrimeiroNo();
     No *previo = nullptr;
     if(!procurarNo(id)){
-        cout << "No nao encontrado para ser removido" ;
+        cout << "No nao encontrado para remocao!";
     }
     else{
-        for(noRemover=this->getPrimeiroNo(); noRemover->getId()!= id; noRemover=noRemover->getProxNo()){
+        for(noRemover; noRemover->getId()!= id; noRemover = noRemover->getProxNo()){
             previo = noRemover;
         }
-        previo->setProxNo(noRemover->getProxNo());
-        for(Aresta * auxAresta = noRemover->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
-            int idAlvo = auxAresta->getAlvoId();
-            No *aux = this->getNo(idAlvo);
-            cout << "\nTo no no  " << aux->getId();
+        Aresta *auxAre = noRemover->getPrimeiraAresta();
+        for(auxAre; auxAre != nullptr; auxAre = auxAre->getProxAresta()){
+            int auxId = auxAre->getAlvoId();
+            No *aux = getNo(auxId);
+            cout << "\n Cheguei nesse no aqui" << aux->getId();
+            Aresta *areAux = aux->getPrimeiraAresta();
+            Aresta *previa = nullptr;
+            for(areAux; areAux->getAlvoId() != id; areAux = areAux->getProxAresta()){
+                previa = areAux;
+            }
+            if(previa == nullptr){
+                aux->setPrimeiraAresta(areAux->getProxAresta());
+            }
+            else{
+                previa->setProxAresta(areAux->getProxAresta());
+            }
         }
-        noRemover->removeTodasArestas();
+        if(previo == nullptr){
+            primeiro_no = noRemover->getProxNo();
+        }
+        else{
+            previo->setProxNo(noRemover->getProxNo());
+        }
     }
 }
 

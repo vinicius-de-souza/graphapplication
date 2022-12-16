@@ -41,6 +41,11 @@ Aresta* No::getPrimeiraAresta(){
 
 }
 
+void No::setPrimeiraAresta(Aresta* aresta){
+    this->primeira_aresta = aresta;
+}
+
+
 Aresta* No::getUltimaAresta(){
 
     return this->ultima_aresta;
