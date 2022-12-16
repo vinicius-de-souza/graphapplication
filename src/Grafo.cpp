@@ -139,16 +139,23 @@ void Grafo::inserirAresta(int id, int target_id, float weight) // * Funcionando
 }
 
 void Grafo::removerNo(int id){ //TODO: fazer função
-    No * aux = this->getPrimeiroNo();
-    No * previo = nullptr;
-
-    No * noParaRemover = this->getNo(id);
-
-    while(aux->getId() != aux->getId()){
-
-        aux = aux->getProxNo();
+    No *noRemover = nullptr;
+    No *previo = nullptr;
+    if(!procurarNo(id)){
+        cout << "No nao encontrado para ser removido" ;
     }
-
+    else{
+        for(noRemover=this->getPrimeiroNo(); noRemover->getId()!= id; noRemover=noRemover->getProxNo()){
+            previo = noRemover;
+        }
+        previo->setProxNo(noRemover->getProxNo());
+        for(Aresta * auxAresta = noRemover->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+            int idAlvo = auxAresta->getAlvoId();
+            No *aux = this->getNo(idAlvo);
+            cout << "\nTo no no  " << aux->getId();
+        }
+        noRemover->removeTodasArestas();
+    }
 }
 
 bool Grafo::procurarNo(int id)  //* Funcionando
@@ -161,8 +168,7 @@ bool Grafo::procurarNo(int id)  //* Funcionando
     return false;
 }
 
-No *Grafo::getNo(int id) //* Funcionando
-{
+No *Grafo::getNo(int id){ //* Funcionando 
     No * aux = this->getPrimeiroNo();
     while(aux != nullptr){
         if(aux->getId() == id)
@@ -223,10 +229,10 @@ void Grafo::auxGeraListaAdjacencia(ofstream &output_file){ // * Funcionando
         output_file << auxNo->getId() << " - [";
 
         for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
-            output_file << " " << auxAresta->getAlvoId() << ",";
+            output_file << " " << auxAresta->getAlvoId() << " ";
         }
 
-        output_file << auxNo->getId() << "]" << endl;
+        output_file << "]" << endl;
 
     }
 
