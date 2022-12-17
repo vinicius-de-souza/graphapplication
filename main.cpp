@@ -52,6 +52,10 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
 
                 grafo->setNumAresta();
                 grafo->inserirAresta(idNoFonte, idNoAlvo, 0);
+                No *aux = grafo->getNo(idNoFonte);
+                aux->setPeso(pesoIdNofonte);
+                No *aux2 = grafo->getNo(idNoAlvo);
+                aux2->setPeso(pesoIdNoAlvo);
 
         }
     }
@@ -67,19 +71,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
 
         }
 
-    }/*else if(grafo->getPesoAresta() && !grafo->getPesoAresta()){
-
-        float nodeSourceWeight, nodeTargetWeight;
-
-        while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight) {
-
-            grafo->inserirAresta(idNoFonte, idNoAlvo, 0);
-            grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
-            grafo->getNo(idNoAlvo)->setPeso(nodeTargetWeight);
-
-        }
-
-    }*/else if(grafo->getPesoNo() && grafo->getPesoAresta()){
+    }else if(grafo->getPesoNo() && grafo->getPesoAresta()){
 
         float nodeSourceWeight, nodeTargetWeight, edgeWeight;
 
@@ -89,6 +81,10 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
             grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
             grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
             grafo->getNo(idNoAlvo)->setPeso(nodeTargetWeight);
+            No *aux = grafo->getNo(idNoFonte);
+            aux->setPeso(nodeSourceWeight);
+            No *aux2 = grafo->getNo(idNoAlvo);
+            aux2->setPeso(nodeTargetWeight);
 
         }
 
@@ -190,9 +186,8 @@ int main(int argc, char const *argv[]) {
 
         if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
-            grafo->removerNo(1);
             grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
-            //grafo->geraGrafoDot("testedot.dot");
+            grafo->geraGrafoDot("testedot.dot");
         }
         else{
             cout << "Erro na leitura do arquivo";

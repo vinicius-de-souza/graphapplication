@@ -139,37 +139,57 @@ void Grafo::inserirAresta(int id, int target_id, float weight) // * Funcionando
 }
 
 void Grafo::removerNo(int id){ //* Funcionando
-    No *noRemover = this->getPrimeiroNo();
-    No *previo = nullptr;
-    if(!procurarNo(id)){
-        cout << "No nao encontrado para remocao!";
-    }
-    else{
-        for(noRemover; noRemover->getId()!= id; noRemover = noRemover->getProxNo()){
-            previo = noRemover;
-        }
-        Aresta *auxAre = noRemover->getPrimeiraAresta();
-        for(auxAre; auxAre != nullptr; auxAre = auxAre->getProxAresta()){
-            int auxId = auxAre->getAlvoId();
-            No *aux = getNo(auxId);
-            cout << "\n Cheguei nesse no aqui" << aux->getId();
-            Aresta *areAux = aux->getPrimeiraAresta();
-            Aresta *previa = nullptr;
-            for(areAux; areAux->getAlvoId() != id; areAux = areAux->getProxAresta()){
-                previa = areAux;
-            }
-            if(previa == nullptr){
-                aux->setPrimeiraAresta(areAux->getProxAresta());
-            }
-            else{
-                previa->setProxAresta(areAux->getProxAresta());
-            }
-        }
-        if(previo == nullptr){
-            primeiro_no = noRemover->getProxNo();
+    if(direcionado){
+        No *noRemover = this->getPrimeiroNo();
+        No *previo = nullptr;
+        if(!procurarNo(id)){
+            cout << "No nao encontrado para remocao!";
         }
         else{
-            previo->setProxNo(noRemover->getProxNo());
+            for(noRemover; noRemover->getId()!= id; noRemover = noRemover->getProxNo()){
+                previo = noRemover;
+            }
+            if(previo == nullptr){
+                primeiro_no = noRemover->getProxNo();
+            }
+            else{
+                previo->setProxNo(noRemover->getProxNo());
+            }
+        }
+    }
+    else{
+        No *noRemover = this->getPrimeiroNo();
+        No *previo = nullptr;
+        if(!procurarNo(id)){
+            cout << "No nao encontrado para remocao!";
+        }
+        else{
+            for(noRemover; noRemover->getId()!= id; noRemover = noRemover->getProxNo()){
+                previo = noRemover;
+            }
+            Aresta *auxAre = noRemover->getPrimeiraAresta();
+            for(auxAre; auxAre != nullptr; auxAre = auxAre->getProxAresta()){
+                int auxId = auxAre->getAlvoId();
+                No *aux = getNo(auxId);
+                cout << "\n Cheguei nesse no aqui" << aux->getId();
+                Aresta *areAux = aux->getPrimeiraAresta();
+                Aresta *previa = nullptr;
+                for(areAux; areAux->getAlvoId() != id; areAux = areAux->getProxAresta()){
+                    previa = areAux;
+                }   
+                if(previa == nullptr){
+                    aux->setPrimeiraAresta(areAux->getProxAresta());
+                }
+                else{
+                previa->setProxAresta(areAux->getProxAresta());
+                }
+            }
+            if(previo == nullptr){
+                primeiro_no = noRemover->getProxNo();
+            }
+            else{
+                previo->setProxNo(noRemover->getProxNo());
+            }
         }
     }
 }
@@ -196,7 +216,7 @@ No *Grafo::getNo(int id){ //* Funcionando
     return nullptr;
 }
 
-float Grafo::getAresta(int idSaida, int idAlvo){
+float Grafo::getAresta(int idSaida, int idAlvo){ //* Funcionando 
     No *auxNo = this->getNo(idSaida);
     for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
         if(auxAresta->getAlvoId()==idAlvo){
@@ -205,19 +225,24 @@ float Grafo::getAresta(int idSaida, int idAlvo){
         }
 }
 
-// Fazer _ Booleano -> verifica se há um caminho entre dois nós passados por parâmetro 
+//Booleano -> verifica se há um caminho entre dois nós passados por parâmetro 
 bool Grafo::buscaProfundidade(int initialId, int targetId){ //TODO: fazer função
-    
-        No *it = this->getNo(initialId);
-        //for(){}
-    
     return false;
 }
 
-
-// Fazer _ Booleando -> verifica se o grafo é conexo ou não (será utilizado dentro de outras funções)
-bool Grafo::grafoConectado(){ //TODO: fazer função
-    return false;
+// Booleano -> verifica se o grafo é conexo ou não, será utilizado dentro de outras funções
+bool Grafo::grafoConectado(){ //* Funcionando 
+    No *vert1 = this->getPrimeiroNo();
+    No *vert2 = vert1->getProxNo();
+    for(vert1; vert1 != nullptr; vert1 = vert1->getProxNo()){
+        vert2 = vert1->getProxNo();
+        for(vert2; vert2 != nullptr; vert2 = vert2->getProxNo()){
+            if(!buscaProfundidade(vert1->getId(),vert2->getId())){
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 
