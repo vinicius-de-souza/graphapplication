@@ -99,9 +99,9 @@ int menu(){
 
     cout << "MENU" << endl;
     cout << "----" << endl;
-    cout << "[1] Grafo Interseção" << endl;
-    cout << "[2] Grafo Diferença" << endl;
-    cout << "[3] Grafo União" << endl;
+    cout << "[1] Grafo Intersecao" << endl;
+    cout << "[2] Grafo Diferenca" << endl;
+    cout << "[3] Grafo Uniao" << endl;
     cout << "[4] Rede Pert" << endl;
     cout << "[0] Sair" << endl;
 
@@ -111,53 +111,72 @@ int menu(){
 
 }
 
-void selecionar(int selecao, Grafo* graph, ofstream& output_file){
+void selecionar(int selecao, Grafo* grafo1, Grafo* grafo2 ,ofstream& output_file, bool direcionado, bool peso_aresta, bool peso_no){
 
     switch (selecao) {
 
         //Interseção
         case 1:{
-
+            int ordem1 = grafo1->getOrdem();
+            int ordem2 = grafo2->getOrdem();
+            if(ordem1 <= ordem2){
+                grafo1->intersecao(ordem1, grafo2, direcionado, peso_aresta, peso_no);
+            }
+            else{
+                grafo1->intersecao(ordem2, grafo2, direcionado, peso_aresta, peso_no);
+            }
             break;
         }
 
         //Diferença
         case 2:{
-
+            cout << "Esta entrando na diferenca";
             break;
         }
 
         //União
         case 3:{
-
+            cout << "Eta entrando na uniao";
             break;
         }
 
         //Rede Pert
         case 4:{
-
+            cout << "Esta entrando na Rede Pert";
             break;
         }
 
     }
 }
 
-int mainMenu(ofstream& output_file, Grafo* grafo){
+int mainMenu(ofstream& output_file, Grafo* grafo, Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no){
 
     int selecao = 1;
 
     while(selecao != 0){
-        system("clear");
-        selecao = menu();
+        if(selecao >=1 && selecao<=5){
+            selecao = menu();
 
-        if(output_file.is_open())
-            selecionar(selecao, grafo, output_file);
+            if(output_file.is_open())
+               selecionar(selecao, grafo, grafo2 ,output_file, direcionado, peso_aresta, peso_no);
 
-        else
-            cout << "Unable to open the output_file" << endl;
+            else
+                cout << "Unable to open the output_file" << endl;
 
-        output_file << endl;
+            output_file << endl;
+        }
+        else{
+            cout <<"Opcao selecionada nao existente \nTente novamente\n";
+                        selecao = menu();
 
+            if(output_file.is_open())
+               selecionar(selecao, grafo, grafo2 ,output_file, direcionado, peso_aresta, peso_no);
+
+            else
+                cout << "Unable to open the output_file" << endl;
+
+            output_file << endl;
+        }
     }
 
     return 0;
@@ -183,11 +202,20 @@ int main(int argc, char const *argv[]) {
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
         arq_grafo.open("input/grafo_teste_naoP_5_1.txt", ios::in); //  abertura do arquivo de teste 
+        ofstream output_file;
+        output_file.open("arquivo_saida", ios::out | ios::trunc);
 
-        if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
+        ifstream arq_grafo2;
+        arq_grafo2.open("input/grafo_teste_naoP_5_2.txt", ios::in);
+        
+
+        if(arq_grafo.is_open() && arq_grafo2.is_open()) { //Caso o arquivo abra normalmente 
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
-            grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
-            grafo->geraGrafoDot("testedot.dot");
+            Grafo *grafo2 = leitura(arq_grafo2, direcionado, peso_aresta, peso_vertice);
+            //grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
+            //grafo->geraGrafoDot("grafo1.dot");
+            //grafo2->geraGrafoDot("grafo2.dot");
+            mainMenu(output_file,grafo,grafo2,direcionado,peso_aresta,peso_vertice);
         }
         else{
             cout << "Erro na leitura do arquivo";
@@ -221,7 +249,7 @@ int main(int argc, char const *argv[]) {
         cout << "Unable to open " << argv[1];
 
 
-    mainMenu(output_file, graph);
+    //mainMenu(output_file, graph, );
 
 
 

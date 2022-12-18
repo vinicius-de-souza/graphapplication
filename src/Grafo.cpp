@@ -326,3 +326,46 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando
         output_file << "\n" << "\n }";
     }
 }
+
+// Implementações necessárias
+
+void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ // ! Falta implementação para grafos direcionados
+    No* no_grafo1 = this->getPrimeiroNo();
+    No* no_grafo2 = grafo2->getPrimeiroNo();
+    Grafo *grafo_inter = new Grafo(ordem, direcionado, peso_aresta, peso_no);
+    for(no_grafo1; no_grafo1 != nullptr ; no_grafo1 = no_grafo1->getProxNo()){
+        for(no_grafo2 = grafo2->getPrimeiroNo(); no_grafo2 != nullptr; no_grafo2 = no_grafo2->getProxNo()){
+            if(no_grafo1->getId() == no_grafo2->getId()){
+                for(Aresta * auxAresta = no_grafo1->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+                    for(Aresta * auxAresta2 = no_grafo2->getPrimeiraAresta(); auxAresta2 != nullptr; auxAresta2 = auxAresta2->getProxAresta()){
+                        if(auxAresta->getAlvoId() == auxAresta2->getAlvoId()){
+                            if(this->getPesoAresta() && auxAresta->getpeso() == auxAresta2->getpeso()){
+                                grafo_inter->inserirAresta(no_grafo1->getId(),auxAresta2->getAlvoId(),auxAresta->getpeso());
+                            }
+                            if(!this->getPesoAresta()){
+                                grafo_inter->inserirAresta(no_grafo1->getId(),auxAresta2->getAlvoId(),auxAresta->getpeso());
+                            }
+                        }
+                    }   
+                }
+            }
+        }
+    }
+    grafo_inter->geraGrafoDot("intersecao.dot");
+    cout << "\nFinalizacao da Funcao Intersecao\n";
+    cout << "Arquivo de saida: \"intersecao.dot\" \n";
+}
+
+Grafo* Grafo::diferenca(Grafo *grafo1, Grafo* grafo2){
+    cout << "\n Ta chamando a funcao de diferenca";
+    return grafo1;
+}
+    
+Grafo* Grafo::uniao (Grafo *grafo1, Grafo *grafo2){
+    cout << "\n Ta chamando a funcao de uniao";
+    return grafo1;
+}
+    
+void Grafo::redePert(int vet, int tempo){
+    cout << "\n Ta chamando a funcao de rede pert";
+}
