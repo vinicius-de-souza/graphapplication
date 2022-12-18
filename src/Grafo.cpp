@@ -361,7 +361,7 @@ Grafo* Grafo::diferenca(Grafo *grafo1, Grafo* grafo2){ //TODO: fazer função
     return grafo1;
 }
     
-void Grafo::uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //TODO: fazer função
+void Grafo::uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando
     Grafo* grafo_uni = new Grafo(ordem, direcionado,peso_aresta,peso_no);
     No* no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
