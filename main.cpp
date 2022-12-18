@@ -130,13 +130,13 @@ void selecionar(int selecao, Grafo* grafo1, Grafo* grafo2 ,ofstream& output_file
 
         //Diferença
         case 2:{
-            cout << "Esta entrando na diferenca";
             break;
         }
 
         //União
         case 3:{
-            cout << "Eta entrando na uniao";
+            int ordem_uni = grafo1->getOrdem() + grafo2->getOrdem();
+            grafo1->uniao(ordem_uni, grafo2,direcionado,peso_aresta,peso_no);
             break;
         }
 
@@ -212,10 +212,11 @@ int main(int argc, char const *argv[]) {
         if(arq_grafo.is_open() && arq_grafo2.is_open()) { //Caso o arquivo abra normalmente 
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
             Grafo *grafo2 = leitura(arq_grafo2, direcionado, peso_aresta, peso_vertice);
-            //grafo->geraListaAdjacencia("listaDeAdjacencia.txt"); //Função de criação de uma lista de adjacência para visualização
-            //grafo->geraGrafoDot("grafo1.dot");
-            //grafo2->geraGrafoDot("grafo2.dot");
-            mainMenu(output_file,grafo,grafo2,direcionado,peso_aresta,peso_vertice);
+            //grafo->geraListaAdjacencia("testes/listaDeAdjacencia_grafo1.txt");
+            //grafo2->geraListaAdjacencia("testes/listaDeAdjacencia_grafo2.txt"); //Função de criação de uma lista de adjacência para visualização
+            grafo->geraGrafoDot("testes/grafo_1.dot");
+            grafo2->geraGrafoDot("testes/grafo2.dot");
+            //mainMenu(output_file,grafo,grafo2,direcionado,peso_aresta,peso_vertice);
         }
         else{
             cout << "Erro na leitura do arquivo";

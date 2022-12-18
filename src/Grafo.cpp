@@ -297,7 +297,7 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando
 //Recebe como parâmetro o aruivo de saida
 
     if(direcionado){
-        output_file << "digraph G {\n";
+        output_file << "strict digraph G {\n";
         for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){
 
             for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
@@ -329,7 +329,7 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando
 
 // Implementações necessárias
 
-void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ // ! Falta implementação para grafos direcionados
+void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando 
     No* no_grafo1 = this->getPrimeiroNo();
     No* no_grafo2 = grafo2->getPrimeiroNo();
     Grafo *grafo_inter = new Grafo(ordem, direcionado, peso_aresta, peso_no);
@@ -351,21 +351,45 @@ void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_are
             }
         }
     }
-    grafo_inter->geraGrafoDot("intersecao.dot");
+    grafo_inter->geraGrafoDot("testes/intersecao.dot");
     cout << "\nFinalizacao da Funcao Intersecao\n";
     cout << "Arquivo de saida: \"intersecao.dot\" \n";
 }
 
-Grafo* Grafo::diferenca(Grafo *grafo1, Grafo* grafo2){
+Grafo* Grafo::diferenca(Grafo *grafo1, Grafo* grafo2){ //TODO: fazer função
     cout << "\n Ta chamando a funcao de diferenca";
     return grafo1;
 }
     
-Grafo* Grafo::uniao (Grafo *grafo1, Grafo *grafo2){
-    cout << "\n Ta chamando a funcao de uniao";
-    return grafo1;
+void Grafo::uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //TODO: fazer função
+    Grafo* grafo_uni = new Grafo(ordem, direcionado,peso_aresta,peso_no);
+    No* no_grafo1 = this->getPrimeiroNo();
+    No *no_grafo2 = grafo2->getPrimeiroNo();
+    for(no_grafo1; no_grafo1 != nullptr; no_grafo1 = no_grafo1->getProxNo()){
+        for(Aresta * auxAresta = no_grafo1->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+            if(!peso_aresta){
+                grafo_uni->inserirAresta(no_grafo1->getId(),auxAresta->getAlvoId(),0);
+            }
+            else{
+                grafo_uni->inserirAresta(no_grafo1->getId(),auxAresta->getAlvoId(),auxAresta->getpeso());
+            }
+        }
+    }
+    for(no_grafo2; no_grafo2 != nullptr; no_grafo2 = no_grafo2->getProxNo()){
+        for(Aresta * auxAresta = no_grafo2->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+            if(!peso_aresta){
+                grafo_uni->inserirAresta(no_grafo2->getId(),auxAresta->getAlvoId(),0);
+            }
+            else{
+                grafo_uni->inserirAresta(no_grafo2->getId(),auxAresta->getAlvoId(),auxAresta->getpeso());
+            }
+        }
+    }
+    grafo_uni->geraGrafoDot("testes/uniao.dot");
+    cout << "\nFinalizacao da Funcao Uniao\n";
+    cout << "Arquivo de saida: \"uniao.dot\" \n";
 }
     
-void Grafo::redePert(int vet, int tempo){
+void Grafo::redePert(int vet, int tempo){ //TODO: fazer função
     cout << "\n Ta chamando a funcao de rede pert";
 }

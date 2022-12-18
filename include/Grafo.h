@@ -59,7 +59,7 @@ public:
     // Implementações necessárias
     void intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     Grafo* diferenca(Grafo *grafo1, Grafo* grafo2);
-    Grafo* uniao (Grafo *grafo1, Grafo *grafo2);
+    void uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void redePert(int vet, int tempo);
 };
 
