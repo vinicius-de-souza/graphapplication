@@ -37,7 +37,7 @@ public:
     bool buscaAresta(int alvo_id);
     void inserirAresta(int alvo_id, float peso);
     void removeTodasArestas();
-    int  removeAresta(int id, bool direcionado, No* no_alvo);
+    void  removeAresta(int id, bool direcionado, No* no_alvo);
     void incrementarGrauSaida();
     void decrementarGrauSaida();
     void incrementarGrauEntrada();

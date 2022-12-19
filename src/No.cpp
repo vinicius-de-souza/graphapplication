@@ -41,11 +41,6 @@ Aresta* No::getPrimeiraAresta(){
 
 }
 
-void No::setPrimeiraAresta(Aresta* aresta){
-    this->primeira_aresta = aresta;
-}
-
-
 Aresta* No::getUltimaAresta(){
 
     return this->ultima_aresta;
@@ -90,6 +85,10 @@ void No::setProxNo(No* proximo_no){
 
 }
 
+void No::setPrimeiraAresta(Aresta* aresta){
+    this->primeira_aresta = aresta;
+}
+
 void No::setPeso(float peso){
 
     this->peso = peso;
@@ -131,10 +130,10 @@ void No::removeTodasArestas(){
     this->primeira_aresta = this->ultima_aresta = nullptr;
 }
 
-int No::removeAresta(int id, bool directed, No* target_node){ //Está funcionando?
+void No::removeAresta(int id, bool directed, No* target_node){ 
     //Verifica se a aresta pedida pra ser removida existe 
     if(this->buscaAresta(id)){
-
+        cout << "Esta entrando aqui";
         Aresta* aux = this->primeira_aresta;
         Aresta* previous = nullptr;
         // Procura a aresta para ser removida
@@ -158,11 +157,8 @@ int No::removeAresta(int id, bool directed, No* target_node){ //Está funcionand
             target_node->decrementarGrauEntrada();
         }
 
-        return 1;
-
     }
     // Caso não exista a aresta não faz nada
-    return 0;
 }
 
 bool No::buscaAresta(int target_id) {
@@ -178,7 +174,6 @@ bool No::buscaAresta(int target_id) {
     return false;
 
 }
-
 
 
 void No::incrementarGrauEntrada() {
@@ -205,7 +200,7 @@ void No::decrementarGrauSaida(){
 
 }
 
-Aresta* No::temArestaEntre(int alvo_id) //Verifica se há aresta entre dois nós
+Aresta* No::temArestaEntre(int alvo_id) 
 {
 
     for(Aresta *auxAresta = this->primeira_aresta; auxAresta != nullptr; auxAresta = auxAresta->getProxAresta())

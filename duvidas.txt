@@ -1,3 +1,7 @@
 1) É preciso testar se os grafos passados como parâmetro para a função de diferença tem de fato os mesmos vértices ou é tomado que os parâmetros já obedecem essa restrição?
 
 2)Como é a saída em .dot para arquivos que possuem pesos nos vértices? 
+
+3)Função diferença _ Não está funcionando
+
+4)Parte II do trabalho, como funciona?

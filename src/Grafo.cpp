@@ -356,19 +356,25 @@ void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_are
     cout << "Arquivo de saida: \"intersecao.dot\" \n";
 }
 
-void  Grafo::diferenca(int ordem, Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //TODO: fazer função
+void  Grafo::diferenca(int ordem, Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando
     Grafo* grafo_dif = new Grafo(ordem,direcionado,peso_aresta,peso_no);
     No *no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
-    for(no_grafo1; no_grafo1 != nullptr; no_grafo1=no_grafo1->getProxNo()){
-        for(no_grafo2; no_grafo2 != nullptr; no_grafo2=no_grafo2->getProxNo()){
-            if(no_grafo1->getId() == no_grafo2->getId()){
-                for(Aresta * auxAresta = no_grafo1->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
-                    for(Aresta * auxAresta2 = no_grafo2->getPrimeiraAresta(); auxAresta2 != nullptr; auxAresta2 = auxAresta2->getProxAresta()){
-                        if(auxAresta->getAlvoId() != auxAresta2->getAlvoId()){
-                            grafo_dif->inserirAresta(no_grafo1->getId(), auxAresta2->getAlvoId(),0);
-                        }
-                    }
+    for(no_grafo1; no_grafo1 != nullptr; no_grafo1 = no_grafo1->getProxNo()){
+        for(Aresta *aresta = no_grafo1->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){
+            if(peso_aresta)
+                grafo_dif->inserirAresta(no_grafo1->getId(),aresta->getAlvoId(),aresta->getpeso());
+            else
+                grafo_dif->inserirAresta(no_grafo1->getId(),aresta->getAlvoId(),aresta->getpeso());
+        }
+    }
+    for(no_grafo2; no_grafo2 != nullptr; no_grafo2 = no_grafo2->getProxNo()){
+        No *aux = grafo_dif->getNo(no_grafo2->getId());
+        for(Aresta *aresta2 = no_grafo2->getPrimeiraAresta(); aresta2 != nullptr; aresta2 = aresta2->getProxAresta()){
+            for(Aresta *aresta1 = aux->getPrimeiraAresta(); aresta1 != nullptr; aresta1 = aresta1->getProxAresta()){
+                if(aresta2->getAlvoId() == aresta1->getAlvoId()){
+                    grafo_dif->getNo(no_grafo2->getId())->removeAresta(aresta2->getAlvoId(),direcionado,grafo_dif->getNo(aresta2->getAlvoId()));
+                    cout << "\nRemovendo a aresta de  " << no_grafo2->getId() << " para " << aresta2->getAlvoId();
                 }
             }
         }

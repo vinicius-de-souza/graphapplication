@@ -175,7 +175,7 @@ int mainMenu(ofstream& output_file, Grafo* grafo, Grafo* grafo2,bool direcionado
         }
         else{
             cout <<"Opcao selecionada nao existente \nTente novamente\n";
-                        selecao = menu();
+            selecao = menu();
 
             if(output_file.is_open())
                selecionar(selecao, grafo, grafo2 ,output_file, direcionado, peso_aresta, peso_no);
