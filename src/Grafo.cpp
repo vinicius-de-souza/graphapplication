@@ -343,7 +343,7 @@ void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_are
                                 grafo_inter->inserirAresta(no_grafo1->getId(),auxAresta2->getAlvoId(),auxAresta->getpeso());
                             }
                             if(!this->getPesoAresta()){
-                                grafo_inter->inserirAresta(no_grafo1->getId(),auxAresta2->getAlvoId(),auxAresta->getpeso());
+                                grafo_inter->inserirAresta(no_grafo1->getId(),auxAresta2->getAlvoId(),0);
                             }
                         }
                     }   
@@ -356,9 +356,26 @@ void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_are
     cout << "Arquivo de saida: \"intersecao.dot\" \n";
 }
 
-Grafo* Grafo::diferenca(Grafo *grafo1, Grafo* grafo2){ //TODO: fazer função
-    cout << "\n Ta chamando a funcao de diferenca";
-    return grafo1;
+void  Grafo::diferenca(int ordem, Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //TODO: fazer função
+    Grafo* grafo_dif = new Grafo(ordem,direcionado,peso_aresta,peso_no);
+    No *no_grafo1 = this->getPrimeiroNo();
+    No *no_grafo2 = grafo2->getPrimeiroNo();
+    for(no_grafo1; no_grafo1 != nullptr; no_grafo1=no_grafo1->getProxNo()){
+        for(no_grafo2; no_grafo2 != nullptr; no_grafo2=no_grafo2->getProxNo()){
+            if(no_grafo1->getId() == no_grafo2->getId()){
+                for(Aresta * auxAresta = no_grafo1->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
+                    for(Aresta * auxAresta2 = no_grafo2->getPrimeiraAresta(); auxAresta2 != nullptr; auxAresta2 = auxAresta2->getProxAresta()){
+                        if(auxAresta->getAlvoId() != auxAresta2->getAlvoId()){
+                            grafo_dif->inserirAresta(no_grafo1->getId(), auxAresta2->getAlvoId(),0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    grafo_dif->geraGrafoDot("testes/diferenca.dot");
+    cout << "\nFinalizacao da Funcao Diferenca\n";
+    cout << "Arquivo de saida: \"diferenca.dot\" \n";
 }
     
 void Grafo::uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando

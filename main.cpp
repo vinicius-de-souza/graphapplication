@@ -130,6 +130,14 @@ void selecionar(int selecao, Grafo* grafo1, Grafo* grafo2 ,ofstream& output_file
 
         //Diferença
         case 2:{
+            int ordem1 = grafo1->getOrdem();
+            int ordem2 = grafo2->getOrdem();
+            if(ordem1 >= ordem2){
+                grafo1->diferenca(ordem1, grafo2, direcionado, peso_aresta, peso_no);
+            }
+            else{
+                grafo1->diferenca(ordem2, grafo2, direcionado, peso_aresta, peso_no);
+            }
             break;
         }
 
@@ -212,8 +220,8 @@ int main(int argc, char const *argv[]) {
         if(arq_grafo.is_open() && arq_grafo2.is_open()) { //Caso o arquivo abra normalmente 
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
             Grafo *grafo2 = leitura(arq_grafo2, direcionado, peso_aresta, peso_vertice);
-            //grafo->geraListaAdjacencia("testes/listaDeAdjacencia_grafo1.txt");
-            //grafo2->geraListaAdjacencia("testes/listaDeAdjacencia_grafo2.txt"); //Função de criação de uma lista de adjacência para visualização
+            grafo->geraListaAdjacencia("testes/listaDeAdjacencia_grafo1.txt");
+            grafo2->geraListaAdjacencia("testes/listaDeAdjacencia_grafo2.txt"); //Função de criação de uma lista de adjacência para visualização
             grafo->geraGrafoDot("testes/grafo1.dot");
             grafo2->geraGrafoDot("testes/grafo2.dot");
             mainMenu(output_file,grafo,grafo2,direcionado,peso_aresta,peso_vertice);

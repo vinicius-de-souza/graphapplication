@@ -58,7 +58,7 @@ public:
 
     // Implementações necessárias
     void intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
-    Grafo* diferenca(Grafo *grafo1, Grafo* grafo2);
+    void diferenca(int ordem, Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
     void uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void redePert(int vet, int tempo);
 };
