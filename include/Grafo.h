@@ -60,7 +60,7 @@ public:
     void intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void diferenca(int ordem, Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
     void uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
-    void redePert(int vet, int tempo);
+    void redePert();
 };
 
 #endif //TRABALHO_GRAFO_H

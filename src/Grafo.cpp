@@ -226,7 +226,7 @@ float Grafo::getAresta(int idSaida, int idAlvo){ //* Funcionando
 }
 
 //Booleano -> verifica se há um caminho entre dois nós passados por parâmetro 
-bool Grafo::buscaProfundidade(int initialId, int targetId){ //TODO: fazer função
+bool Grafo::buscaProfundidade(int initialId, int targetId){ // ? Essa função precisa ser feita?
     return false;
 }
 
@@ -374,7 +374,6 @@ void  Grafo::diferenca(int ordem, Grafo* grafo2, bool direcionado, bool peso_are
             for(Aresta *aresta1 = aux->getPrimeiraAresta(); aresta1 != nullptr; aresta1 = aresta1->getProxAresta()){
                 if(aresta2->getAlvoId() == aresta1->getAlvoId()){
                     grafo_dif->getNo(no_grafo2->getId())->removeAresta(aresta2->getAlvoId(),direcionado,grafo_dif->getNo(aresta2->getAlvoId()));
-                    cout << "\nRemovendo a aresta de  " << no_grafo2->getId() << " para " << aresta2->getAlvoId();
                 }
             }
         }
@@ -413,6 +412,9 @@ void Grafo::uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, 
     cout << "Arquivo de saida: \"uniao.dot\" \n";
 }
     
-void Grafo::redePert(int vet, int tempo){ //TODO: fazer função
-    cout << "\n Ta chamando a funcao de rede pert";
+void Grafo::redePert(){ 
+    No *inicio = this->getPrimeiroNo();
+    No *fim = this->getUltimoNo();
+    cout << "No de inicio " << inicio->getId();
+    cout << "\nNo final\n  " << fim->getId();
 }

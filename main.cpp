@@ -150,7 +150,7 @@ void selecionar(int selecao, Grafo* grafo1, Grafo* grafo2 ,ofstream& output_file
 
         //Rede Pert
         case 4:{
-            cout << "Esta entrando na Rede Pert";
+            grafo1->redePert();
             break;
         }
 
@@ -209,7 +209,7 @@ int main(int argc, char const *argv[]) {
         cin >> peso_aresta;
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
-        arq_grafo.open("input/grafo_teste_naoP_5_1.txt", ios::in); //  abertura do arquivo de teste 
+        arq_grafo.open("input/grafo_teste_rede.txt", ios::in); //  abertura do arquivo de teste 
         ofstream output_file;
         output_file.open("arquivo_saida", ios::out | ios::trunc);
 
@@ -220,8 +220,8 @@ int main(int argc, char const *argv[]) {
         if(arq_grafo.is_open() && arq_grafo2.is_open()) { //Caso o arquivo abra normalmente 
             Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
             Grafo *grafo2 = leitura(arq_grafo2, direcionado, peso_aresta, peso_vertice);
-            grafo->geraListaAdjacencia("testes/listaDeAdjacencia_grafo1.txt");
-            grafo2->geraListaAdjacencia("testes/listaDeAdjacencia_grafo2.txt"); //Função de criação de uma lista de adjacência para visualização
+            //grafo->geraListaAdjacencia("testes/listaDeAdjacencia_grafo1.txt");
+            //grafo2->geraListaAdjacencia("testes/listaDeAdjacencia_grafo2.txt"); //Função de criação de uma lista de adjacência para visualização
             grafo->geraGrafoDot("testes/grafo1.dot");
             grafo2->geraGrafoDot("testes/grafo2.dot");
             mainMenu(output_file,grafo,grafo2,direcionado,peso_aresta,peso_vertice);
