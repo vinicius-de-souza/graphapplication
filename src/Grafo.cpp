@@ -413,8 +413,13 @@ void Grafo::uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, 
 }
     
 void Grafo::redePert(){ 
-    No *inicio = this->getPrimeiroNo();
-    No *fim = this->getUltimoNo();
-    cout << "No de inicio " << inicio->getId();
-    cout << "\nNo final\n  " << fim->getId();
+    int id_inicio;
+    int id_fim;
+    cout << "Para iniciar a Funcao de Rede Pert, indique o id no de inicio " ;
+    cin >> id_inicio;
+    No *inicio = new No(id_inicio);
+    cout << "Indique o id do no de fim ";
+    cin >> id_fim;
+    No *fim = new No(id_fim);
+    cout << "No de inicio" << inicio->getId() << " e no de fim " << fim->getId();
 }
