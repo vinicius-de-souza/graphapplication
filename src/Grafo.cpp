@@ -421,5 +421,16 @@ void Grafo::redePert(){
     cout << "Indique o id do no de fim ";
     cin >> id_fim;
     No *fim = new No(id_fim);
-    cout << "No de inicio" << inicio->getId() << " e no de fim " << fim->getId();
+}
+
+void Grafo::gulosoConstrutivo(){
+
+}
+
+void Grafo::gulosoRandomizadoAdaptativo(){
+
+}
+
+void Grafo::gulosoRandomizadoReativo(){
+    
 }

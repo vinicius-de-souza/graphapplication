@@ -61,6 +61,11 @@ public:
     void diferenca(int ordem, Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
     void uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void redePert();
+
+    //Parte 2 _ Algoritmos Gulosos
+    void gulosoConstrutivo();
+    void gulosoRandomizadoAdaptativo();
+    void gulosoRandomizadoReativo();
 };
 
 #endif //TRABALHO_GRAFO_H

@@ -41,6 +41,7 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
             grafo->setNumAresta();
             grafo->inserirAresta(idNoFonte, idNoAlvo, 0);
 
+            
         }
 
     }
@@ -56,38 +57,35 @@ Grafo * leitura(ifstream& input_file, bool direcionado, bool peso_aresta, int pe
                 aux->setPeso(pesoIdNofonte);
                 No *aux2 = grafo->getNo(idNoAlvo);
                 aux2->setPeso(pesoIdNoAlvo);
-
-        }
+            }
     }
     else if(grafo->getPesoAresta() && !grafo->getPesoNo() ){ //Devia estar funcionando
 
         float edgeWeight;
+        
+             while(input_file >> idNoFonte >> idNoAlvo >> edgeWeight) {
 
-        while(input_file >> idNoFonte >> idNoAlvo >> edgeWeight) {
+                grafo->setNumAresta();
+                grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
 
-            grafo->setNumAresta();
-            grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
-
-
-        }
+            }
 
     }else if(grafo->getPesoNo() && grafo->getPesoAresta()){
 
         float nodeSourceWeight, nodeTargetWeight, edgeWeight;
+       
 
-        while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight >> edgeWeight) {
+            while(input_file >> idNoFonte >> nodeSourceWeight >> idNoAlvo >> nodeTargetWeight >> edgeWeight) {
 
-            grafo->setNumAresta();
-            grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
-            grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
-            grafo->getNo(idNoAlvo)->setPeso(nodeTargetWeight);
-            No *aux = grafo->getNo(idNoFonte);
-            aux->setPeso(nodeSourceWeight);
-            No *aux2 = grafo->getNo(idNoAlvo);
-            aux2->setPeso(nodeTargetWeight);
-
-        }
-
+                grafo->setNumAresta();
+                grafo->inserirAresta(idNoFonte, idNoAlvo, edgeWeight);
+                grafo->getNo(idNoFonte)->setPeso(nodeSourceWeight);
+                grafo->getNo(idNoAlvo)->setPeso(nodeTargetWeight);
+                No *aux = grafo->getNo(idNoFonte);
+                aux->setPeso(nodeSourceWeight);
+                No *aux2 = grafo->getNo(idNoAlvo);
+                aux2->setPeso(nodeTargetWeight);
+            }
     }
 
     return grafo;
@@ -103,6 +101,9 @@ int menu(){
     cout << "[2] Grafo Diferenca" << endl;
     cout << "[3] Grafo Uniao" << endl;
     cout << "[4] Rede Pert" << endl;
+    cout << "[5] Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso" << endl;
+    cout << "[6] Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado e Adaptativo " << endl;
+    cout << "[7] Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado Reativo." << endl;
     cout << "[0] Sair" << endl;
 
     cin >> selecao;
@@ -115,7 +116,7 @@ void selecionar(int selecao, Grafo* grafo1, Grafo* grafo2 ,ofstream& output_file
 
     switch (selecao) {
 
-        //Interseção
+        //Interseção de dois grafos
         case 1:{
             int ordem1 = grafo1->getOrdem();
             int ordem2 = grafo2->getOrdem();
@@ -151,6 +152,24 @@ void selecionar(int selecao, Grafo* grafo1, Grafo* grafo2 ,ofstream& output_file
         //Rede Pert
         case 4:{
             grafo1->redePert();
+            break;
+        }
+
+        // Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso
+        case 5:{
+            grafo1->gulosoConstrutivo();
+            break;
+        }
+
+        //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado e Adaptativo
+        case 6:{
+            grafo1->gulosoRandomizadoAdaptativo();
+            break;
+        }
+
+        //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado Reativo
+        case 7:{
+            grafo1->gulosoRandomizadoReativo();
             break;
         }
 
