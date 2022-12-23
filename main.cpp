@@ -118,8 +118,7 @@ void selecionar(int selecao, Grafo* grafo1, ofstream& output_file, bool direcion
 
         //Interseção 
         case 1:{
-            cout << "ta entrando aqui!";
-            /*cout << "A opcao escolhida foi a INTERSECAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
+            cout << "A opcao escolhida foi a INTERSECAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
             if(direcionado)
                 cout <<"\n[1] Direcionado";
             else
@@ -142,7 +141,7 @@ void selecionar(int selecao, Grafo* grafo1, ofstream& output_file, bool direcion
                 grafo2 = leitura(input_file, direcionado, peso_aresta, peso_no);
             else
                 cout << "Unable to open " << input_file_name;
-            grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no);*/
+            grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no);
             break;
         }
 
