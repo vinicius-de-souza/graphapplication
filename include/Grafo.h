@@ -11,7 +11,6 @@ class Grafo{
 
     //Atributos
 private:
-    int ordem;
     int numero_arestas;
     bool direcionado;
     bool peso_aresta;
@@ -22,13 +21,12 @@ private:
 public:
 
     //Construtor
-    Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no);
+    Grafo(bool direcionado, bool peso_aresta, bool peso_no);
 
     //Destrutor
     ~Grafo();
 
     //Getters
-    int getOrdem();
     int getNumeroArestas();
     bool getDirecionado();
     bool getPesoAresta();
@@ -57,9 +55,9 @@ public:
     void geraGrafoDot(string output);
 
     // Implementações necessárias
-    void intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
-    void diferenca(int ordem, Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
-    void uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
+    void intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
+    void diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
+    void uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void redePert();
 
     //Parte 2 _ Algoritmos Gulosos

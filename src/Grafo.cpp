@@ -15,9 +15,8 @@
 using namespace std;
 
 // Construtor 
-Grafo::Grafo(int ordem, bool direcionado, bool peso_aresta, bool peso_no) {
+Grafo::Grafo(bool direcionado, bool peso_aresta, bool peso_no) {
     // Inicializa o grafo
-    this->ordem = ordem;
     this->direcionado = direcionado;
     this->peso_aresta = peso_aresta;
     this->peso_no = peso_no;
@@ -42,9 +41,6 @@ Grafo::~Grafo()
 }
 
 // Getters
-int Grafo::getOrdem(){ // * Funcionando 
-    return this->ordem;
-}
 
 int Grafo::getNumeroArestas(){ // * Funcionando
     return this->numero_arestas;
@@ -107,7 +103,6 @@ void Grafo::inserir_No(int id){ //* Funcionando
         No * novoNo = new No(id);
         this->primeiro_no = novoNo;
         this->ultimo_no = novoNo;
-        this->ordem = this->ordem + 1;
         return;
     }
 
@@ -115,7 +110,6 @@ void Grafo::inserir_No(int id){ //* Funcionando
         No * novoNo = new No(id);
         this->ultimo_no->setProxNo(novoNo);
         this->ultimo_no = this->ultimo_no->getProxNo();
-        this->ordem = this->ordem + 1;
         return;
     }
 }
@@ -329,10 +323,10 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando
 
 // Implementações necessárias
 
-void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando 
+void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando 
     No* no_grafo1 = this->getPrimeiroNo();
     No* no_grafo2 = grafo2->getPrimeiroNo();
-    Grafo *grafo_inter = new Grafo(ordem, direcionado, peso_aresta, peso_no);
+    Grafo *grafo_inter = new Grafo(direcionado, peso_aresta, peso_no);
     for(no_grafo1; no_grafo1 != nullptr ; no_grafo1 = no_grafo1->getProxNo()){
         for(no_grafo2 = grafo2->getPrimeiroNo(); no_grafo2 != nullptr; no_grafo2 = no_grafo2->getProxNo()){
             if(no_grafo1->getId() == no_grafo2->getId()){
@@ -356,8 +350,8 @@ void Grafo::intersecao(int ordem, Grafo *grafo2, bool direcionado, bool peso_are
     cout << "Arquivo de saida: \"intersecao.dot\" \n";
 }
 
-void  Grafo::diferenca(int ordem, Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando
-    Grafo* grafo_dif = new Grafo(ordem,direcionado,peso_aresta,peso_no);
+void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando
+    Grafo* grafo_dif = new Grafo(direcionado, peso_aresta, peso_no);
     No *no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
     for(no_grafo1; no_grafo1 != nullptr; no_grafo1 = no_grafo1->getProxNo()){
@@ -365,7 +359,7 @@ void  Grafo::diferenca(int ordem, Grafo* grafo2, bool direcionado, bool peso_are
             if(peso_aresta)
                 grafo_dif->inserirAresta(no_grafo1->getId(),aresta->getAlvoId(),aresta->getpeso());
             else
-                grafo_dif->inserirAresta(no_grafo1->getId(),aresta->getAlvoId(),aresta->getpeso());
+                grafo_dif->inserirAresta(no_grafo1->getId(),aresta->getAlvoId(),0);
         }
     }
     for(no_grafo2; no_grafo2 != nullptr; no_grafo2 = no_grafo2->getProxNo()){
@@ -381,10 +375,16 @@ void  Grafo::diferenca(int ordem, Grafo* grafo2, bool direcionado, bool peso_are
     grafo_dif->geraGrafoDot("testes/diferenca.dot");
     cout << "\nFinalizacao da Funcao Diferenca\n";
     cout << "Arquivo de saida: \"diferenca.dot\" \n";
+    int sel;
+    cout << "Deseja realizar mais operacoes?\n[1]SIM \n[2]NAO\n";
+    cin >> sel;
+    if(sel==2){
+        exit(0);
+    }
 }
     
-void Grafo::uniao(int ordem, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando
-    Grafo* grafo_uni = new Grafo(ordem, direcionado,peso_aresta,peso_no);
+void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando
+    Grafo* grafo_uni = new Grafo(direcionado,peso_aresta,peso_no);
     No* no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
     for(no_grafo1; no_grafo1 != nullptr; no_grafo1 = no_grafo1->getProxNo()){

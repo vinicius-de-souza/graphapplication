@@ -133,7 +133,6 @@ void No::removeTodasArestas(){
 void No::removeAresta(int id, bool directed, No* target_node){ 
     //Verifica se a aresta pedida pra ser removida existe 
     if(this->buscaAresta(id)){
-        cout << "Esta entrando aqui";
         Aresta* aux = this->primeira_aresta;
         Aresta* previous = nullptr;
         // Procura a aresta para ser removida
