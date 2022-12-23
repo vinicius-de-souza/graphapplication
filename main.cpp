@@ -118,21 +118,20 @@ void selecionar(int selecao, Grafo* grafo1, ofstream& output_file, bool direcion
 
         //Interseção 
         case 1:{
-            cout << "Esta entrando aqui";
-            /*cout << "A opcao escolhida foi a INTERSECAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
-            if(direcionado)
+            cout << "A opcao escolhida foi a INTERSECAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
+            if(direcionado){
                 cout <<"\n[1] Direcionado";
-            else
+            }else{
                 cout <<"\n[1] Nao direcionado";
-            if(peso_aresta)
+            }if(peso_aresta){
                 cout << "\n[2] Com peso nas arestas";
-            else
+            }else{
                 cout << "\n[2] Sem peso nas arestas";
-            if(peso_no)
+            }if(peso_no){
                 cout << "\n[3] Com peso nos vertices";
-            else
+            }else{
                 cout <<"\n[3] Sem peso nos vertices";
-            string input_file_name;
+            }/*string input_file_name;
             cout << "\nInsira o nome do arquivo do novo grafo:";
             cin >> input_file_name;
             ifstream input_file;
