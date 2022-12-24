@@ -347,7 +347,14 @@ void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool p
     }
     grafo_inter->geraGrafoDot("testes/intersecao.dot");
     cout << "\nFinalizacao da Funcao Intersecao\n";
-    cout << "Arquivo de saida: \"intersecao.dot\" \n";
+    cout << "Arquivo de saida: \"intersecao.dot\" \n\n";
+    int sel;
+    cout << "Deseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+    cin >> sel;
+    if(sel==2){
+        cout << "Programa Finalizado";
+        exit(0);
+    }
 }
 
 void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando
@@ -374,11 +381,12 @@ void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool p
     }
     grafo_dif->geraGrafoDot("testes/diferenca.dot");
     cout << "\nFinalizacao da Funcao Diferenca\n";
-    cout << "Arquivo de saida: \"diferenca.dot\" \n";
+    cout << "Arquivo de saida: \"diferenca.dot\" \n\n";
     int sel;
-    cout << "Deseja realizar mais operacoes?\n[1]SIM \n[2]NAO\n";
+    cout << "Deseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
     cin >> sel;
     if(sel==2){
+        cout << "Programa Finalizado";
         exit(0);
     }
 }
@@ -409,28 +417,85 @@ void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_n
     }
     grafo_uni->geraGrafoDot("testes/uniao.dot");
     cout << "\nFinalizacao da Funcao Uniao\n";
-    cout << "Arquivo de saida: \"uniao.dot\" \n";
+    cout << "Arquivo de saida: \"uniao.dot\" \n\n";
+    int sel;
+    cout << "Deseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+    cin >> sel;
+    if(sel==2){
+        cout << "Programa Finalizado";
+        exit(0);
+    }
 }
     
 void Grafo::redePert(){ 
+    if(!this->direcionado){
+        cout << "Para a realizacao da Rede Pert o grafo inserido deve ser direcionado!";
+        return;
+    }
     int id_inicio;
     int id_fim;
-    cout << "Para iniciar a Funcao de Rede Pert, indique o id no de inicio " ;
+    cout << "Para iniciar a Funcao de Rede Pert, indique o id no de inicio (id correspondente a primeira etapa): " ;
     cin >> id_inicio;
     No *inicio = new No(id_inicio);
-    cout << "Indique o id do no de fim ";
+    cout << "Indique o id do no de fim (id correspondente a ultima etapa): ";
     cin >> id_fim;
     No *fim = new No(id_fim);
 }
 
 void Grafo::gulosoConstrutivo(){
-
+    if(this->direcionado){
+        cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
+        return;
+    }
+    list<int> solucao; //Criação da lista dos vértices de solução (inicalmente vazia) através da função list da biblioeta <stack>
+    list<int> vertices; //Criação da lista de todos os vértices do grafo em questão
+    No* aux = this->getPrimeiroNo();
+    int maior_grau = aux->getGrau();
+    No* noMaiorGrau = this->getPrimeiroNo();
+    for(aux; aux != nullptr; aux = aux->getProxNo()){ //Preenchendo o vetor de vértices com pesos de cada vertice
+        if(aux->getGrau() > maior_grau){
+            maior_grau = aux->getGrau();
+            noMaiorGrau = aux;
+        }
+        vertices.push_front(aux->getId());
+    }
+    int j = vertices.size();
+    while(j != 0){
+        solucao.push_front(noMaiorGrau->getId());
+        for(Aresta *aresta = noMaiorGrau->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){
+            vertices.remove(aresta->getAlvoId());
+            j = j - 1;
+        }
+        vertices.remove(noMaiorGrau->getId());
+        auto it = vertices.begin();
+        int grauMaior = *it;
+        for (it; it !=vertices.end(); ++it){
+            if(*it > grauMaior)
+                grauMaior = *it;
+        }
+        No *auxiliar = this->getNo(grauMaior);
+        noMaiorGrau = auxiliar;
+    }
+    cout << "Conjunto dos Vertices Originais: [";
+    for (auto it = vertices.begin(); it !=vertices.end(); ++it)
+        cout << ' ' << *it;
+    cout << " ]\n";
+    cout << "Conjunto dos Vertices Solucao: [";
+    for(auto it = solucao.begin(); it !=solucao.end(); ++it)
+        cout << ' ' << *it;
+    cout << " ]";
 }
 
 void Grafo::gulosoRandomizadoAdaptativo(){
-
+    if(this->direcionado){
+        cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
+        return;
+    }
 }
 
 void Grafo::gulosoRandomizadoReativo(){
-    
+    if(this->direcionado){
+        cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
+        return;
+    }
 }

@@ -95,7 +95,7 @@ int menu(){
 
     int selecao;
 
-    cout << "MENU" << endl;
+    cout << "\nMENU" << endl;
     cout << "----" << endl;
     cout << "[1] Grafo Intersecao" << endl;
     cout << "[2] Grafo Diferenca" << endl;
@@ -131,7 +131,7 @@ void selecionar(int selecao, Grafo* grafo1, ofstream& output_file, bool direcion
                 cout << "\n[3] Com peso nos vertices";
             }else{
                 cout <<"\n[3] Sem peso nos vertices";
-            }/*string input_file_name;
+            }string input_file_name;
             cout << "\nInsira o nome do arquivo do novo grafo:";
             cin >> input_file_name;
             ifstream input_file;
@@ -141,7 +141,7 @@ void selecionar(int selecao, Grafo* grafo1, ofstream& output_file, bool direcion
                 grafo2 = leitura(input_file, direcionado, peso_aresta, peso_no);
             else
                 cout << "Unable to open " << input_file_name;
-            grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no);*/
+            grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no);
             break;
         }
 
@@ -247,7 +247,7 @@ int mainMenu(ofstream& output_file, Grafo* grafo, bool direcionado, bool peso_ar
             output_file << endl;
         }
         else{
-            cout <<"Opcao selecionada nao existente \nTente novamente\n";
+            cout <<"\nOpcao selecionada nao existente \nTente novamente\n";
             selecao = menu();
 
             if(output_file.is_open())
@@ -269,6 +269,34 @@ int main(int argc, char const *argv[]) {
     //Na ordem esses parâmetros são: int argc _ quantidade de argumentos (devem ser 6) ; char const *argv[] _ nome do programa _ nome do arquivo de entrada _ nome do arquivo de saída _ se é direcionado (bool) _ se tem peso nas arestas (bool) _ se tem peso no nó (bool)
     if (argc != 6) { //Caso não seja passado os parâmetros corretos, uma mensagem de erro é impressa 
         cout << "ERROR: Expecting: ./<program_name> <input_file> <output_file> <directed> <weighted_edge> <weighted_node> " << endl;
+
+        //Adaptação do código para testes 
+        bool direcionado, peso_vertice, peso_aresta = false;
+
+        //Adiciona manualmente as informações 
+        cout<< "Direcionado: ";
+        cin >> direcionado;
+        cout<< "Peso vertice: ";
+        cin >> peso_vertice;
+        cout<< "Peso aresta: ";
+        cin >> peso_aresta;
+
+        ifstream arq_grafo; //Rotina para abertura do arquivo 
+        arq_grafo.open("input/grafo_teste_naoP_5_1.txt", ios::in); //  abertura do arquivo de teste 
+        ofstream output_file;
+        output_file.open("arquivo_saida", ios::out | ios::trunc);
+        
+
+        if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
+            Grafo *grafo = leitura(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
+            //grafo->geraListaAdjacencia("testes/listaDeAdjacencia_grafo1.txt");
+            grafo->geraGrafoDot("testes/grafo1.dot");
+            mainMenu(output_file,grafo,direcionado,peso_aresta,peso_vertice);
+        }
+        else{
+            cout << "Erro na leitura do arquivo";
+        }
+
         //Faz parte do if _ Fechar o programa após a mensagem de erro 
         return 1;
     }

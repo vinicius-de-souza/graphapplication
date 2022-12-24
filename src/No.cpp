@@ -16,6 +16,7 @@ No::No(int id){
     this->primeira_aresta = nullptr;
     this->ultima_aresta = nullptr;
     this->proximo_no = nullptr;
+    this->grau = 0;
 
 };
 
@@ -77,6 +78,11 @@ No* No::getProxNo(){
 
 }
 
+int No::getGrau(){
+    this->setGrau();
+    return this->grau;
+}
+
 // Setters
 
 void No::setProxNo(No* proximo_no){
@@ -93,6 +99,13 @@ void No::setPeso(float peso){
 
     this->peso = peso;
 
+}
+
+void No::setGrau(){
+    this->grau = 0;
+    for(Aresta *aux = this->getPrimeiraAresta(); aux != nullptr; aux = aux->getProxAresta()){
+        grau = grau + 1;
+    }
 }
 
 // Outras funções
@@ -174,7 +187,6 @@ bool No::buscaAresta(int target_id) {
 
 }
 
-
 void No::incrementarGrauEntrada() {
 
     this->grau_entrada++;
@@ -200,6 +212,7 @@ void No::decrementarGrauSaida(){
 }
 
 Aresta* No::temArestaEntre(int alvo_id) 
+
 {
 
     for(Aresta *auxAresta = this->primeira_aresta; auxAresta != nullptr; auxAresta = auxAresta->getProxAresta())

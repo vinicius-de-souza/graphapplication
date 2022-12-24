@@ -1,9 +1,6 @@
-strict graph G { 
- 
+strict digraph G {
 
-    1 --  2
-    2 --  1
-    4 --  2
-    3 --  4
+    2 ->  4
+    3 ->  4
 
  }
