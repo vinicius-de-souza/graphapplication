@@ -1,3 +1,6 @@
+/*Referências
+[1] _ Iterador da função <list> -> https://linuxhint.com/list-iterator-cpp/
+*/
 #include "../include/Grafo.h"
 #include "../include/No.h"
 #include "../include/Aresta.h"
@@ -442,41 +445,44 @@ void Grafo::redePert(){
     No *fim = new No(id_fim);
 }
 
-void Grafo::gulosoConstrutivo(){
-    if(this->direcionado){
+
+void Grafo::gulosoConstrutivo(){ 
+    if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
         cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
         return;
     }
     list<int> solucao; //Criação da lista dos vértices de solução (inicalmente vazia) através da função list da biblioeta <stack>
-    list<int> vertices; //Criação da lista de todos os vértices do grafo em questão
-    No* aux = this->getPrimeiroNo();
-    int maior_grau = aux->getGrau();
-    No* noMaiorGrau = this->getPrimeiroNo();
-    for(aux; aux != nullptr; aux = aux->getProxNo()){ //Preenchendo o vetor de vértices com pesos de cada vertice
-        if(aux->getGrau() > maior_grau){
+    list<int> vertices; //Criação da lista de todos os vértices do grafo em questão através da função list da biblioeta <stack>
+    int peso_total = 0;
+    No* aux = this->getPrimeiroNo(); 
+    int maior_grau = aux->getGrau(); 
+    No* noMaiorGrau = this->getPrimeiroNo(); 
+    for(aux; aux != nullptr; aux = aux->getProxNo()){ //For para rodar entre todos os nós do grafo
+        if(aux->getGrau() > maior_grau){ // Caso o no em questao tenha um grau maior que o último, esse passa a ser o no de maior grau
             maior_grau = aux->getGrau();
-            noMaiorGrau = aux;
+            noMaiorGrau = aux; 
         }
-        vertices.push_front(aux->getId());
+        vertices.push_front(aux->getId()); // Conforme faço essa análise, já preencho o vetor de vertices com todos os nós do grafo
     }
-    int j = vertices.size();
-    while(j != 0){
-        solucao.push_front(noMaiorGrau->getId());
-        for(Aresta *aresta = noMaiorGrau->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){
-            vertices.remove(aresta->getAlvoId());
-            j = j - 1;
+    while(vertices.size() != 0){ //Enquanto minha lista de vertices estiver com vertices, eu faço a analise
+        solucao.push_front(noMaiorGrau->getId()); // O vertice selecionado no looping entra na solução -> push_front: funcao que adiciona no inicio da lista o valor passado como parametro _ aqui decidimos adicionar na solucao os pesos dos vertices
+        peso_total = peso_total + noMaiorGrau->getId(); //Somando os pesos 
+        for(Aresta *aresta = noMaiorGrau->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){ //Lopping das arestas
+            cout << "\nArestas que eu to tirando do no: " << noMaiorGrau->getId() << " -> " << aresta->getAlvoId();
+            vertices.remove(aresta->getAlvoId()); //Pela descrição do problema, a cada vertice selecionado, os seus vizinhos nao precisam estar na solucao 
         }
-        vertices.remove(noMaiorGrau->getId());
-        auto it = vertices.begin();
-        int grauMaior = *it;
-        for (it; it !=vertices.end(); ++it){
-            if(*it > grauMaior)
-                grauMaior = *it;
+        vertices.remove(noMaiorGrau->getId());//Removo da lista de vertices, o vertice de maior grau tmb
+        auto it = vertices.begin(); // Funcao para pegar o valor do primeiro item da lista de vertice (referência [1])
+        maior_grau = *it; // a variavel de maior grau recebe o valor do grau do primeiro vertice que esta na lista de vertices
+        for (it; it !=vertices.end(); ++it){ // Iteração para descobrir o novo vertice de maior grau 
+            No* iteracao = this->getNo(*it);
+            if(iteracao->getGrau() > maior_grau)
+                maior_grau = iteracao->getGrau(); // Guardo o valor do grau
+                noMaiorGrau = iteracao;
         }
-        No *auxiliar = this->getNo(grauMaior);
-        noMaiorGrau = auxiliar;
-    }
-    cout << "Conjunto dos Vertices Originais: [";
+    } 
+    // Saidas para teste de funcionalidades
+    cout << "\nConjunto dos Vertices Originais: [";
     for (auto it = vertices.begin(); it !=vertices.end(); ++it)
         cout << ' ' << *it;
     cout << " ]\n";
@@ -484,6 +490,7 @@ void Grafo::gulosoConstrutivo(){
     for(auto it = solucao.begin(); it !=solucao.end(); ++it)
         cout << ' ' << *it;
     cout << " ]";
+    cout << "\nPeso total calculado: " << peso_total;
 }
 
 void Grafo::gulosoRandomizadoAdaptativo(){
