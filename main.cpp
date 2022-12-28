@@ -5,7 +5,6 @@
 #include <utility>
 #include <tuple>
 #include <iomanip>
-#include <stdlib.h>
 #include <chrono>
 #include "include/Grafo.h"
 #include "include/Aresta.h"
@@ -18,7 +17,6 @@ using namespace std;
 
 // ofstream classe do <fstream> para criar e escrever em arquivos
 // ifstream: classe do <fstream> para ler de arquivos  _ utilizado quando a ação é apenas ler arquivos 
-//Função para leitura do grafo, recebe como parâmetro 
 Grafo * leituraParteI(ifstream& input_file, bool direcionado, bool peso_aresta, int peso_no){//* OK
 
     //Variáveis para auxiliar na criação dos nós no Grafo
@@ -92,7 +90,55 @@ Grafo * leituraParteI(ifstream& input_file, bool direcionado, bool peso_aresta, 
 }
 
 Grafo *leituraParteII(ifstream& input_file, bool direcionado, bool peso_aresta, int peso_no){
-
+    string linha;
+    string ord;
+    string no;
+    Grafo* grafo = new Grafo(direcionado, peso_aresta, peso_no);
+    getline(input_file,linha); //Pega a primeira linha 
+    getline(input_file,ord); //Pega a segunda linha _ ordem do grafo
+    int ordem = stoi(ord);
+    const char *c;
+    int j  = 3; //Iterador para andar no arquivo 
+    while(j < ordem+5){ //Anda no arquinvo até a linha que inicia os valores dos nós
+        getline(input_file,linha);
+        j = j + 1;
+    }
+    int i  = 1;
+    while(j <= (2*ordem)+4){ // Encontra os nos do arquivo e adiciona os nos no grafo;
+        getline(input_file,no);
+        grafo->inserir_No(stoi(no));
+        grafo->getNo(stoi(no))->setIdInterno(i);
+        i = i + 1;
+        j = j + 1;
+    }
+    getline(input_file,linha); //Pega a linha antes da matriz de adjacência 
+    j = j + 1;
+    int cont = 1;
+    while(j <= (3*ordem)+5){ //While para percorre até o final do arquivo
+        getline(input_file,linha);
+        //cout << linha << endl;
+        c = linha.c_str(); 
+        for(int k=0; c[k]!='\0';k++){
+            //cout << "Caracter " << k << " -> " << c[k] << endl;
+            if(c[k]=='1' && k!=0){
+                cout << "Tem aresta aqui! " << grafo->getNoInterno(1)->getId() << k/2;
+                cont = cont + 1;
+            }
+        }
+        //int cont  = j;
+        /*for(int k=1; c[k]!='\0';k++){
+            if(c[k] == '1'){
+                if(k==1){
+                    cout << "Entrou aqui k==1";
+                    grafo->inserirAresta(grafo->getNoInterno(cont-105)->getId(),grafo->getNoInterno(1)->getId(),0);
+                }else
+                    grafo->inserirAresta(grafo->getNoInterno(cont-105)->getId(),grafo->getNoInterno((k-1)/2)->getId(),0);
+                cont =  cont + 1;
+            }*/
+        j =(3*ordem)+6; 
+    }
+    
+    return grafo;
 }
 
 int menuParteI(){//* OK
@@ -345,13 +391,14 @@ int main(int argc, char const *argv[]) {//*OK
         cin >> peso_aresta;
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
-        arq_grafo.open("input_parteII/Problem_50_50_3.txt", ios::in); //  abertura do arquivo de teste 
+        arq_grafo.open("input_parteII/Problem_50_50_3.dat", ios::in); //  abertura do arquivo de teste 
         ofstream output_file;
         output_file.open("arquivo_saida", ios::out | ios::trunc);
     
 
-        if(arq_grafo.is_open()) { //Caso o arquivo abra normalmente 
-            Grafo *grafo = leituraParteI(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
+        if(arq_grafo.is_open()) { 
+            Grafo *grafo;//Caso o arquivo abra normalmente 
+            //Grafo *grafo = leituraParteI(arq_grafo, direcionado, peso_aresta, peso_vertice); //Chama a função de leitura 
             //grafo->geraListaAdjacencia("testes/listaDeAdjacencia_grafo1.txt");
             //grafo->geraGrafoDot("testes/grafo1.dot");
             int sel;
@@ -367,7 +414,8 @@ int main(int argc, char const *argv[]) {//*OK
                 }
                 if(sel==2){
                     grafo = leituraParteII(arq_grafo, direcionado, peso_aresta, peso_vertice);
-                    mainMenuParteII(output_file,grafo, direcionado, peso_aresta, peso_vertice);
+                    grafo->geraListaAdjacencia("testes/listaParteII.txt");
+                    //mainMenuParteII(output_file,grafo, direcionado, peso_aresta, peso_vertice);
                 }            
             }
             else{

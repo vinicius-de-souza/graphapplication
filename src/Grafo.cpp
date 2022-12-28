@@ -213,6 +213,16 @@ No *Grafo::getNo(int id){ //* Funcionando
     return nullptr;
 }
 
+No *Grafo::getNoInterno(int idInterno){
+    No *aux = this->getPrimeiroNo();
+    while(aux != nullptr){
+        if(aux->getIdInterno() == idInterno)
+            return aux;
+        else
+            aux = aux->getProxNo();
+    }
+}
+
 float Grafo::getAresta(int idSaida, int idAlvo){ //* Funcionando 
     No *auxNo = this->getNo(idSaida);
     for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){
@@ -241,7 +251,6 @@ bool Grafo::grafoConectado(){ //* Funcionando
     }
     return true;
 }
-
 
 // Extra _ Criados para melhor visualização do programa
 
@@ -275,7 +284,6 @@ void Grafo::auxGeraListaAdjacencia(ofstream &output_file){ // * Funcionando
     }
 
 }
-
 
 void Grafo::geraGrafoDot(string output){ //* Funcionando
 //Geração do arquivo de sáida em .dot
@@ -324,7 +332,7 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){ //* Funcionando
     }
 }
 
-// Implementações necessárias
+// Implementações necessárias Parte I
 
 void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ //* Funcionando 
     No* no_grafo1 = this->getPrimeiroNo();
@@ -445,6 +453,7 @@ void Grafo::redePert(){
     No *fim = new No(id_fim);
 }
 
+//Implementações Parte II
 
 void Grafo::gulosoConstrutivo(){ 
     if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado

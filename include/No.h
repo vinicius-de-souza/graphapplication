@@ -17,6 +17,7 @@ private:
     float peso;
     No* proximo_no;
     int grau;
+    int idInterno;
 
 public:
     // Construtor
@@ -32,10 +33,12 @@ public:
     float getPeso();
     No* getProxNo();
     int getGrau();
+    int getIdInterno();
     // Setters
     void setProxNo(No* No);
     void setPeso(float peso);
     void setGrau();
+    void setIdInterno(int idInterno);
     // Outras funções
     bool buscaAresta(int alvo_id);
     void inserirAresta(int alvo_id, float peso);

@@ -34,6 +34,8 @@ public:
     No* getPrimeiroNo();
     No* getUltimoNo();
     float getAresta(int idSaida, int idAlvo);
+    No* getNo(int id);
+    No *getNoInterno(int idInterno);
 
     //Outras funções necessárias
     void inserirNo(int id);
@@ -41,7 +43,6 @@ public:
     void inserirAresta(int id, int target_id, float weight);
     void removerNo(int id);
     bool procurarNo(int id);
-    No* getNo(int id);
     bool buscaProfundidade(int idInicial, int idAlvo);
     bool grafoConectado();
     void setNumAresta();

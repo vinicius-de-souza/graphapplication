@@ -83,6 +83,10 @@ int No::getGrau(){
     return this->grau;
 }
 
+int No::getIdInterno(){
+    return this->idInterno;
+}
+
 // Setters
 
 void No::setProxNo(No* proximo_no){
@@ -106,6 +110,10 @@ void No::setGrau(){
     for(Aresta *aux = this->getPrimeiraAresta(); aux != nullptr; aux = aux->getProxAresta()){
         grau = grau + 1;
     }
+}
+
+void No::setIdInterno(int idinterno){
+    this->idInterno = idinterno;
 }
 
 // Outras funções
