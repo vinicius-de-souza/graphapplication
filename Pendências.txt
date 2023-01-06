@@ -2,19 +2,22 @@ PENDÊNCIAS:
 
 -> Parte I
 
-	* Refinamento das classes _ comentários sobre as funções e funcionalidades
+	* Refinamento das classes _ comentários sobre as funções e funcionalidades !! OK !!
+	
+	* Referências do trabalho 
 
 	* Ajustar os arquivos para envio (retirar o que não é necessário e modificar os nomes)
 
-	* Arquivo de saida _ armazenar o novo grafo 
+	* Arquivo de saida _ armazenar o novo grafo  !! (1) !!
 
-	* Saida em tela 
+	* Saida em tela !! (2) !!
 
 	* Rede Pert _ toda implementação 
 
+
 -> Parte II _ Problema do Subconjunto Dominante Ponderado:
 
-	* Função de leitura dos arquivos da parte II
+	* Função de leitura dos arquivos da parte II !! (3) !!
 
 	* Algoritmo construtivo gulos - verificar se funciona 
 
