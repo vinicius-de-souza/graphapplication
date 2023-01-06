@@ -7,9 +7,11 @@
 
 using namespace std;
 
+// Definição da Classe Grafo 
+
 class Grafo{
 
-    //Atributos
+    //Atributos privados 
 private:
     int numero_arestas;
     bool direcionado;
@@ -18,6 +20,7 @@ private:
     No* primeiro_no;
     No* ultimo_no;
 
+    //Atributos publicos _ podem ser utilizados pelo usuario na main 
 public:
 
     //Construtor
@@ -37,15 +40,14 @@ public:
     No* getNo(int id);
     No *getNoInterno(int idInterno);
 
+    //Setters
+    void setNumAresta();
+
     //Outras funções necessárias
     void inserirNo(int id);
-    void inserir_No(int id);
     void inserirAresta(int id, int target_id, float weight);
     void removerNo(int id);
     bool procurarNo(int id);
-    bool buscaProfundidade(int idInicial, int idAlvo);
-    bool grafoConectado();
-    void setNumAresta();
 
     // Extra _ Criados para melhor visualização do programa
     void geraListaAdjacencia(string output);
@@ -55,7 +57,7 @@ public:
     void auxGeraGrafoDot(ofstream &output_file);
     void geraGrafoDot(string output);
 
-    // Implementações necessárias
+    // Parte I _ Implementações necessárias
     void intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
     void uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
