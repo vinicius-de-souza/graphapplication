@@ -511,7 +511,7 @@ Grafo* Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool
 }
 
 //Função da diferença de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não
-void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+Grafo* Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     No *no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
@@ -572,10 +572,12 @@ void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool p
 
     }
 
+    return grafo_dif;
+
 }
     
 //Função de união de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não    
-void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+Grafo* Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     Grafo* grafo_uni = new Grafo(direcionado,peso_aresta,peso_no);
     
@@ -635,6 +637,8 @@ void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_n
         exit(0);
 
     }
+
+    return grafo_uni;
 
 }
 

@@ -62,8 +62,8 @@ public:
 
     // Parte I _ Implementações necessárias
     Grafo* intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
-    void diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
-    void uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
+    Grafo* diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
+    Grafo* uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void redePert();
 
     //Parte 2 _ Algoritmos Gulosos
