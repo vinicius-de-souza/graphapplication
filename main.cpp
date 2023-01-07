@@ -134,20 +134,21 @@ Grafo *leituraParteII(ifstream& input_file, bool direcionado, bool peso_aresta, 
 
         getline(input_file,no);
 
-        grafo->inserirNo(stoi(no)); //Inserimos o nó no grafo 
-        grafo->getNo(stoi(no))->setIdInterno(i); //Ligamos o nó que acabou de ser criado com um id interno de controle _ Esse id vai de 1 até o valor da ordem
-
+            grafo->inserirNo(i);
+            grafo->getNo(i)->setPeso(stoi(no)); //Inserimos o nó no grafo 
+           
         //Incrementamos os iteradores 
         i = i + 1;
         j = j + 1;
 
     }
-
+   
     getline(input_file,linha); //Pega a linha antes da matriz de adjacência 
     
     j = j + 1; //O iterador j recebe mais um pela linha lida acima 
 
-    int cont = 1;
+    int cont = 0; //Será utilizado para a manipulação dos ids internos
+
 
     while(j <= (3*ordem)+5){ //Percorre até o final do arquivo _ Esse valor foi encontrado através do estudo dos arquivos disponíveis 
 
@@ -155,28 +156,22 @@ Grafo *leituraParteII(ifstream& input_file, bool direcionado, bool peso_aresta, 
 
         c = linha.c_str(); //A linha lida como string é transformada em um vetor de char
 
+        cout << linha << endl;
+
         for(int k=0 ;  c[k] != '\0' ; k++){ //Percorre todo o vetor criado a partir da string , por definição o final de uma string é \0, por isso a iteração ocorre até encontrarmos esse caractere 
 
-            if(c[k]=='1' && k!=0){ //Pela definição, caso haja aresta 
+            if(c[k]=='1' && k!=cont){ //Pela definição, caso haja aresta entre um nó e outro na matriz de adjacência, o número 1 aparece _   k!=cont -> controle para que não sejam criadad arestad do nó para ele mesmo
 
-                cout << "Tem aresta aqui! " << grafo->getNoInterno(1)->getId() << k/2;
-                cont = cont + 1;
+                grafo->inserirAresta((j-105),(k/2)+1,grafo->getNo((j-105))->getPeso());
 
             }
 
         }
 
-        //int cont  = j;
-        /*for(int k=1; c[k]!='\0';k++){
-            if(c[k] == '1'){
-                if(k==1){
-                    cout << "Entrou aqui k==1";
-                    grafo->inserirAresta(grafo->getNoInterno(cont-105)->getId(),grafo->getNoInterno(1)->getId(),0);
-                }else
-                    grafo->inserirAresta(grafo->getNoInterno(cont-105)->getId(),grafo->getNoInterno((k-1)/2)->getId(),0);
-                cont =  cont + 1;
-            }*/
-        j =(3*ordem)+6; 
+        j = j + 1 ;
+
+        cont = cont + 2 ; // Variável para evitar que sejam criadas arestas do nó para ele mesmo
+
     }
     
     return grafo;
@@ -337,7 +332,8 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
 
                  cout << "Unable to open " << input_file_name;
 
-            grafo1->diferenca(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de diferença
+            grafo1->diferenca(grafo2, direcionado, peso_aresta, peso_no
+            ; //Chama a função de diferença
 
             break;
 
@@ -589,8 +585,7 @@ int main(int argc, char const *argv[]) {
                 }
                 if(sel==2){
                     grafo = leituraParteII(arq_grafo, direcionado, peso_aresta, peso_vertice);
-                    grafo->geraListaAdjacencia("testes/listaParteII.txt");
-                    //mainMenuParteII(output_file,grafo, direcionado, peso_aresta, peso_vertice);
+                    mainMenuParteII(output_file,grafo, direcionado, peso_aresta, peso_vertice);
                 }            
             }
             else{

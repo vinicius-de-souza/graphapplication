@@ -7,7 +7,6 @@
 #include "../include/Grafo.h"
 #include "../include/No.h"
 #include "../include/Aresta.h"
-#include <iostream>
 #include <fstream>
 #include <stack>
 #include <queue>
@@ -91,9 +90,26 @@ No *Grafo::getUltimoNo(){
 
 }
 
+//Recebe como parâmetro o id de um nó e retorna o objeto nó referente aquele id
+No *Grafo::getNo(int id){ 
+
+    No * aux = this->getPrimeiroNo();
+
+    while(aux != nullptr){
+
+        if(aux->getId() == id)
+            return aux;
+
+        else
+            aux = aux->getProxNo();
+
+    }
+
+    return nullptr;
+}
+
 
 //Setters
-
 
 //Define o número de arestas do grafo 
 void Grafo::setNumAresta(){ 
@@ -102,8 +118,8 @@ void Grafo::setNumAresta(){
 
 }
 
-// Outras funções 
 
+// Outras funções 
 
 //Inserção interna de nós, utilizada na hora da leitura do grafo _ não muda a ordem pois a ordem já está sendo informada no início da leitura do arquivo 
 void Grafo::inserirNo(int id){ 
@@ -246,35 +262,6 @@ bool Grafo::procurarNo(int id){
     return false;
 }
 
-//Recebe como parâmetro o id de um nó e retorna o objeto nó referente aquele id
-No *Grafo::getNo(int id){ 
-
-    No * aux = this->getPrimeiroNo();
-
-    while(aux != nullptr){
-
-        if(aux->getId() == id)
-            return aux;
-
-        else
-            aux = aux->getProxNo();
-
-    }
-
-    return nullptr;
-}
-
-//! Ajustar
-No *Grafo::getNoInterno(int idInterno){
-    No *aux = this->getPrimeiroNo();
-    while(aux != nullptr){
-        if(aux->getIdInterno() == idInterno)
-            return aux;
-        else
-            aux = aux->getProxNo();
-    }
-}
-
 //Função que recebe como parâmetro dois ids (id do nó de saída da aresta e id do nó de entrada da aresta) e retorna o valor do peso da aresta entre elas
 float Grafo::getAresta(int idSaida, int idAlvo){ 
     if(!peso_aresta)  //Caso não haja peso nas arestas desse grafo
@@ -337,7 +324,7 @@ void Grafo::auxGeraListaAdjacencia(ofstream &output_file){
 
 }
 
-//Função para geração do arquivo de saída em .dot _ Recebe como parâmetro o arquivo de entrada
+//Função para geração do arquivo de saída em .dot _ Recebe como parâmetro o arquivo de saída
 void Grafo::geraGrafoDot(string output){
 
     ofstream output_file; //Rotina para abertura e escrita do arquivo 
@@ -397,12 +384,71 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){
     }
 }
 
+//Função para geração do arquivo de saída do novo grafo _ Recebe como parâmetro o arquivo de saída
+void Grafo::geraArquivoSaida(string output){
+
+    ofstream output_file; //Rotina para abertura e escrita do arquivo 
+    output_file.open(output, ios::trunc);
+
+    if(output_file.is_open())
+
+        auxGeraArquivoSaida(output_file);
+    
+    else//Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
+
+        cout << endl << "Nao foi possivel abrir arquivo <" << output ;
+
+}
+
+//Função para geração do arquivo de saída do novo grafo _  Recebe como parâmetro o arquivo de saída 
+void Grafo::auxGeraArquivoSaida(ofstream &output_file){  
+
+    //Caso o grafo seja direcionado 
+    if(direcionado){
+        output_file << "strict digraph G {\n"; //Definição própria do .dot para geração de grafos direcionados sem multiaresta
+        for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){ //Percorre todos os nós do grafo
+
+            for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){ //Percorre todas as arestas do nó
+
+                output_file << "\n" << "    " << auxNo->getId() << " -> ";
+                output_file << " " << auxAresta->getAlvoId();
+
+                if(peso_aresta)
+
+                    output_file << " " << "[label=\" " << this->getAresta(auxNo->getId(), auxAresta->getAlvoId()) << "\"]";
+
+        }
+    }
+        output_file << "\n" << "\n }";
+    }
+    
+    //Caso o grafo não seja direcionado   
+    else{
+        output_file << "strict graph G { \n \n"; //Definição própria do .dot para geração de grafos não direcionados sem multiaresta
+        for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){ //Percorre todos os nós do grafo
+
+            for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){ //Percorre todas as arestas do nó
+
+                output_file << "\n" << "    " << auxNo->getId() << " -- ";
+                output_file << " " << auxAresta->getAlvoId();
+
+                if(peso_aresta)
+
+                    output_file << " " << "[label=\" " << this->getAresta(auxNo->getId(), auxAresta->getAlvoId()) << "\"]";
+                
+            }
+        }
+
+        output_file << "\n" << "\n }";
+
+    }
+}
 
 // Implementações necessárias Parte I
 
 
 //Função de interseção de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não
-void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no, string output_file){ 
 
     No* no_grafo1 = this->getPrimeiroNo(); 
     No* no_grafo2 = grafo2->getPrimeiroNo();
@@ -444,7 +490,9 @@ void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool p
     grafo_inter->geraGrafoDot("testes/intersecao.dot"); //Chamada da função de geração do arquivo .dot 
 
     cout << "\nFinalizacao da Funcao Intersecao\n";
-    cout << "Arquivo de saida: \"intersecao.dot\" \n\n";
+    cout << "Arquivo .dot: \"intersecao.dot\" \n";
+    
+    this->geraArquivoSaida(output_file);
 
     //Verificação da continuação do programa
     int sel;
@@ -460,7 +508,7 @@ void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool p
 }
 
 //Função da diferença de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não
-void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no, string output_file){ 
 
     No *no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
@@ -524,7 +572,7 @@ void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool p
 }
     
 //Função de união de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não    
-void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no, string output_file){ 
 
     Grafo* grafo_uni = new Grafo(direcionado,peso_aresta,peso_no);
     
@@ -588,7 +636,7 @@ void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_n
 }
 
 // Função de criação da Rede Pert de um grafo direcionado _ Não necessita receber nada como parâmetro   
-void Grafo::redePert(){ 
+void Grafo::redePert(string output_file){ 
     if(!this->direcionado){
         cout << "Para a realizacao da Rede Pert o grafo inserido deve ser direcionado!";
         return;
@@ -640,13 +688,13 @@ void Grafo::gulosoConstrutivo(){
 
     }
 
-    //Enquanto minha lista de vertices estiver com vertices, eu faço a analise _ Pela heurística em algum momento essa lista estará vazia 
+    //Enquanto minha lista de vertices estiver com vertices, eu faço a analise _ Pela heurística em algum momento essa lista estará vazia
     while(vertices.size() != 0){ 
 
         solucao.push_front(noMaiorGrau->getId()); // O vértice selecionado no looping entra na solução 
         // -> push_front: função que adiciona no inicio da lista o valor passado como parametro _ aqui decidimos adicionar na solucao os pesos dos vertices como forma de identificação dos mesmos
 
-        peso_total = peso_total + noMaiorGrau->getId(); //Somando os pesos 
+        peso_total = peso_total + noMaiorGrau->getPeso(); //Somando os pesos 
 
         for(Aresta *aresta = noMaiorGrau->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){ //Lopping das arestas
 
@@ -674,7 +722,7 @@ void Grafo::gulosoConstrutivo(){
 
         }
 
-    } 
+    }  
 
     // Saidas para teste de funcionalidades
     cout << "\nConjunto dos Vertices Originais: [";
