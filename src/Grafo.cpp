@@ -389,14 +389,16 @@ void Grafo::geraArquivoSaida(ofstream &output_file){
 
     ofstream output_file; //Rotina para abertura e escrita do arquivo 
 
-    if(output_file.is_open())
+    if(output_file.is_open()){
 
         cout << "Chega aqui direitinho";
-        //auxGeraArquivoSaida(output_file);
+        auxGeraArquivoSaida(output_file);
     
-    /*else//Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
+    }
 
-        cout << endl << "Nao foi possivel abrir arquivo <" << output ;*/
+    else//Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
+
+        cout << endl << "Nao foi possivel abrir arquivo " ;
 
 }
 
@@ -404,7 +406,7 @@ void Grafo::geraArquivoSaida(ofstream &output_file){
 void Grafo::auxGeraArquivoSaida(ofstream &output_file){  
 
     //Caso o grafo seja direcionado 
-    if(direcionado){
+    /*if(direcionado){
         output_file << "strict digraph G {\n"; //Definição própria do .dot para geração de grafos direcionados sem multiaresta
         for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){ //Percorre todos os nós do grafo
 
@@ -441,7 +443,10 @@ void Grafo::auxGeraArquivoSaida(ofstream &output_file){
 
         output_file << "\n" << "\n }";
 
-    }
+    }*/
+
+    cout << "Chega aqui";
+
 }
 
 

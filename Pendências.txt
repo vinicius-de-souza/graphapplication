@@ -17,7 +17,7 @@ PENDÊNCIAS:
 
 -> Parte II _ Problema do Subconjunto Dominante Ponderado:
 
-	* Função de leitura dos arquivos da parte II !! (3) !!
+	* Função de leitura dos arquivos da parte II !! OK !!
 
 	* Algoritmo construtivo guloso - verificar se funciona 
 

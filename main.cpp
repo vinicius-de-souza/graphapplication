@@ -6,9 +6,9 @@
 #include <tuple>
 #include <iomanip>
 #include <chrono>
-//#include "include/Grafo.h"
-//#include "include/Aresta.h"
-//#include "include/No.h"
+#include "include/Grafo.h"
+#include "include/Aresta.h"
+#include "include/No.h"
 #include "src/Grafo.cpp"
 #include "src/Aresta.cpp"
 #include "src/No.cpp"
