@@ -57,14 +57,14 @@ public:
     void geraGrafoDot(string output);
 
     //Geração do arquivo de saída
-    void geraArquivoSaida(string output_file);
+    void geraArquivoSaida(ofstream &output_file);
     void auxGeraArquivoSaida(ofstream &output_file);
 
     // Parte I _ Implementações necessárias
-    void intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no,string output_file);
-    void diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no,string output_file);
-    void uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no,string output_file);
-    void redePert(string output_file);
+    Grafo* intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
+    void diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
+    void uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
+    void redePert();
 
     //Parte 2 _ Algoritmos Gulosos
     void gulosoConstrutivo();

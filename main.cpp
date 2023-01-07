@@ -267,6 +267,9 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
             //Criação de um novo objeto grafo 
             Grafo *grafo2;
 
+            //Será utilizado para a geração do novo arquivo de saída 
+            Grafo *final;
+
             if(input_file.is_open())
 
                 grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
@@ -275,7 +278,9 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
 
                 cout << "Unable to open " << input_file_name;
 
-            grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de interseção  
+            final = grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de interseção  
+
+            final->geraArquivoSaida(output_file); //Gera o arquivo de saída do novo grafo
 
             break;
 
@@ -324,6 +329,9 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
             //Criação de um novo objeto grafo 
             Grafo *grafo2;
 
+            //Será utilizado para a geração do novo arquivo de saída 
+            Grafo *final;
+
             if(input_file.is_open())
 
                 grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
@@ -332,8 +340,10 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
 
                  cout << "Unable to open " << input_file_name;
 
-            grafo1->diferenca(grafo2, direcionado, peso_aresta, peso_no
-            ; //Chama a função de diferença
+            final = grafo1->diferenca(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de diferença
+
+            final->geraArquivoSaida(output_file);   //Gera o arquivo de saída do novo grafo   
+
 
             break;
 
@@ -382,6 +392,9 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
              //Criação de um novo objeto grafo 
             Grafo *grafo2;
 
+            //Será utilizado para a geração do novo arquivo de saída 
+            Grafo* final;
+
             if(input_file.is_open())
 
                 grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
@@ -390,7 +403,9 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
 
                 cout << "Unable to open " << input_file_name;
 
-            grafo1->uniao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de união
+            final = grafo1->uniao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de união
+
+            final->geraArquivoSaida(output_file); //Gera o arquivo de saída do novo grafo
 
             break;
 

@@ -385,18 +385,18 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){
 }
 
 //Função para geração do arquivo de saída do novo grafo _ Recebe como parâmetro o arquivo de saída
-void Grafo::geraArquivoSaida(string output){
+void Grafo::geraArquivoSaida(ofstream &output_file){
 
     ofstream output_file; //Rotina para abertura e escrita do arquivo 
-    output_file.open(output, ios::trunc);
 
     if(output_file.is_open())
 
-        auxGeraArquivoSaida(output_file);
+        cout << "Chega aqui direitinho";
+        //auxGeraArquivoSaida(output_file);
     
-    else//Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
+    /*else//Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
 
-        cout << endl << "Nao foi possivel abrir arquivo <" << output ;
+        cout << endl << "Nao foi possivel abrir arquivo <" << output ;*/
 
 }
 
@@ -444,11 +444,12 @@ void Grafo::auxGeraArquivoSaida(ofstream &output_file){
     }
 }
 
+
 // Implementações necessárias Parte I
 
 
 //Função de interseção de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não
-void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no, string output_file){ 
+Grafo* Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     No* no_grafo1 = this->getPrimeiroNo(); 
     No* no_grafo2 = grafo2->getPrimeiroNo();
@@ -492,7 +493,6 @@ void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool p
     cout << "\nFinalizacao da Funcao Intersecao\n";
     cout << "Arquivo .dot: \"intersecao.dot\" \n";
     
-    this->geraArquivoSaida(output_file);
 
     //Verificação da continuação do programa
     int sel;
@@ -505,10 +505,13 @@ void Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool p
         exit(0);
 
     }
+
+    return grafo_inter;
+
 }
 
 //Função da diferença de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não
-void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no, string output_file){ 
+void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     No *no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
@@ -572,7 +575,7 @@ void  Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool p
 }
     
 //Função de união de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não    
-void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no, string output_file){ 
+void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     Grafo* grafo_uni = new Grafo(direcionado,peso_aresta,peso_no);
     
@@ -636,19 +639,28 @@ void Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_n
 }
 
 // Função de criação da Rede Pert de um grafo direcionado _ Não necessita receber nada como parâmetro   
-void Grafo::redePert(string output_file){ 
-    if(!this->direcionado){
+void Grafo::redePert(){ 
+
+    if(!this->direcionado){ //Para que seja possível realizar a análise de Rede Pert, o grafo deve ser direcionado
+
         cout << "Para a realizacao da Rede Pert o grafo inserido deve ser direcionado!";
         return;
+
     }
+
+    //Etapa de verificação do início e fim da Rede Pert _ É possível que o primeiro nó inserido não seja referente a primeira etapa da Rede Pert
     int id_inicio;
     int id_fim;
+
     cout << "Para iniciar a Funcao de Rede Pert, indique o id no de inicio (id correspondente a primeira etapa): " ;
     cin >> id_inicio;
     No *inicio = new No(id_inicio);
+
     cout << "Indique o id do no de fim (id correspondente a ultima etapa): ";
     cin >> id_fim;
     No *fim = new No(id_fim);
+
+
 }
 
 
