@@ -387,65 +387,14 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){
 //Função para geração do arquivo de saída do novo grafo _ Recebe como parâmetro o arquivo de saída
 void Grafo::geraArquivoSaida(ofstream &output_file){
 
-    ofstream output_file; //Rotina para abertura e escrita do arquivo 
-
     if(output_file.is_open()){
 
-        cout << "Chega aqui direitinho";
-        auxGeraArquivoSaida(output_file);
+        cout << "Ta chegando aqui";
+        output_file << "oi";
     
-    }
-
-    else//Mensagem de erro caso não seja possível gerar arquivo de lista de adjacência 
+    }else//Mensagem de erro caso não seja possível gerar arquivo de saída
 
         cout << endl << "Nao foi possivel abrir arquivo " ;
-
-}
-
-//Função para geração do arquivo de saída do novo grafo _  Recebe como parâmetro o arquivo de saída 
-void Grafo::auxGeraArquivoSaida(ofstream &output_file){  
-
-    //Caso o grafo seja direcionado 
-    /*if(direcionado){
-        output_file << "strict digraph G {\n"; //Definição própria do .dot para geração de grafos direcionados sem multiaresta
-        for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){ //Percorre todos os nós do grafo
-
-            for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){ //Percorre todas as arestas do nó
-
-                output_file << "\n" << "    " << auxNo->getId() << " -> ";
-                output_file << " " << auxAresta->getAlvoId();
-
-                if(peso_aresta)
-
-                    output_file << " " << "[label=\" " << this->getAresta(auxNo->getId(), auxAresta->getAlvoId()) << "\"]";
-
-        }
-    }
-        output_file << "\n" << "\n }";
-    }
-    
-    //Caso o grafo não seja direcionado   
-    else{
-        output_file << "strict graph G { \n \n"; //Definição própria do .dot para geração de grafos não direcionados sem multiaresta
-        for( No * auxNo = this->getPrimeiroNo(); auxNo != nullptr ; auxNo = auxNo->getProxNo()){ //Percorre todos os nós do grafo
-
-            for(Aresta * auxAresta = auxNo->getPrimeiraAresta(); auxAresta != nullptr; auxAresta = auxAresta->getProxAresta()){ //Percorre todas as arestas do nó
-
-                output_file << "\n" << "    " << auxNo->getId() << " -- ";
-                output_file << " " << auxAresta->getAlvoId();
-
-                if(peso_aresta)
-
-                    output_file << " " << "[label=\" " << this->getAresta(auxNo->getId(), auxAresta->getAlvoId()) << "\"]";
-                
-            }
-        }
-
-        output_file << "\n" << "\n }";
-
-    }*/
-
-    cout << "Chega aqui";
 
 }
 
@@ -496,21 +445,8 @@ Grafo* Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool
     grafo_inter->geraGrafoDot("testes/intersecao.dot"); //Chamada da função de geração do arquivo .dot 
 
     cout << "\nFinalizacao da Funcao Intersecao\n";
-    cout << "Arquivo .dot: \"intersecao.dot\" \n";
+    cout << "Arquivo .dot: \"intersecao.dot\" \n\n";
     
-
-    //Verificação da continuação do programa
-    int sel;
-    cout << "Deseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
-    cin >> sel;
-
-    if(sel==2){//Caso o usuário opte por finalizar o programa
-
-        cout << "Programa Finalizado";
-        exit(0);
-
-    }
-
     return grafo_inter;
 
 }
@@ -565,18 +501,6 @@ Grafo* Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool 
     cout << "\nFinalizacao da Funcao Diferenca\n";
     cout << "Arquivo de saida: \"diferenca.dot\" \n\n";
 
-    //Verificação da continuação do programa
-    int sel;
-    cout << "Deseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
-    cin >> sel;
-
-    if(sel==2){//Caso o usuário opte por finalizar o programa
-
-        cout << "Programa Finalizado";
-        exit(0);
-
-    }
-
     return grafo_dif;
 
 }
@@ -630,18 +554,6 @@ Grafo* Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso
 
     cout << "\nFinalizacao da Funcao Uniao\n";
     cout << "Arquivo de saida: \"uniao.dot\" \n\n";
-
-    //Verificação da continuação do programa
-    int sel;
-    cout << "Deseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
-    cin >> sel;
-
-    if(sel==2){ //Caso o usuário opte por finalizar o programa
-
-        cout << "Programa Finalizado";
-        exit(0);
-
-    }
 
     return grafo_uni;
 

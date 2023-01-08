@@ -58,7 +58,6 @@ public:
 
     //Geração do arquivo de saída
     void geraArquivoSaida(ofstream &output_file);
-    void auxGeraArquivoSaida(ofstream &output_file);
 
     // Parte I _ Implementações necessárias
     Grafo* intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
