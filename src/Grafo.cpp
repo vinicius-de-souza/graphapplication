@@ -2,6 +2,8 @@
 
 [1] _ Iterador da função <list> -> https://linuxhint.com/list-iterator-cpp/
 
+[2] _ Como contar o tempo de processamento de uma função -> https://acervolima.com/meca-o-tempo-de-execucao-com-alta-precisao-em-c-c/
+
 */
 
 #include "../include/Grafo.h"
@@ -16,6 +18,7 @@
 #include <ctime>
 #include <float.h>
 #include <iomanip>
+#include "time.h" // Referência [2]
 
 using namespace std;
 
@@ -389,7 +392,7 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){
 
 
 //Função de interseção de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não
-Grafo* Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+void Grafo::intersecao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     No* no_grafo1 = this->getPrimeiroNo(); 
     No* no_grafo2 = grafo2->getPrimeiroNo();
@@ -428,17 +431,18 @@ Grafo* Grafo::intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool
 
     }
 
+    grafo_inter->geraSaidaParteI(output_file); //Chamada da função para a geração do arquivo de saída .txt ou .dat (de acordo com o que foi informado na linha de comando)
+
     grafo_inter->geraGrafoDot("testes/intersecao.dot"); //Chamada da função de geração do arquivo .dot 
 
     cout << "\nFinalizacao da Funcao Intersecao\n";
     cout << "Arquivo .dot: \"intersecao.dot\" \n\n";
-    
-    return grafo_inter;
+
 
 }
 
 //Função da diferença de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não
-Grafo* Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+void Grafo::diferenca(ofstream &output_file, Grafo* grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     No *no_grafo1 = this->getPrimeiroNo();
     No *no_grafo2 = grafo2->getPrimeiroNo();
@@ -487,12 +491,11 @@ Grafo* Grafo::diferenca(Grafo* grafo2, bool direcionado, bool peso_aresta, bool 
     cout << "\nFinalizacao da Funcao Diferenca\n";
     cout << "Arquivo de saida: \"diferenca.dot\" \n\n";
 
-    return grafo_dif;
 
 }
     
 //Função de união de dois grafos _ Recebe como parâmetro o segundo grafo para realização da função, se o grafo é direcionado ou não, se o grafo tem peso na aresta ou não e se o grafo tem peso no nó ou não    
-Grafo* Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
+void Grafo::uniao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no){ 
 
     Grafo* grafo_uni = new Grafo(direcionado,peso_aresta,peso_no);
     
@@ -541,7 +544,6 @@ Grafo* Grafo::uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso
     cout << "\nFinalizacao da Funcao Uniao\n";
     cout << "Arquivo de saida: \"uniao.dot\" \n\n";
 
-    return grafo_uni;
 
 }
 
@@ -570,6 +572,13 @@ void Grafo::redePert(){
 
 }
 
+//Função que tem como objetivo geração do arquivo de saída da Parte I do trabalho
+void Grafo::geraSaidaParteI(ofstream &output_file){
+
+    output_file << "Ta saindo";
+
+}
+
 
 //Implementações Parte II
 
@@ -582,6 +591,9 @@ void Grafo::gulosoConstrutivo(ofstream &output_file, string input_file_name){
         return;
 
     }
+
+    time_t start, end; //Utilizado para contagem de tempo da função 
+    time(&start);
 
     list<int> solucao; //Criação da lista dos vértices de solução (inicalmente vazia) 
     list<int> vertices; //Criação da lista de todos os vértices do grafo em questão 
@@ -649,11 +661,14 @@ void Grafo::gulosoConstrutivo(ofstream &output_file, string input_file_name){
 
     }
 
-    this->geraSaidaGuloso(output_file,input_file_name,solucao,peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total
+    time(&end); //Utilizado para contagem de tempo da função
+    double time_taken = double(end - start);
+
+    this->saidaTelaGulosoConstrutivo(input_file_name , peso_total, time_taken);
     
     cout << "\nFim do Algoritmo Guloso Construtivo!" << endl ;
 
-    
+    this->geraSaidaGuloso(output_file,input_file_name,solucao,peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total
 
 }
 
@@ -695,7 +710,7 @@ void Grafo::geraSaidaGuloso(ofstream &output_file, string input_file_name, list<
 
     output_file << "\nQualidade da solucao: " << (100 - this->qualidadeGuloso(input_file_name, peso_total)) << "%";
 
-    cout << "\nO arquivo de saida foi gerado." << endl;
+    cout << "\nArquivo de saida gerado." << endl;
 
 }
 
@@ -779,4 +794,12 @@ float Grafo::qualidadeGuloso(string input_file_name, int peso_total){
 
     return qualidade;
     
+}
+
+//Função que gera as saídas em tela para o algoritmo Guloso Construtivo _ Recebe como parâmetro o peso calculado no algoritmo e o nome do arquivo para comparação da qualidade e o tempo de processamento
+void Grafo::saidaTelaGulosoConstrutivo(string input_file_name, int peso_total, double tempo){
+
+    cout << "\nO Algoritmo Guloso Construtivo atingiu uma qualidade de: " << (100 - this->qualidadeGuloso(input_file_name,peso_total) ) << "%" << endl;
+
+    cout << "Tempo gasto para a geracao da solucao do Algoritmo Guloso Construtivo: " << tempo << setprecision(5) << "s";
 }

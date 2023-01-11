@@ -57,9 +57,9 @@ public:
     void geraGrafoDot(string output);
 
     // Parte I _ Implementações necessárias
-    Grafo* intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
-    Grafo* diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
-    Grafo* uniao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
+    void intersecao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
+    void diferenca(ofstream &output_file, Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
+    void uniao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void redePert();
 
     //Parte 2 _ Algoritmos Gulosos
@@ -67,9 +67,13 @@ public:
     void gulosoRandomizadoAdaptativo();
     void gulosoRandomizadoReativo();
 
+    //Geração do Arquivo de Saída _ Parte I
+    void geraSaidaParteI(ofstream&output_file);
+
     //Geração do Arquivo de Saida _ Guloso Construtivo
     void geraSaidaGuloso(ofstream &output_file, string input_file_name, list<int> solucao, int peso_total);
     float qualidadeGuloso(string input_file_name, int peso_total);
+    void saidaTelaGulosoConstrutivo(string input_file_name,int peso_total, double tempo);
 };
 
 #endif //TRABALHO_GRAFO_H

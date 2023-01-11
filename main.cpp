@@ -225,7 +225,7 @@ int menuParteII(){
 }
 
 //Função que atráves da utilização do switch, acessa a função escolhida atráves do menu na classe do grafo, essa implementação funciona para a Primeira Parte _ Recebe como parâmetro o valor inserido no menu, o grafo, o arquivo de saída, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não
-void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool direcionado, bool peso_aresta, bool peso_no){
+void selecionarParteI(int selecao, Grafo* grafo1,  ofstream& output_file, bool direcionado, bool peso_aresta, bool peso_no){
 
     switch (selecao) {
 
@@ -272,16 +272,12 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
             //Criação de um novo objeto grafo 
             Grafo *grafo2;
 
-            //Será utilizado para a geração do novo arquivo de saída 
-            Grafo *final;
-
             if(input_file.is_open()){
 
                 grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
 
-                final = grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de interseção  
+                grafo1->intersecao(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de interseção  
 
-            
                 //Verificação da continuação do programa
                 int sel;
                 cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
@@ -348,14 +344,11 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
             //Criação de um novo objeto grafo 
             Grafo *grafo2;
 
-            //Será utilizado para a geração do novo arquivo de saída 
-            Grafo *final;
-
             if(input_file.is_open()){
 
                 grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
                 
-                final = grafo1->diferenca(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de diferença
+                grafo1->diferenca(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de diferença
 
                 //Verificação da continuação do programa
                 int sel;
@@ -422,14 +415,11 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
              //Criação de um novo objeto grafo 
             Grafo *grafo2;
 
-            //Será utilizado para a geração do novo arquivo de saída 
-            Grafo* final;
-
             if(input_file.is_open()){
 
                 grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
                 
-                final = grafo1->uniao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de união
+                grafo1->uniao(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de união
 
 
                 //Verificação da continuação do programa
@@ -554,7 +544,7 @@ int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool p
 
             if(output_file.is_open()) 
 
-               selecionarParteI(selecao, grafo,output_file, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
+               selecionarParteI(selecao, grafo, output_file, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
 
             else 
 
@@ -656,11 +646,11 @@ int main(int argc, char const *argv[]) {
         cin >> peso_aresta;
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
-        arq_grafo.open("input_parteII/Problem_150_150_3.dat", ios::in); //  abertura do arquivo de teste 
+        arq_grafo.open("input_parteII/Problem_50_50_3.dat", ios::in); //  abertura do arquivo de teste 
         ofstream output_file;
         output_file.open("arquivo_saida.txt", ios::out | ios::trunc);
     
-        string input_file_name = "input_parteII/Problem_150_150_3.dat" ;
+        string input_file_name = "input_parteII/Problem_50_50_3.dat" ;
 
         if(arq_grafo.is_open()) { 
             Grafo *grafo;//Caso o arquivo abra normalmente 
@@ -674,11 +664,11 @@ int main(int argc, char const *argv[]) {
             if(sel==1 || sel==2){
                 if(sel==1){
                     grafo = leituraParteI(arq_grafo, direcionado, peso_aresta, peso_vertice);
-                    mainMenuParteI(output_file,grafo, direcionado, peso_aresta, peso_vertice);
+                    mainMenuParteI(output_file, grafo, direcionado, peso_aresta, peso_vertice);
                 }
                 if(sel==2){
                     grafo = leituraParteII(arq_grafo, direcionado, peso_aresta, peso_vertice);
-                    mainMenuParteII(input_file_name, output_file,grafo, direcionado, peso_aresta, peso_vertice);
+                    mainMenuParteII(input_file_name, output_file, grafo, direcionado, peso_aresta, peso_vertice);
                 }            
             }
             else{
@@ -696,7 +686,7 @@ int main(int argc, char const *argv[]) {
 
     //Definindo as variáveis nome do programa e nome do arquivo de saída 
     string program_name(argv[0]);
-    string input_file_name(argv[1]);
+    string input_file_name = argv[1];
 
 
     //Abrindo arquivo de entrada _ rotina de abertura de arquivo 
@@ -726,14 +716,14 @@ int main(int argc, char const *argv[]) {
             if(sel==1){ //Implementação para a Primeira Parte do Trabalho
 
                 grafo = leituraParteI(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5])); //atoi _ função que converte string em números inteiros
-                mainMenuParteI(output_file,grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+                mainMenuParteI(output_file, grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
 
             }
 
             if(sel==2){ //Implementação para a Segunda Parte do Trabalho 
 
                 grafo = leituraParteII(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5])); //atoi _ função que converte string em números inteiros
-                mainMenuParteII(input_file_name, output_file,grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+                mainMenuParteII(input_file_name, output_file, grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
 
             }          
 

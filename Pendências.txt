@@ -2,10 +2,6 @@ PENDÊNCIAS:
 
 -> Parte I
 
-	* Refinamento das classes _ comentários sobre as funções e funcionalidades !! OK !!
-	
-	* Referências do trabalho 
-
 	* Ajustar os arquivos para envio (retirar o que não é necessário e modificar os nomes)
 
 	* Arquivo de saida _ armazenar o novo grafo  !! (1) !!
@@ -17,16 +13,14 @@ PENDÊNCIAS:
 
 -> Parte II _ Problema do Subconjunto Dominante Ponderado:
 
-	* Função de leitura dos arquivos da parte II !! OK !!
-
-	* Algoritmo construtivo guloso - !! OK !! 
 
 	* Algoritmo construtivo guloso randomizado e adaptativo _ definir lógica e implementação 
 
-	* Algoritmo construtivo guloso randomizado reativo _ definir lógica e implementação 
 
-	* Arquivo saida _ é o arquivo onde será gravada a solução (o conjunto de vértices) e a qualidade final da solução
+	* Algoritmo construtivo guloso randomizado reativo _ definir lógica e implementação
 
-	* Saida em tela _ deve constar a qualidade, o tempo de processamento, a semente de randomização e a informação se o algoritmo conseguiu uma solução viável ou não.
+
+	* Saida em tela _  a semente de randomização e a informação se o algoritmo conseguiu uma solução viável ou não.
+
 
 	* Ajustar os arquivos para envio (retirar o que não é necessário e modificar os nomes)
