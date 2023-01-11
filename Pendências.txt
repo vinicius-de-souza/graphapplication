@@ -19,7 +19,7 @@ PENDÊNCIAS:
 
 	* Função de leitura dos arquivos da parte II !! OK !!
 
-	* Algoritmo construtivo guloso - verificar se funciona 
+	* Algoritmo construtivo guloso - !! OK !! 
 
 	* Algoritmo construtivo guloso randomizado e adaptativo _ definir lógica e implementação 
 

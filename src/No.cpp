@@ -74,7 +74,7 @@ int No::getGrauSaida(){
 }
 
 // Função booleana que retorna verdadeiro ou falso caso o nó tenha peso ou não
-float No::getPeso(){
+float No::getPesoNo(){
 
     return this->peso;
 
@@ -92,7 +92,7 @@ int No::getGrau(){
 
     this->setGrau();
 
-    return this->grau;
+    return this->grau/2;
 
 }
 

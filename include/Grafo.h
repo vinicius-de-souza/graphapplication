@@ -56,9 +56,6 @@ public:
     void auxGeraGrafoDot(ofstream &output_file);
     void geraGrafoDot(string output);
 
-    //Geração do arquivo de saída
-    void geraArquivoSaida(ofstream &output_file);
-
     // Parte I _ Implementações necessárias
     Grafo* intersecao(Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     Grafo* diferenca(Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
@@ -66,9 +63,13 @@ public:
     void redePert();
 
     //Parte 2 _ Algoritmos Gulosos
-    void gulosoConstrutivo();
+    void gulosoConstrutivo(ofstream &output_file, string input_file_name);
     void gulosoRandomizadoAdaptativo();
     void gulosoRandomizadoReativo();
+
+    //Geração do Arquivo de Saida _ Guloso Construtivo
+    void geraSaidaGuloso(ofstream &output_file, string input_file_name, list<int> solucao, int peso_total);
+    float qualidadeGuloso(string input_file_name, int peso_total);
 };
 
 #endif //TRABALHO_GRAFO_H

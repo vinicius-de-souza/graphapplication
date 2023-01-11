@@ -1,3 +1,7 @@
+/*REFERENCIAS
+    [1] _ Função que converte string em float -> https://www.techiedelight.com/pt/convert-a-string-to-a-float-in-cpp/
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -134,9 +138,11 @@ Grafo *leituraParteII(ifstream& input_file, bool direcionado, bool peso_aresta, 
 
         getline(input_file,no);
 
-            grafo->inserirNo(i);
-            grafo->getNo(i)->setPeso(stoi(no)); //Inserimos o nó no grafo 
-           
+            float peso = std::strtof(no.c_str(),nullptr); //Função que transforma string em float _ Referência [1]
+
+            grafo->inserirNo(i); //Inserimos o nó no grafo com um id 
+
+            grafo->getNo(i)->setPeso(peso); //Inserimos o peso do nó
 
         //Incrementamos os iteradores 
         i = i + 1;
@@ -157,13 +163,11 @@ Grafo *leituraParteII(ifstream& input_file, bool direcionado, bool peso_aresta, 
 
         c = linha.c_str(); //A linha lida como string é transformada em um vetor de char
 
-        cout << linha << endl;
-
         for(int k=0 ;  c[k] != '\0' ; k++){ //Percorre todo o vetor criado a partir da string , por definição o final de uma string é \0, por isso a iteração ocorre até encontrarmos esse caractere 
 
-            if(c[k]=='1' && k!=cont){ //Pela definição, caso haja aresta entre um nó e outro na matriz de adjacência, o número 1 aparece _   k!=cont -> controle para que não sejam criadad arestad do nó para ele mesmo
+            if(c[k]=='1' && k!=cont){ //Pela definição, caso haja aresta entre um nó e outro na matriz de adjacência, o número 1 aparece _   k!=cont -> controle para que não sejam criadad aresta do nó para ele mesmo
 
-                grafo->inserirAresta((j-105),(k/2)+1,grafo->getNo((j-105))->getPeso());
+                grafo->inserirAresta((j-((2*ordem)+5)),(k/2)+1,0);
 
             }
 
@@ -277,8 +281,7 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
 
                 final = grafo1->intersecao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de interseção  
 
-                final->geraArquivoSaida(output_file); //Gera o arquivo de saída do novo grafo
-
+            
                 //Verificação da continuação do programa
                 int sel;
                 cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
@@ -354,8 +357,6 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
                 
                 final = grafo1->diferenca(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de diferença
 
-                final->geraArquivoSaida(output_file);   //Gera o arquivo de saída do novo grafo   
-
                 //Verificação da continuação do programa
                 int sel;
                 cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
@@ -430,7 +431,6 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
                 
                 final = grafo1->uniao(grafo2, direcionado, peso_aresta, peso_no); //Chama a função de união
 
-                final->geraArquivoSaida(output_file); //Gera o arquivo de saída do novo grafo
 
                 //Verificação da continuação do programa
                 int sel;
@@ -470,14 +470,26 @@ void selecionarParteI(int selecao, Grafo* grafo1, ofstream& output_file, bool di
 }
 
 //Função que atráves da utilização do switch, acessa a função escolhida atráves do menu na classe do grafo, essa implementação funciona para a Segunda Parte _ Recebe como parâmetro o valor inserido no menu, o grafo, o arquivo de saída, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não
-void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, bool direcionado, bool peso_aresta, bool peso_no){
+void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, string input_file_name, bool direcionado, bool peso_aresta, bool peso_no){
 
     switch(selecao){
 
         //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso 
        case 1:{
 
-            grafo1->gulosoConstrutivo();
+            grafo1->gulosoConstrutivo(output_file, input_file_name);
+
+            //Verificação da continuação do programa
+                int sel;
+                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+                cin >> sel;
+
+                if(sel==2){//Caso o usuário opte por finalizar o programa
+
+                    cout << "Programa Finalizado";
+                    exit(0);
+
+                }
 
             break;
 
@@ -488,6 +500,18 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, bool d
 
             grafo1->gulosoRandomizadoAdaptativo();
 
+            //Verificação da continuação do programa
+                int sel;
+                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+                cin >> sel;
+
+                if(sel==2){//Caso o usuário opte por finalizar o programa
+
+                    cout << "Programa Finalizado";
+                    exit(0);
+
+                }
+
             break;
             
         }
@@ -496,6 +520,18 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, bool d
         case 3:{
 
             grafo1->gulosoRandomizadoReativo();
+
+            //Verificação da continuação do programa
+                int sel;
+                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+                cin >> sel;
+
+                if(sel==2){//Caso o usuário opte por finalizar o programa
+
+                    cout << "Programa Finalizado";
+                    exit(0);
+
+                }
 
             break;
 
@@ -553,7 +589,7 @@ int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool p
 }
 
 //Menu principal para a implementação da Segunda Parte _ Recebe como parâmetro o arquivo de saída, o grafo gerado a partir da leitura, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não 
-int mainMenuParteII(ofstream& output_file, Grafo* grafo, bool direcionado, bool peso_aresta, bool peso_no){
+int mainMenuParteII(string input_file_name, ofstream& output_file, Grafo* grafo, bool direcionado, bool peso_aresta, bool peso_no){
 
     int selecao = 1;
 
@@ -565,7 +601,7 @@ int mainMenuParteII(ofstream& output_file, Grafo* grafo, bool direcionado, bool 
 
             if(output_file.is_open())
 
-               selecionarParteII(selecao, grafo,output_file, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
+               selecionarParteII(selecao, grafo, output_file, input_file_name, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
 
             else
 
@@ -583,7 +619,7 @@ int mainMenuParteII(ofstream& output_file, Grafo* grafo, bool direcionado, bool 
 
             if(output_file.is_open())
 
-               selecionarParteII(selecao, grafo,output_file, direcionado, peso_aresta, peso_no);
+               selecionarParteII(selecao, grafo, output_file, input_file_name, direcionado, peso_aresta, peso_no);
 
             else
 
@@ -620,10 +656,11 @@ int main(int argc, char const *argv[]) {
         cin >> peso_aresta;
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
-        arq_grafo.open("input/grafo_teste_naoP_5_1.txt", ios::in); //  abertura do arquivo de teste 
+        arq_grafo.open("input_parteII/Problem_150_150_3.dat", ios::in); //  abertura do arquivo de teste 
         ofstream output_file;
         output_file.open("arquivo_saida.txt", ios::out | ios::trunc);
     
+        string input_file_name = "input_parteII/Problem_150_150_3.dat" ;
 
         if(arq_grafo.is_open()) { 
             Grafo *grafo;//Caso o arquivo abra normalmente 
@@ -641,7 +678,7 @@ int main(int argc, char const *argv[]) {
                 }
                 if(sel==2){
                     grafo = leituraParteII(arq_grafo, direcionado, peso_aresta, peso_vertice);
-                    mainMenuParteII(output_file,grafo, direcionado, peso_aresta, peso_vertice);
+                    mainMenuParteII(input_file_name, output_file,grafo, direcionado, peso_aresta, peso_vertice);
                 }            
             }
             else{
@@ -696,7 +733,7 @@ int main(int argc, char const *argv[]) {
             if(sel==2){ //Implementação para a Segunda Parte do Trabalho 
 
                 grafo = leituraParteII(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5])); //atoi _ função que converte string em números inteiros
-                mainMenuParteII(output_file,grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+                mainMenuParteII(input_file_name, output_file,grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
 
             }          
 

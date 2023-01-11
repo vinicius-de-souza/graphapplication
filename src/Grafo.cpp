@@ -384,20 +384,6 @@ void Grafo::auxGeraGrafoDot(ofstream &output_file){
     }
 }
 
-//Função para geração do arquivo de saída do novo grafo _ Recebe como parâmetro o arquivo de saída
-void Grafo::geraArquivoSaida(ofstream &output_file){
-
-    if(output_file.is_open()){
-
-        cout << "Ta chegando aqui";
-        output_file << "oi";
-    
-    }else//Mensagem de erro caso não seja possível gerar arquivo de saída
-
-        cout << endl << "Nao foi possivel abrir arquivo " ;
-
-}
-
 
 // Implementações necessárias Parte I
 
@@ -589,7 +575,7 @@ void Grafo::redePert(){
 
 
 // Função de implementação do algoritmo Guloso Construtivo _ A heurística utilizada foi adicionar ao conjunto solução o vértice de maior grau entre aqueles disponíveis 
-void Grafo::gulosoConstrutivo(){ 
+void Grafo::gulosoConstrutivo(ofstream &output_file, string input_file_name){ 
 
     if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
         cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
@@ -625,9 +611,9 @@ void Grafo::gulosoConstrutivo(){
     while(vertices.size() != 0){ 
 
         solucao.push_front(noMaiorGrau->getId()); // O vértice selecionado no looping entra na solução 
-        // -> push_front: função que adiciona no inicio da lista o valor passado como parametro _ aqui decidimos adicionar na solucao os pesos dos vertices como forma de identificação dos mesmos
+        // -> push_front: função que adiciona no inicio da lista o valor passado como parametro _ aqui decidimos adicionar na solucao os id dos vertices como forma de identificação dos mesmos _ esses ids foram inseridos na leitura dos arquivos 
 
-        peso_total = peso_total + noMaiorGrau->getPeso(); //Somando os pesos 
+        peso_total = peso_total + noMaiorGrau->getPesoNo(); //Somando os pesos 
 
         for(Aresta *aresta = noMaiorGrau->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){ //Lopping das arestas
 
@@ -638,15 +624,21 @@ void Grafo::gulosoConstrutivo(){
 
         vertices.remove(noMaiorGrau->getId());//Removo da lista de vertices, o vertice de maior grau tmb
 
+        if(vertices.size() == 0) //Pode ser que durante essa iteração, a lista fique vazia, caso isso ocorra paramos o while
+            break;
+
         auto it = vertices.begin(); // Funcao para pegar o valor do primeiro item da lista de vertice (referência [1])
 
-        maior_grau = *it; // A variável de maior grau recebe o valor do grau do primeiro vertice que esta na lista de vertices
+        maior_grau = this->getNo(*it)->getGrau(); // A variável de maior grau recebe o valor do grau do primeiro vertice que esta na lista de vertices
+
+        noMaiorGrau = this->getNo(*it);
+
 
         for (it; it !=vertices.end(); ++it){ // Iteração para descobrir o novo vertice de maior grau 
 
             No* iteracao = this->getNo(*it);
 
-            if(iteracao->getGrau() >= maior_grau){
+            if(iteracao->getGrau() > maior_grau){
 
                 maior_grau = iteracao->getGrau(); // Guardo o valor do grau
                 noMaiorGrau = iteracao;
@@ -655,24 +647,13 @@ void Grafo::gulosoConstrutivo(){
 
         }
 
-    }  
+    }
 
-    // Saidas para teste de funcionalidades
-    cout << "\nConjunto dos Vertices Originais: [";
+    this->geraSaidaGuloso(output_file,input_file_name,solucao,peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total
+    
+    cout << "\nFim do Algoritmo Guloso Construtivo!" << endl ;
 
-    for (auto it = vertices.begin(); it !=vertices.end(); ++it)
-        cout << ' ' << *it;
-
-    cout << " ]\n";
-
-    cout << "Conjunto dos Vertices Solucao: [";
-
-    for(auto it = solucao.begin(); it !=solucao.end(); ++it)
-        cout << ' ' << *it;
-
-    cout << " ]";
-
-    cout << "\nPeso total calculado: " << peso_total;
+    
 
 }
 
@@ -697,5 +678,105 @@ void Grafo::gulosoRandomizadoReativo(){
         return;
 
     }
+    
+}
+
+//Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total
+void Grafo::geraSaidaGuloso(ofstream &output_file, string input_file_name, list<int> solucao, int peso_total){
+
+    output_file << "Conjunto dos Vertices Solucao: [";
+
+    for(auto it = solucao.begin(); it !=solucao.end(); ++it)
+        output_file << ' ' << *it;
+
+    output_file << " ]";
+
+    output_file << "\nPeso total calculado: " << peso_total;
+
+    output_file << "\nQualidade da solucao: " << (100 - this->qualidadeGuloso(input_file_name, peso_total)) << "%";
+
+    cout << "\nO arquivo de saida foi gerado." << endl;
+
+}
+
+//Essa função tem como objetivo definir a qualidade do algoritmo implementado e recebe como parâmetro o nome do arquivo e o peso total
+float Grafo::qualidadeGuloso(string input_file_name, int peso_total){
+
+    float best_literatura;
+    float qualidade;
+
+    //Para que seja possível definir a qualidade, é necessário que seja possível armazenar de alguma forma o melhor valor encontrado na literatura e esse valor está relacionado com o nome do arquivo. Assim, verificamos o nome do arquivo atráves de estruturas if, cada caso é explorado
+    if(input_file_name == "input_parteII/Problem_50_50_3.dat")
+        best_literatura = 552;
+
+    else{
+
+        if(input_file_name == "input_parteII/Problem_50_250_3.dat")
+            best_literatura = 192;
+
+        else{
+
+            if(input_file_name == "input_parteII/Problem_100_250_3.dat")
+                best_literatura = 672;
+
+            else{
+
+                if(input_file_name == "input_parteII/Problem_100_500_3.dat")
+                    best_literatura = 432;
+
+                else{
+
+                    if(input_file_name == "input_parteII/Problem_150_150_3.dat")
+                        best_literatura = 1608;
+                    
+                    else{
+
+                        if(input_file_name == "input_parteII/Problem_250_750_3.dat")
+                            best_literatura = 1640;
+                        
+                        else{
+
+                            if(input_file_name == "input_parteII/Problem_300_500_3.dat")
+                                best_literatura = 2723;
+
+                            else{
+
+                                if(input_file_name == "input_parteII/Problem_300_2000_3.dat")
+                                    best_literatura = 1533;
+
+                                else{
+
+                                    if(input_file_name == "input_parteII/Problem_500_500_0.dat")
+                                        best_literatura = 1825;
+                                    
+                                    else{
+
+                                        if(input_file_name == "input_parteII/Problem_500_500_3.dat")
+                                            best_literatura = 1824;
+
+                                    }
+
+
+                                }
+   
+
+                            }
+   
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }   
+
+    qualidade = (fabs((best_literatura - peso_total)) / peso_total) * 100 ;  //Cálculo do Erro Relativo, é preciso usar módulo
+
+    return qualidade;
     
 }

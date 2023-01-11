@@ -34,7 +34,7 @@ public:
     int getId();
     int getGrauEntrada();
     int getGrauSaida();
-    float getPeso();
+    float getPesoNo();
     No* getProxNo();
     int getGrau();
     int getIdInterno();
