@@ -1,0 +1,11 @@
+1) Pode ser um mesmo programa para parte I e parte II? SIM
+
+2) O que significa conseguir uma solução viável ou não? 
+
+3) O que é semente da randomização? srand 
+
+4) Nome do arquivo para comparação da solução _ pode ser usado? qualidade é o opeso que eu encontrei 
+
+5) Tabela no trabalho prático?
+
+grau/peso -> heuristica pro guloso construtivo _ cuidado com a divisão por 0
