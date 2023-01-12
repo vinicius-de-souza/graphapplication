@@ -602,7 +602,7 @@ void Grafo::gulosoConstrutivo(ofstream &output_file, string input_file_name){
 
     No* aux = this->getPrimeiroNo();  
 
-    int maior_grau = aux->getGrau(); 
+    int maior_grau = aux->getGrau()/aux->getPesoNo(); //Nova heurística 
 
     No* noMaiorGrau = this->getPrimeiroNo(); 
 
