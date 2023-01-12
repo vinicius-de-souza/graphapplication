@@ -4,6 +4,11 @@
 
 [2] _ Como contar o tempo de processamento de uma função -> https://acervolima.com/meca-o-tempo-de-execucao-com-alta-precisao-em-c-c/
 
+[3] _ Como usar a srand e rand -> https://www.cmmprogressivo.net/2019/12/Como-Gerar-Numeros-Aleatorios-Randomicos-rand-srand.html
+
+[4] _ QuickSort Implementation -> https://www.geeksforgeeks.org/quick-sort/
+
+
 */
 
 #include "../include/Grafo.h"
@@ -18,9 +23,47 @@
 #include <ctime>
 #include <float.h>
 #include <iomanip>
+#include <vector>
+#include <ctime> 
 #include "time.h" // Referência [2]
 
 using namespace std;
+
+int partition(No* arr[], int low, int high){
+        No* pivot = arr[high]; // pivot
+        int i = (low- 1); // Index of smaller element and indicates the right position of pivot found so far
+        
+        for (int j = low; j <= high - 1; j++) {
+            // If current element is smaller than the pivot
+            if (arr[j]->getPesoNo() < pivot->getPesoNo()) { //grafo->getNo(arr[j])->getPesoNo()
+                i++; // increment index of smaller element
+                swap(arr[i], arr[j]);
+            }
+        }
+        swap(arr[i + 1], arr[high]);
+        return (i + 1);
+    }
+    
+    /* The main function that implements QuickSort
+    arr[] --> Array to be sorted,
+    low --> Starting index,
+    high --> Ending index */
+    
+void quickSort(No* arr[], int low, int high) 
+    {
+        
+        if (low < high) {
+            /* pi is partitioning index, arr[p] is now
+            at right place */
+            int pi = partition(arr, low, high); 
+    
+            // Separately sort elements before
+            // partition and after partition
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
 
 // Construtor _ Inicializa o grafo recebendo como parâmetro as funções booleanas que indicam se o grafo é direciondo, se há peso na aresta e se há peso no nó
 Grafo::Grafo(bool direcionado, bool peso_aresta, bool peso_no) {
@@ -30,6 +73,7 @@ Grafo::Grafo(bool direcionado, bool peso_aresta, bool peso_no) {
     this->peso_no = peso_no;
     this->primeiro_no = this->ultimo_no = nullptr;
     this->numero_arestas = 0;
+    this->ordem = 0;
 
 }
 
@@ -111,6 +155,12 @@ No *Grafo::getNo(int id){
     return nullptr;
 }
 
+//Função que retorna a ordem do grafo
+int Grafo::getOrdem(){
+
+    return this->ordem;
+
+}
 
 //Setters
 
@@ -286,6 +336,14 @@ float Grafo::getAresta(int idSaida, int idAlvo){
 
 }
 
+
+//Função que recebe como parâmetro um vetor e analisa se os vértices do vetor formam um conjunto dominante
+bool Grafo::ehDominante(vector <int> sol){
+
+    No* aux = this->getPrimeiroNo();
+
+
+}
 
 // Extra _ Criados para melhor visualização do programa
 
@@ -584,7 +642,7 @@ void Grafo::geraSaidaParteI(ofstream &output_file){
 
 
 // Função de implementação do algoritmo Guloso Construtivo _ A heurística utilizada foi adicionar ao conjunto solução o vértice de maior grau entre aqueles disponíveis 
-void Grafo::gulosoConstrutivo(ofstream &output_file, string input_file_name){ 
+void Grafo::gulosoConstrutivo(ofstream &output_file){ 
 
     if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
         cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
@@ -602,7 +660,7 @@ void Grafo::gulosoConstrutivo(ofstream &output_file, string input_file_name){
 
     No* aux = this->getPrimeiroNo();  
 
-    int maior_grau = aux->getGrau()/aux->getPesoNo(); //Nova heurística 
+    int maior_grau = aux->getGrau(); //Nova heurística 
 
     No* noMaiorGrau = this->getPrimeiroNo(); 
 
@@ -664,11 +722,11 @@ void Grafo::gulosoConstrutivo(ofstream &output_file, string input_file_name){
     time(&end); //Utilizado para contagem de tempo da função
     double time_taken = double(end - start);
 
-    this->saidaTelaGulosoConstrutivo(input_file_name , peso_total, time_taken);
+    this->saidaTelaGulosoConstrutivo(peso_total, time_taken); // A função para saída em tela é chamada 
     
     cout << "\nFim do Algoritmo Guloso Construtivo!" << endl ;
 
-    this->geraSaidaGuloso(output_file,input_file_name,solucao,peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total
+    this->geraSaidaGulosoConstrutivo(output_file,solucao,peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, a lista dos vértices de solução e o valor do peso total
 
 }
 
@@ -682,22 +740,95 @@ void Grafo::gulosoRandomizadoAdaptativo(){
 
     }
 
+
+
 }
 
-// Função de implementação do algoritmo Guloso Construtivo _ A heurística utilizada foi adicionar ao conjunto solução o vértice de maior grau entre aqueles disponíveis 
-void Grafo::gulosoRandomizadoReativo(){
+// Função de implementação do algoritmo Guloso Construtivo _ A heurística utilizada foi ordenar a lista de candidatos de forma com que esse vetor contenha de forma crescente a função peso/grau para cada nó. Com esse critério escolhemos de forma aleatória um vértice e o adicionamos no conjunto solução, após isso atualizamos a lista de candidatos, retirando apenas os vértices que entraram na solução e para todo adjacente de um vértice na solução o seu grau também é atualizado. E por fim, a cada iteração verificamos se o conjunto solução é dominante, quando isso ocorrer, o nosso código está finalizado. 
+void Grafo::gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& output_file){
 
-    if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
+    if(this->direcionado){ //Para o problema do Subconjunto Dominante Ponderado, por definição, o grafo deve ser não direcionado
 
         cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
         return;
 
     }
+
+    time_t start, end; //Utilizado para contagem de tempo da função 
+    time(&start);
+
+    int iteracoes = 3; //Quantidade de iteracoes do código _ Definido inicialmente 
+
+    float melhor_peso = 0; //Variável que armazena a melhor solução das iterações
+    float peso;
+    int i = 1; //Variável utilizada para controle das iterações 
+    float k;  //Variável utilizada para manipulação do valor aleatório
+
+
+    vector<int> solucao; //Vetor para armazenar o conjunto solucao durante as iterações
+    vector<int> melhor_solucao; //Vetor para armazenar o conjunto final de melhor solução
+    No* listaCandidatos[this->getOrdem()]; //Vetor de candidatos para a solução
+
+    //Preenchimento inicial da lista de candidatos _ Todos os vértices entram na lista 
+    No* aux = this->getPrimeiroNo();  
+    int j = 0;
+    for(aux; aux != nullptr; aux = aux->getProxNo()){ 
+
+        listaCandidatos[j] = aux; //A lista de candidatos recebe todos os vértices 
+        melhor_peso =  melhor_peso + aux->getPesoNo(); //Dessa forma eu inicializo o meu menor peso com a soma total dos pesos de todos os vértices
+        j++;
+
+    }
     
+    while(i<iteracoes){ //Processamento do while para controle das iterações 
+
+        i++; 
+
+        int size =sizeof(listaCandidatos)/4;
+
+        this->ordenaListaCandidatos(listaCandidatos,size); //A lista de candidatos é atualizada de acordo com a heurística determinada do problema 
+
+        solucao.clear(); //Limpa toda a lista de solucao para uma nova iteracao 
+        int kx = static_cast<int>(k); //Converte valor aleatório de float para int
+    
+        while(!ehDominante(solucao)){
+
+            float xy = (alfa*size) -1; // Métrica para geração do número aleatório
+            float k = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/xy)); 
+            int sol = listaCandidatos[kx]->getId();
+            // 2. Adicionar um novo vértice ao conjunto solucao e altera o valor do peso
+            // 3. Atualiza lista candidatos 
+
+        }
+        
+        if(peso < melhor_peso){
+
+            melhor_peso =  peso;
+            melhor_solucao = solucao;
+
+        }
+
+    }
+
+    time(&end); //Utilizado para contagem de tempo da função
+    double time_taken = double(end - start);
+
+    this->saidaTelaGulosoRandomizado(melhor_peso, time_taken, semente); // A função para saída em tela é chamada 
+    
+    cout << "\nFim do Algoritmo Guloso Randomizado!" << endl ;
+
+    this->geraSaidaGulosoRandomizado(output_file, melhor_solucao, melhor_peso); // A função para gerar o arquivo de saída é chamada 
+
 }
 
-//Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total
-void Grafo::geraSaidaGuloso(ofstream &output_file, string input_file_name, list<int> solucao, int peso_total){
+void Grafo::ordenaListaCandidatos(No * lista[], int size){ //Função auxiliar para ordenação da lista de candidatos _ A heurística utilizada foi dar preferência para os vértices com menor valor da relação peso/grau .
+    
+    quickSort(lista,0,size-1); //Utilizamos a função quickSort já conhecida para ordenação dessa lista _ Referência [4]
+
+}   
+
+//Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total e gera o arquivo de saída para o Algoritmo Guloso Construtivo
+void Grafo::geraSaidaGulosoConstrutivo(ofstream &output_file, list<int> solucao, int peso_total){
 
     output_file << "Conjunto dos Vertices Solucao: [";
 
@@ -706,100 +837,46 @@ void Grafo::geraSaidaGuloso(ofstream &output_file, string input_file_name, list<
 
     output_file << " ]";
 
-    output_file << "\nPeso total calculado: " << peso_total;
-
-    output_file << "\nQualidade da solucao: " << (100 - this->qualidadeGuloso(input_file_name, peso_total)) << "%";
+    output_file << "\nQualidade da solucao: " << peso_total;
 
     cout << "\nArquivo de saida gerado." << endl;
 
 }
 
-//Essa função tem como objetivo definir a qualidade do algoritmo implementado e recebe como parâmetro o nome do arquivo e o peso total
-float Grafo::qualidadeGuloso(string input_file_name, int peso_total){
-
-    float best_literatura;
-    float qualidade;
-
-    //Para que seja possível definir a qualidade, é necessário que seja possível armazenar de alguma forma o melhor valor encontrado na literatura e esse valor está relacionado com o nome do arquivo. Assim, verificamos o nome do arquivo atráves de estruturas if, cada caso é explorado
-    if(input_file_name == "input_parteII/Problem_50_50_3.dat")
-        best_literatura = 552;
-
-    else{
-
-        if(input_file_name == "input_parteII/Problem_50_250_3.dat")
-            best_literatura = 192;
-
-        else{
-
-            if(input_file_name == "input_parteII/Problem_100_250_3.dat")
-                best_literatura = 672;
-
-            else{
-
-                if(input_file_name == "input_parteII/Problem_100_500_3.dat")
-                    best_literatura = 432;
-
-                else{
-
-                    if(input_file_name == "input_parteII/Problem_150_150_3.dat")
-                        best_literatura = 1608;
-                    
-                    else{
-
-                        if(input_file_name == "input_parteII/Problem_250_750_3.dat")
-                            best_literatura = 1640;
-                        
-                        else{
-
-                            if(input_file_name == "input_parteII/Problem_300_500_3.dat")
-                                best_literatura = 2723;
-
-                            else{
-
-                                if(input_file_name == "input_parteII/Problem_300_2000_3.dat")
-                                    best_literatura = 1533;
-
-                                else{
-
-                                    if(input_file_name == "input_parteII/Problem_500_500_0.dat")
-                                        best_literatura = 1825;
-                                    
-                                    else{
-
-                                        if(input_file_name == "input_parteII/Problem_500_500_3.dat")
-                                            best_literatura = 1824;
-
-                                    }
-
-
-                                }
-   
-
-                            }
-   
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    }   
-
-    qualidade = (fabs((best_literatura - peso_total)) / peso_total) * 100 ;  //Cálculo do Erro Relativo, é preciso usar módulo
-
-    return qualidade;
-    
-}
-
 //Função que gera as saídas em tela para o algoritmo Guloso Construtivo _ Recebe como parâmetro o peso calculado no algoritmo e o nome do arquivo para comparação da qualidade e o tempo de processamento
-void Grafo::saidaTelaGulosoConstrutivo(string input_file_name, int peso_total, double tempo){
+void Grafo::saidaTelaGulosoConstrutivo(int peso_total, double tempo){
 
-    cout << "\nO Algoritmo Guloso Construtivo atingiu uma qualidade de: " << (100 - this->qualidadeGuloso(input_file_name,peso_total) ) << "%" << endl;
+    cout << "\nO Algoritmo Guloso Construtivo atingiu uma qualidade de: " << peso_total;
 
     cout << "Tempo gasto para a geracao da solucao do Algoritmo Guloso Construtivo: " << tempo << setprecision(5) << "s";
+
+}
+
+//Função que gera as saídas em tela para o algoritmo Guloso Randomizado
+void Grafo::saidaTelaGulosoRandomizado(int peso_total, double tempo, int semente){
+
+    cout << "\nO Algoritmo Guloso Randomizado atingiu uma qualidade de: " << peso_total << endl;
+
+    cout << "Tempo gasto para a geracao da solucao do Algoritmo Guloso Construtivo: " << tempo << setprecision(5) << "s" << endl;
+
+    cout<< "A semente de randomizacao para esse Algoritmo foi: " << semente << endl;
+
+    cout << "Uma vez que o programa testa a todo momento se o conjunto solucao eh dominante ou nao, a nossa solucao sempre eh viavel." << endl;
+
+}
+
+//Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total e gera o arquivo de saída para o Algoritmo Guloso Construtivo
+void Grafo::geraSaidaGulosoRandomizado(ofstream &output_file, vector<int> solucao, int peso_total){
+
+    output_file << "Conjunto dos Vertices Solucao: [";
+
+    for(auto it = solucao.begin(); it !=solucao.end(); ++it)
+        output_file << ' ' << *it;
+
+    output_file << " ]";
+
+    output_file << "\nQualidade da solucao: " << peso_total;
+
+    cout << "\nArquivo de saida gerado." << endl;
+
 }

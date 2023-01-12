@@ -10,6 +10,7 @@
 #include <tuple>
 #include <iomanip>
 #include <chrono>
+#include <ctime>
 #include "include/Grafo.h"
 #include "include/Aresta.h"
 #include "include/No.h"
@@ -30,8 +31,11 @@ Grafo * leituraParteI(ifstream& input_file, bool direcionado, bool peso_aresta, 
     //Inserção da ordem do grafo
     input_file >> ordem;
 
+
     //Criando objeto grafo
     Grafo* grafo = new Grafo(direcionado, peso_aresta, peso_no);
+
+    grafo->ordem = ordem;
 
     //Leitura do arquivo
 
@@ -120,6 +124,8 @@ Grafo *leituraParteII(ifstream& input_file, bool direcionado, bool peso_aresta, 
     getline(input_file,ord); //Leitura da segunda linha _ ordem do grafo
 
     int ordem = stoi(ord); // A ordem do grfo fica guardada numa variável int _ função stoi transforma uma string em um inteiro
+
+    grafo->ordem = ordem;
 
     const char *c; //Será utilizada na leitura da matriz de adjacência 
 
@@ -460,14 +466,14 @@ void selecionarParteI(int selecao, Grafo* grafo1,  ofstream& output_file, bool d
 }
 
 //Função que atráves da utilização do switch, acessa a função escolhida atráves do menu na classe do grafo, essa implementação funciona para a Segunda Parte _ Recebe como parâmetro o valor inserido no menu, o grafo, o arquivo de saída, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não
-void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, string input_file_name, bool direcionado, bool peso_aresta, bool peso_no){
+void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsigned semente, bool direcionado, bool peso_aresta, bool peso_no){
 
     switch(selecao){
 
         //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso 
        case 1:{
 
-            grafo1->gulosoConstrutivo(output_file, input_file_name);
+            grafo1->gulosoConstrutivo(output_file);
 
             //Verificação da continuação do programa
                 int sel;
@@ -509,7 +515,12 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, string
         //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado Reativo
         case 3:{
 
-            grafo1->gulosoRandomizadoReativo();
+            float alfa;
+
+            cout << "Informe o valor de ALFA para a geracao do Algoritmo Guloso Randomizado: ";
+            cin >> alfa;
+
+            grafo1->gulosoRandomizadoReativo(alfa,semente,output_file);
 
             //Verificação da continuação do programa
                 int sel;
@@ -579,7 +590,7 @@ int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool p
 }
 
 //Menu principal para a implementação da Segunda Parte _ Recebe como parâmetro o arquivo de saída, o grafo gerado a partir da leitura, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não 
-int mainMenuParteII(string input_file_name, ofstream& output_file, Grafo* grafo, bool direcionado, bool peso_aresta, bool peso_no){
+int mainMenuParteII(string input_file_name, ofstream& output_file, Grafo* grafo, unsigned semente, bool direcionado, bool peso_aresta, bool peso_no){
 
     int selecao = 1;
 
@@ -591,7 +602,7 @@ int mainMenuParteII(string input_file_name, ofstream& output_file, Grafo* grafo,
 
             if(output_file.is_open())
 
-               selecionarParteII(selecao, grafo, output_file, input_file_name, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
+               selecionarParteII(selecao, grafo, output_file, semente, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
 
             else
 
@@ -609,7 +620,7 @@ int mainMenuParteII(string input_file_name, ofstream& output_file, Grafo* grafo,
 
             if(output_file.is_open())
 
-               selecionarParteII(selecao, grafo, output_file, input_file_name, direcionado, peso_aresta, peso_no);
+               selecionarParteII(selecao, grafo, output_file, semente, direcionado, peso_aresta, peso_no);
 
             else
 
@@ -627,6 +638,9 @@ int mainMenuParteII(string input_file_name, ofstream& output_file, Grafo* grafo,
 
 //Main do programa 
 int main(int argc, char const *argv[]) {
+
+    unsigned seed = static_cast <unsigned> (time(0)); //Será utilizado para geração de números aleatório dentro da construção dos Algoritmos Gulosos 
+    srand(seed); 
 
     //Verificação se todos os parâmetros do programa foram corretamente inseridos 
     //Na ordem esses parâmetros são: int argc _ quantidade de argumentos (devem ser 6) ; char const *argv[] _ nome do programa _ nome do arquivo de entrada _ nome do arquivo de saída _ se é direcionado (bool) _ se tem peso nas arestas (bool) _ se tem peso no nó (bool)
@@ -668,7 +682,8 @@ int main(int argc, char const *argv[]) {
                 }
                 if(sel==2){
                     grafo = leituraParteII(arq_grafo, direcionado, peso_aresta, peso_vertice);
-                    mainMenuParteII(input_file_name, output_file, grafo, direcionado, peso_aresta, peso_vertice);
+                    grafo->geraListaAdjacencia("lista_teste.txt");
+                    mainMenuParteII(input_file_name, output_file, grafo, seed, direcionado, peso_aresta, peso_vertice);
                 }            
             }
             else{
@@ -682,7 +697,6 @@ int main(int argc, char const *argv[]) {
         //Faz parte do if _ Fechar o programa após a mensagem de erro 
         return 1;
     }
-
 
     //Definindo as variáveis nome do programa e nome do arquivo de saída 
     string program_name(argv[0]);
@@ -723,7 +737,7 @@ int main(int argc, char const *argv[]) {
             if(sel==2){ //Implementação para a Segunda Parte do Trabalho 
 
                 grafo = leituraParteII(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5])); //atoi _ função que converte string em números inteiros
-                mainMenuParteII(input_file_name, output_file, grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+                mainMenuParteII(input_file_name, output_file, grafo, seed, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
 
             }          
 

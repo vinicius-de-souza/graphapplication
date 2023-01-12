@@ -4,6 +4,8 @@
 #include <fstream>
 #include <stack>
 #include <list>
+#include <stdio.h>
+#include <vector>
 
 using namespace std;
 
@@ -23,6 +25,8 @@ private:
     //Atributos publicos _ podem ser utilizados pelo usuario na main 
 public:
 
+    int ordem;
+
     //Construtor
     Grafo(bool direcionado, bool peso_aresta, bool peso_no);
 
@@ -34,6 +38,7 @@ public:
     bool getDirecionado();
     bool getPesoAresta();
     bool getPesoNo();
+    int getOrdem();
     No* getPrimeiroNo();
     No* getUltimoNo();
     float getAresta(int idSaida, int idAlvo);
@@ -47,6 +52,7 @@ public:
     void inserirAresta(int id, int target_id, float weight);
     void removerNo(int id);
     bool procurarNo(int id);
+    bool ehDominante(vector <int> sol);
 
     // Extra _ Criados para melhor visualização do programa
     void geraListaAdjacencia(string output);
@@ -63,17 +69,21 @@ public:
     void redePert();
 
     //Parte 2 _ Algoritmos Gulosos
-    void gulosoConstrutivo(ofstream &output_file, string input_file_name);
+    void gulosoConstrutivo(ofstream &output_file);
     void gulosoRandomizadoAdaptativo();
-    void gulosoRandomizadoReativo();
+    void gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& output_file);
+    void ordenaListaCandidatos(No * lista[], int size);
 
     //Geração do Arquivo de Saída _ Parte I
     void geraSaidaParteI(ofstream&output_file);
 
     //Geração do Arquivo de Saida _ Guloso Construtivo
-    void geraSaidaGuloso(ofstream &output_file, string input_file_name, list<int> solucao, int peso_total);
-    float qualidadeGuloso(string input_file_name, int peso_total);
-    void saidaTelaGulosoConstrutivo(string input_file_name,int peso_total, double tempo);
+    void geraSaidaGulosoConstrutivo(ofstream &output_file, list<int> solucao, int peso_total);
+    void saidaTelaGulosoConstrutivo(int peso_total, double tempo);
+
+    //Geração do Arquivo de Saida _ Guloso Randomizado
+    void geraSaidaGulosoRandomizado(ofstream &output_file, vector<int> solucao, int peso_total);
+    void saidaTelaGulosoRandomizado(int peso_total, double tempo, int semente);
 };
 
 #endif //TRABALHO_GRAFO_H

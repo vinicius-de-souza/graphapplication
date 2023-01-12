@@ -20,7 +20,4 @@ PENDÊNCIAS:
 	* Algoritmo construtivo guloso randomizado reativo _ definir lógica e implementação
 
 
-	* Saida em tela _  a semente de randomização e a informação se o algoritmo conseguiu uma solução viável ou não.
-
-
 	* Ajustar os arquivos para envio (retirar o que não é necessário e modificar os nomes)

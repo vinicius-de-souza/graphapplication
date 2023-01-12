@@ -1,2 +1,3 @@
 
-                    mainMenuParteI(output_file,grafo, direcionado, peso_aresta, peso_vertice);
+        cout<< "Peso aresta: ";
+        cin >> peso_aresta;
