@@ -17,10 +17,12 @@ private:
     unsigned int grau_saida;
     float peso; 
     No* proximo_no; 
-    int grau; 
+
 
     // Atributos publicos _ podem ser utilizados pelo usuario na main 
 public:
+
+    int grau; 
 
     // Construtor
     No(int id);

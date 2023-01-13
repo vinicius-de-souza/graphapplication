@@ -22,34 +22,37 @@
 #include <cstdlib>
 #include <ctime>
 #include <float.h>
-#include <iomanip>
+//#include <iomanip>
+#include <iostream>
+#include <algorithm>
 #include <vector>
 #include <ctime> 
 #include "time.h" // Referência [2]
 
 using namespace std;
 
-int partition(No* arr[], int low, int high){
-        No* pivot = arr[high]; // pivot
-        int i = (low- 1); // Index of smaller element and indicates the right position of pivot found so far
-        
-        for (int j = low; j <= high - 1; j++) {
-            // If current element is smaller than the pivot
-            if (arr[j]->getPesoNo() < pivot->getPesoNo()) { //grafo->getNo(arr[j])->getPesoNo()
-                i++; // increment index of smaller element
-                swap(arr[i], arr[j]);
+/*void swapA(vector<No*> &arr, int a, int b)
+{
+    No* t = arr[a];
+    arr[a] = arr[b];
+    arr[b] = t;
+}
+*/
+
+int partition(vector<No*> &arr, int low, int high){
+        int pivot = high;
+        int j = low;
+        for(int i=low;i<high;++i){
+            if((arr[i]->getPesoNo()/arr[i]->getGrau()) < (arr[pivot]->getPesoNo()/arr[pivot]->getGrau())){
+             swap(arr[i],arr[j]);
+                ++j;
             }
         }
-        swap(arr[i + 1], arr[high]);
-        return (i + 1);
+        swap(arr[j],arr[pivot]);
+        return j;
     }
     
-    /* The main function that implements QuickSort
-    arr[] --> Array to be sorted,
-    low --> Starting index,
-    high --> Ending index */
-    
-void quickSort(No* arr[], int low, int high) 
+void quickSort(vector<No*> &arr, int low, int high) 
     {
         
         if (low < high) {
@@ -337,13 +340,6 @@ float Grafo::getAresta(int idSaida, int idAlvo){
 }
 
 
-//Função que recebe como parâmetro um vetor e analisa se os vértices do vetor formam um conjunto dominante
-bool Grafo::ehDominante(vector <int> sol){
-
-    No* aux = this->getPrimeiroNo();
-
-
-}
 
 // Extra _ Criados para melhor visualização do programa
 
@@ -726,7 +722,9 @@ void Grafo::gulosoConstrutivo(ofstream &output_file){
     
     cout << "\nFim do Algoritmo Guloso Construtivo!" << endl ;
 
-    this->geraSaidaGulosoConstrutivo(output_file,solucao,peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, a lista dos vértices de solução e o valor do peso total
+    this->geraSaidaGulosoConstrutivo(output_file, solucao, peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, a lista dos vértices de solução e o valor do peso total
+
+    cout << "\nArquivo de saida gerado." << endl;
 
 }
 
@@ -739,8 +737,6 @@ void Grafo::gulosoRandomizadoAdaptativo(){
         return;
 
     }
-
-
 
 }
 
@@ -767,44 +763,68 @@ void Grafo::gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& out
 
     vector<int> solucao; //Vetor para armazenar o conjunto solucao durante as iterações
     vector<int> melhor_solucao; //Vetor para armazenar o conjunto final de melhor solução
-    No* listaCandidatos[this->getOrdem()]; //Vetor de candidatos para a solução
+    vector<No*> listaCandidatos; //Vetor de candidatos para a solução
 
     //Preenchimento inicial da lista de candidatos _ Todos os vértices entram na lista 
     No* aux = this->getPrimeiroNo();  
     int j = 0;
     for(aux; aux != nullptr; aux = aux->getProxNo()){ 
 
-        listaCandidatos[j] = aux; //A lista de candidatos recebe todos os vértices 
+        listaCandidatos.push_back(aux); //A lista de candidatos recebe todos os vértices 
         melhor_peso =  melhor_peso + aux->getPesoNo(); //Dessa forma eu inicializo o meu menor peso com a soma total dos pesos de todos os vértices
         j++;
 
     }
-    
+
+    /*int size = listaCandidatos.size();
+    quickSort(listaCandidatos,0,size-1); 
+
+    for(int n=0; n<size; n++){
+
+        cout << "No de id " << listaCandidatos[n]->getId() << " com peso " << listaCandidatos[n]->getPesoNo()/listaCandidatos[n]->getGrau() << endl;
+ 
+    }*/
+
     while(i<iteracoes){ //Processamento do while para controle das iterações 
 
         i++; 
 
-        int size =sizeof(listaCandidatos)/4;
-
-        this->ordenaListaCandidatos(listaCandidatos,size); //A lista de candidatos é atualizada de acordo com a heurística determinada do problema 
+        int size = listaCandidatos.size();
+        int kInt; //Variável que guarda o valor aleatorio k (float) em int
+        int sol;
+        int v = 0;
+        int y = 0;
+        quickSort(listaCandidatos,0,size-1); //A lista de candidatos é atualizada de acordo com a heurística determinada do problema 
 
         solucao.clear(); //Limpa toda a lista de solucao para uma nova iteracao 
-        int kx = static_cast<int>(k); //Converte valor aleatório de float para int
-    
-        while(!ehDominante(solucao)){
+        float xy = (alfa*size) - 1;
 
-            float xy = (alfa*size) -1; // Métrica para geração do número aleatório
+
+        while(!ehDominante){
+            
             float k = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/xy)); 
-            int sol = listaCandidatos[kx]->getId();
-            // 2. Adicionar um novo vértice ao conjunto solucao e altera o valor do peso
-            // 3. Atualiza lista candidatos 
+            kInt = static_cast<int>(k); //Converte valor aleatório de float para int
+            sol = listaCandidatos[kInt]->getId();
+            solucao.push_back(sol);
+            y++;
+            peso = peso + listaCandidatos[kInt]->getPesoNo();
+            this->atualizaListaCandidatos(listaCandidatos, kInt, size);
+            cout << "Iteracao " << v << endl;
+            cout << "O id escolhido para ser removido foi " << listaCandidatos[kInt]->getId();
+            cout << "Lista de candidatos ";
+            for(int h=0; h<listaCandidatos.size(); h++){
 
+                cout << "No de id " << listaCandidatos[h]->getId() << " com peso/grau " << listaCandidatos[h]->getPesoNo()/listaCandidatos[h]->getGrau() << endl;
+
+            }
+            
         }
         
         if(peso < melhor_peso){
 
             melhor_peso =  peso;
             melhor_solucao = solucao;
+            
 
         }
 
@@ -821,11 +841,29 @@ void Grafo::gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& out
 
 }
 
-void Grafo::ordenaListaCandidatos(No * lista[], int size){ //Função auxiliar para ordenação da lista de candidatos _ A heurística utilizada foi dar preferência para os vértices com menor valor da relação peso/grau .
+void Grafo::ordenaListaCandidatos(vector<No*> lista, int size){ //Função auxiliar para ordenação da lista de candidatos _ A heurística utilizada foi dar preferência para os vértices com menor valor da relação peso/grau .
     
     quickSort(lista,0,size-1); //Utilizamos a função quickSort já conhecida para ordenação dessa lista _ Referência [4]
 
 }   
+
+void Grafo::atualizaListaCandidatos(vector<No*> lista, int kInt , int size){
+
+    lista.remove(lista[kInt]->getId()); //Removo da lista de candidatos o vértice da posição kInt (referente ao alfa)
+
+    //É necessário decrementar em um grau todos os vértices adjacentes do vértice que foi colocado na solução
+
+    No* aux = this->getNo(lista[kInt]->getId());
+
+    for(Aresta *aresta = aux->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){
+
+        this->getNo(aresta->getAlvoId())->grau = this->getNo(aresta->getAlvoId())->getGrau() - 1; 
+
+    }
+
+    quickSort(lista,0,size-1); 
+
+}
 
 //Essa função recebe como parâmetro o arquivo de saída, o nome do arquivo de entrada (para determinação da qualidade do programa), a lista dos vértices de solução e o valor do peso total e gera o arquivo de saída para o Algoritmo Guloso Construtivo
 void Grafo::geraSaidaGulosoConstrutivo(ofstream &output_file, list<int> solucao, int peso_total){
@@ -846,9 +884,9 @@ void Grafo::geraSaidaGulosoConstrutivo(ofstream &output_file, list<int> solucao,
 //Função que gera as saídas em tela para o algoritmo Guloso Construtivo _ Recebe como parâmetro o peso calculado no algoritmo e o nome do arquivo para comparação da qualidade e o tempo de processamento
 void Grafo::saidaTelaGulosoConstrutivo(int peso_total, double tempo){
 
-    cout << "\nO Algoritmo Guloso Construtivo atingiu uma qualidade de: " << peso_total;
+    cout << "\nO Algoritmo Guloso Construtivo atingiu uma qualidade de: " << peso_total << endl;
 
-    cout << "Tempo gasto para a geracao da solucao do Algoritmo Guloso Construtivo: " << tempo << setprecision(5) << "s";
+    cout << "Tempo gasto para a geracao da solucao do Algoritmo Guloso Construtivo: " << tempo << "s";
 
 }
 
@@ -857,7 +895,7 @@ void Grafo::saidaTelaGulosoRandomizado(int peso_total, double tempo, int semente
 
     cout << "\nO Algoritmo Guloso Randomizado atingiu uma qualidade de: " << peso_total << endl;
 
-    cout << "Tempo gasto para a geracao da solucao do Algoritmo Guloso Construtivo: " << tempo << setprecision(5) << "s" << endl;
+    cout << "Tempo gasto para a geracao da solucao do Algoritmo Guloso Construtivo: " << tempo << "s" << endl;
 
     cout<< "A semente de randomizacao para esse Algoritmo foi: " << semente << endl;
 
@@ -878,5 +916,42 @@ void Grafo::geraSaidaGulosoRandomizado(ofstream &output_file, vector<int> soluca
     output_file << "\nQualidade da solucao: " << peso_total;
 
     cout << "\nArquivo de saida gerado." << endl;
+
+}
+
+
+bool Grafo::ehDominante(vector<int> sol){
+
+    No *aux = this->getPrimeiroNo();
+
+    for(aux; aux != nullptr; aux = aux->getProxNo()){
+
+        int key = aux->getId();
+
+        if(!(std::count(sol.begin(), sol.end(), key)))
+        {
+
+            bool coberto = false;
+
+            for(Aresta *aresta = aux->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta())
+            {
+                
+                if(std::count(sol.begin(), sol.end(), aresta->getAlvoId())){
+
+                    coberto = true;
+                    break;
+
+                }
+
+            }
+
+            if(!coberto){
+                return false;
+            }
+        }
+        
+    }
+
+    return true;
 
 }

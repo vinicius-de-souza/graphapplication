@@ -72,7 +72,8 @@ public:
     void gulosoConstrutivo(ofstream &output_file);
     void gulosoRandomizadoAdaptativo();
     void gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& output_file);
-    void ordenaListaCandidatos(No * lista[], int size);
+    void ordenaListaCandidatos(vector <No*> lista, int size);
+    void atualizaListaCandidatos(vector <No*> lista, int kInt, int size);
 
     //Geração do Arquivo de Saída _ Parte I
     void geraSaidaParteI(ofstream&output_file);

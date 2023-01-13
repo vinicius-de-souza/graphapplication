@@ -590,7 +590,7 @@ int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool p
 }
 
 //Menu principal para a implementação da Segunda Parte _ Recebe como parâmetro o arquivo de saída, o grafo gerado a partir da leitura, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não 
-int mainMenuParteII(string input_file_name, ofstream& output_file, Grafo* grafo, unsigned semente, bool direcionado, bool peso_aresta, bool peso_no){
+int mainMenuParteII(ofstream& output_file, Grafo* grafo, unsigned semente, bool direcionado, bool peso_aresta, bool peso_no){
 
     int selecao = 1;
 
@@ -683,7 +683,7 @@ int main(int argc, char const *argv[]) {
                 if(sel==2){
                     grafo = leituraParteII(arq_grafo, direcionado, peso_aresta, peso_vertice);
                     grafo->geraListaAdjacencia("lista_teste.txt");
-                    mainMenuParteII(input_file_name, output_file, grafo, seed, direcionado, peso_aresta, peso_vertice);
+                    mainMenuParteII(output_file, grafo, seed, direcionado, peso_aresta, peso_vertice);
                 }            
             }
             else{
@@ -737,7 +737,7 @@ int main(int argc, char const *argv[]) {
             if(sel==2){ //Implementação para a Segunda Parte do Trabalho 
 
                 grafo = leituraParteII(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5])); //atoi _ função que converte string em números inteiros
-                mainMenuParteII(input_file_name, output_file, grafo, seed, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+                mainMenuParteII(output_file, grafo, seed, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
 
             }          
 

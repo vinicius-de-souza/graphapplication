@@ -8,16 +8,18 @@ PENDÊNCIAS:
 
 	* Saida em tela !! (2) !!
 
-	* Rede Pert _ toda implementação 
-
 
 -> Parte II _ Problema do Subconjunto Dominante Ponderado:
 
 
-	* Algoritmo construtivo guloso randomizado e adaptativo _ definir lógica e implementação 
+	* Guloso Randomico -> Ajustar função atualizaListaCandidatos (descobrir como remove um elemento do vetor)
 
 
-	* Algoritmo construtivo guloso randomizado reativo _ definir lógica e implementação
+	* Guloso Randomizado Adaptativo	
+			-> iniciar vetores
+			-> atualiza probabilidade
+			-> escolhe alfa
+			-> atualiza média 
 
 
 	* Ajustar os arquivos para envio (retirar o que não é necessário e modificar os nomes)

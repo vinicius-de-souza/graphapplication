@@ -1,3 +1,2 @@
 
-        cout<< "Peso aresta: ";
-        cin >> peso_aresta;
+        cout<< "Peso vertice: ";
