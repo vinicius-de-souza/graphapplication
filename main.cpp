@@ -205,6 +205,8 @@ int menuParteI(){
 
     cout << "[0] Sair\n";
 
+    cout << endl << "Digite a opcao desejada: ";
+
     cin >> selecao;
 
     return selecao;
@@ -214,18 +216,20 @@ int menuParteI(){
 // Função para apresentação do menu em tela da Segunda Parte _ Retorna o valor inserido pelo usuário 
 int menuParteII(){
     int selecao;
-
-    cout << "\n                       MENU                           " << endl;
+    cout << "\n";
+    cout << "--------------------------------------------------------" << endl;
+    cout << "                        MENU                           " << endl;
     cout << "--------------------------------------------------------" << endl;
     cout << "Funcionalidades da Segunda Parte do Trabalho Pratico" << endl;
-
+    cout << "\n";
     cout << "[1] Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso" << endl;
     cout << "[2] Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado e Adaptativo " << endl;
     cout << "[3] Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado Reativo" << endl;
 
     cout << "[0] Sair" << endl;
-
+    cout << endl << "Digite a opcao desejada: ";
     cin >> selecao;
+    cout << "\n";
 
     return selecao;
 }
@@ -430,12 +434,13 @@ void selecionarParteI(int selecao, Grafo* grafo1,  ofstream& output_file, bool d
 
                 //Verificação da continuação do programa
                 int sel;
-                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+                cout << "Digite a opcao desejada: ";
                 cin >> sel;
 
                 if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                    cout << "Programa Finalizado";
+                    cout << "\nPrograma Finalizado \n";
                     exit(0);
 
                 }
@@ -477,12 +482,13 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsign
 
             //Verificação da continuação do programa
                 int sel;
-                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+                cout << "Digite a opcao desejada: ";
                 cin >> sel;
 
                 if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                    cout << "Programa Finalizado";
+                    cout << "\nPrograma Finalizado!";
                     exit(0);
 
                 }
@@ -494,16 +500,17 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsign
         //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado e Adaptativo
         case 2:{
 
-            grafo1->gulosoRandomizadoAdaptativo();
+            grafo1->gulosoRandomizadoAdaptativo(semente);
 
             //Verificação da continuação do programa
                 int sel;
-                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+                cout << "Digite a opcao desejada: ";
                 cin >> sel;
 
                 if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                    cout << "Programa Finalizado";
+                    cout << "\nPrograma Finalizado!\n";
                     exit(0);
 
                 }
@@ -517,19 +524,23 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsign
 
             float alfa;
 
-            cout << "Informe o valor de ALFA para a geracao do Algoritmo Guloso Randomizado: ";
+            //Pegando o valor de alfa
+            cout << "Para funcionamento do Algoritmo Guloso Randomizado eh necessario informar um valor de alfa." << endl;
+            cout << "alfa = [0.15 ; 0.30 ; 0.50]" << endl;
+            cout << "Informe um valor valido de alfa: ";
             cin >> alfa;
 
             grafo1->gulosoRandomizadoReativo(alfa,semente,output_file);
 
             //Verificação da continuação do programa
                 int sel;
-                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+                cout << "Digite a opcao desejada: ";
                 cin >> sel;
 
                 if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                    cout << "Programa Finalizado";
+                    cout << "\nPrograma Finalizado!\n";
                     exit(0);
 
                 }
@@ -567,7 +578,7 @@ int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool p
 
         else{ // Caso o valor informado não seja uma opção do menu
 
-            cout <<"\nOpcao selecionada nao existente \nTente novamente\n";
+            cout <<"\nOpcao selecionada nao existente \nPor favor, tente novamente\n";
 
             selecao = menuParteI();
 
@@ -674,6 +685,7 @@ int main(int argc, char const *argv[]) {
             cout << "--------------------------------------------------------" << endl;
             cout << "Para acessar funcionalidades da Primeira Parte do Trabalho Pratico digite [1]" << endl;
             cout << "Para acessar funcionalidades da Segunda Parte do Trabalho Pratico digite [2]" << endl;
+            cout << "Digite a opcao desejada: ";
             cin >> sel;
             if(sel==1 || sel==2){
                 if(sel==1){
@@ -682,7 +694,33 @@ int main(int argc, char const *argv[]) {
                 }
                 if(sel==2){
                     grafo = leituraParteII(arq_grafo, direcionado, peso_aresta, peso_vertice);
-                    grafo->geraListaAdjacencia("lista_teste.txt");
+                    /*vector<int> solucao;
+
+                    solucao.push_back(13);
+                    solucao.push_back(16);
+                    solucao.push_back(17);
+                    solucao.push_back(19);
+                    solucao.push_back(22);
+                    solucao.push_back(27);
+                    solucao.push_back(24);
+                    solucao.push_back(32);
+                    solucao.push_back(34);
+                    solucao.push_back(36);
+                    solucao.push_back(40);
+                    solucao.push_back(41);
+                    solucao.push_back(42);
+                    solucao.push_back(44);
+                    solucao.push_back(46);
+                    solucao.push_back(47);
+                    solucao.push_back(48);
+                    solucao.push_back(49);
+                    solucao.push_back(50);
+                    solucao.push_back(4);
+
+
+                    cout << "Esse conjunto eh dominante " << grafo->ehDominante(solucao);
+                    //grafo->geraGrafoDot("grafo.dot");
+                    //grafo->geraListaAdjacencia("listaAdj.txt");*/
                     mainMenuParteII(output_file, grafo, seed, direcionado, peso_aresta, peso_vertice);
                 }            
             }
@@ -718,8 +756,10 @@ int main(int argc, char const *argv[]) {
         int sel;
 
         //Esse MENU foi implementado pois a leitura do arquivo é feita de formas diferentes para a Primeira Parte e a Segunda Parte do Trabalho
-        cout << "\nMENU" << endl;
         cout << "--------------------------------------------------------" << endl;
+        cout << "MENU" << endl;
+        cout << "--------------------------------------------------------" << endl;
+        cout << "\n";
         cout << "Para acessar funcionalidades da Primeira Parte do Trabalho Pratico digite [1]" << endl;
         cout << "Para acessar funcionalidades da Segunda Parte do Trabalho Pratico digite [2]" << endl;
 

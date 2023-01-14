@@ -1,9 +1,5 @@
 PENDÊNCIAS:
 
--> Parte I
-
-	* Ajustar os arquivos para envio (retirar o que não é necessário e modificar os nomes)
-
 	* Arquivo de saida _ armazenar o novo grafo  !! (1) !!
 
 	* Saida em tela !! (2) !!
@@ -12,14 +8,8 @@ PENDÊNCIAS:
 -> Parte II _ Problema do Subconjunto Dominante Ponderado:
 
 
-	* Guloso Randomico -> Ajustar função atualizaListaCandidatos (descobrir como remove um elemento do vetor)
-
-
 	* Guloso Randomizado Adaptativo	
-			-> iniciar vetores
 			-> atualiza probabilidade
-			-> escolhe alfa
-			-> atualiza média 
 
 
 	* Ajustar os arquivos para envio (retirar o que não é necessário e modificar os nomes)
