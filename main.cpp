@@ -235,311 +235,296 @@ int menuParteII(){
 
 //Função que atráves da utilização do switch, acessa a função escolhida atráves do menu na classe do grafo, essa implementação funciona para a Primeira Parte _ Recebe como parâmetro o valor inserido no menu, o grafo, o arquivo de saída, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não
 void selecionarParteI(int selecao, Grafo* grafo1,  ofstream& output_file, bool direcionado, bool peso_aresta, bool peso_no){
+    
+    int sel;
+    string input_file_name;
+    ifstream input_file;
+    Grafo *grafo2;
 
-    switch (selecao) {
+    if(selecao == 1){
 
-        //Interseção 
-        case 1:{
+        //Orientações para a inserção do novo grafo 
+        cout << "--------------------------------------------------------";
+        cout << "\nA opcao escolhida foi a INTERSECAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
 
-            //Orientações para a inserção do novo grafo 
-            cout << "--------------------------------------------------------";
-            cout << "\nA opcao escolhida foi a INTERSECAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
+        if(direcionado)
 
-            if(direcionado)
+            cout <<"\n[1] Direcionado";
 
-                cout <<"\n[1] Direcionado";
+        else
 
-            else
+            cout <<"\n[1] Nao direcionado";
 
-                cout <<"\n[1] Nao direcionado";
+        if(peso_aresta)
 
-            if(peso_aresta)
+            cout << "\n[2] Com peso nas arestas";
 
-                cout << "\n[2] Com peso nas arestas";
+        else
 
-            else
+            cout << "\n[2] Sem peso nas arestas";
 
-                cout << "\n[2] Sem peso nas arestas";
+        if(peso_no)
 
-            if(peso_no)
+            cout << "\n[3] Com peso nos vertices";
 
-                cout << "\n[3] Com peso nos vertices";
+         else
 
-            else
-                cout <<"\n[3] Sem peso nos vertices";
+            cout <<"\n[3] Sem peso nos vertices";
 
+        
+        //Inserindo o novo grafo 
+        cout << "\nInsira o nome do arquivo do novo grafo:";
+        cin >> input_file_name;
 
-            //Inserindo o novo grafo 
-            string input_file_name;
-            cout << "\nInsira o nome do arquivo do novo grafo:";
-            cin >> input_file_name;
+        //Rotina de abertura do arquivo do novo grafo
+        input_file.open(input_file_name, ios::in);
 
-            //Rotina de abertura do arquivo do novo grafo
-            ifstream input_file;
-            input_file.open(input_file_name, ios::in);
+        //Criação de um novo objeto grafo 
 
-            //Criação de um novo objeto grafo 
-            Grafo *grafo2;
+        if(input_file.is_open()){
 
-            if(input_file.is_open()){
+            grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
 
-                grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
+            grafo1->intersecao(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de interseção  
 
-                grafo1->intersecao(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de interseção  
-
-                //Verificação da continuação do programa
-                int sel;
-                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
-                cin >> sel;
-
-                if(sel==2){//Caso o usuário opte por finalizar o programa
-
-                    cout << "Programa Finalizado";
-                    exit(0);
-
-                }
-
-            }
-
-            else
-
-                cout << "Unable to open " << input_file_name;
-
-
-            break;
-
-        }
-
-        //Diferença
-        case 2:{
-
-            //Orientações para a inserção do novo grafo 
-            cout << "--------------------------------------------------------" << endl;
-            cout << "A opcao escolhida foi a DIFERENCA!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
-
-            if(direcionado)
-
-                cout <<"\n[1] Direcionado";
-
-            else
-
-                cout <<"\n[1] Nao direcionado";
-
-            if(peso_aresta)
-
-                cout << "\n[2] Com peso nas arestas";
-
-            else
-
-                cout << "\n[2] Sem peso nas arestas";
-
-            if(peso_no)
-
-                cout << "\n[3] Com peso nos vertices";
-
-            else
-
-                cout <<"\n[3] Sem peso nos vertices";
-
-            //Inserindo o novo grafo 
-            string input_file_name;
-            cout << "\nInsira o nome do arquivo do novo grafo:";
-            cin >> input_file_name;
-
-            //Rotina de abertura do arquivo do novo grafo
-            ifstream input_file;
-            input_file.open(input_file_name, ios::in);
-
-            //Criação de um novo objeto grafo 
-            Grafo *grafo2;
-
-            if(input_file.is_open()){
-
-                grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
+            //Verificação da continuação do programa
                 
-                grafo1->diferenca(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de diferença
+            cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+            cin >> sel;
 
-                //Verificação da continuação do programa
-                int sel;
-                cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
-                cin >> sel;
+            if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                if(sel==2){//Caso o usuário opte por finalizar o programa
-
-                    cout << "Programa Finalizado";
-                    exit(0);
-
-                }
+                cout << "Programa Finalizado";
+                exit(0);
 
             }
 
-            else
-
-                 cout << "Unable to open " << input_file_name;
-
-            break;
-
         }
 
-        //União
-        case 3:{
+        else
 
-            //Orientações para a inserção do novo grafo 
-            cout << "--------------------------------------------------------" << endl;
-            cout << "A opcao escolhida foi a UNIAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
+            cout << "Unable to open " << input_file_name;
 
-            if(direcionado)
+    }
+    
+    else if(selecao == 2){
 
-                cout <<"\n[1] Direcionado";
+        //Orientações para a inserção do novo grafo 
+        cout << "--------------------------------------------------------" << endl;
+        cout << "A opcao escolhida foi a DIFERENCA!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
 
-            else
+        if(direcionado)
 
-                cout <<"\n[1] Nao direcionado";
+            cout <<"\n[1] Direcionado";
 
-            if(peso_aresta)
+        else
 
-                cout << "\n[2] Com peso nas arestas";
+            cout <<"\n[1] Nao direcionado";
 
-            else
+        if(peso_aresta)
 
-                cout << "\n[2] Sem peso nas arestas";
+            cout << "\n[2] Com peso nas arestas";
 
-            if(peso_no)
+        else
 
-                cout << "\n[3] Com peso nos vertices";
+            cout << "\n[2] Sem peso nas arestas";
 
-            else
+        if(peso_no)
 
-                cout <<"\n[3] Sem peso nos vertices";
+            cout << "\n[3] Com peso nos vertices";
 
-            //Inserindo o novo grafo 
-            string input_file_name;
-            cout << "\nInsira o nome do arquivo do novo grafo:";
-            cin >> input_file_name;
+        else
 
-            //Rotina de abertura do arquivo do novo grafo
-            ifstream input_file;
-            input_file.open(input_file_name, ios::in);
+            cout <<"\n[3] Sem peso nos vertices";
 
-             //Criação de um novo objeto grafo 
-            Grafo *grafo2;
+        //Inserindo o novo grafo 
+        cout << "\nInsira o nome do arquivo do novo grafo:";
+        cin >> input_file_name;
 
-            if(input_file.is_open()){
+        //Rotina de abertura do arquivo do novo grafo
+        input_file.open(input_file_name, ios::in);
 
-                grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
+        //Criação de um novo objeto grafo 
+
+        if(input_file.is_open()){
+
+            grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
                 
-                grafo1->uniao(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de união
+            grafo1->diferenca(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de diferença
 
+            //Verificação da continuação do programa
+                
+            cout << "\nDeseja realizar mais operacoes?\n[1] Sim \n[2] Nao\n";
+            cin >> sel;
 
-                //Verificação da continuação do programa
-                int sel;
-                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
-                cout << "Digite a opcao desejada: ";
-                cin >> sel;
+            if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                if(sel==2){//Caso o usuário opte por finalizar o programa
-
-                    cout << "\nPrograma Finalizado \n";
-                    exit(0);
-
-                }
+                cout << "Programa Finalizado";
+                exit(0);
 
             }
 
-            else
-
-                cout << "Unable to open " << input_file_name;
-
-            break;
-
         }
+
+        else
+
+            cout << "Unable to open " << input_file_name;
 
     }
 
-}
+    else if(selecao == 3){
+
+        //Orientações para a inserção do novo grafo 
+        cout << "--------------------------------------------------------" << endl;
+        cout << "A opcao escolhida foi a UNIAO!\nPara a utilizacao dessa funcao um novo grafo deve ser inserido." << "\nLembrando que o novo grafo deve ter as mesmas configuracoes do grafo principal, ou seja, deve ser:";
+
+        if(direcionado)
+
+            cout <<"\n[1] Direcionado";
+
+         else
+
+            cout <<"\n[1] Nao direcionado";
+
+        if(peso_aresta)
+
+            cout << "\n[2] Com peso nas arestas";
+
+        else
+
+            cout << "\n[2] Sem peso nas arestas";
+
+        if(peso_no)
+
+            cout << "\n[3] Com peso nos vertices";
+
+        else
+
+            cout <<"\n[3] Sem peso nos vertices";
+
+        //Inserindo o novo grafo 
+        cout << "\nInsira o nome do arquivo do novo grafo:";
+        cin >> input_file_name;
+
+        //Rotina de abertura do arquivo do novo grafo
+        input_file.open(input_file_name, ios::in);
+
+        //Criação de um novo objeto grafo 
+
+        if(input_file.is_open()){
+
+            grafo2 = leituraParteI(input_file, direcionado, peso_aresta, peso_no); //Chama a leitura referente a Primeira Parte
+                
+            grafo1->uniao(output_file, grafo2, direcionado, peso_aresta, peso_no); //Chama a função de união
+
+
+            //Verificação da continuação do programa
+                
+            cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+            cout << "Digite a opcao desejada: ";
+            cin >> sel;
+
+            if(sel==2){//Caso o usuário opte por finalizar o programa
+
+                cout << "\nPrograma Finalizado \n";
+                exit(0);
+
+            }
+
+        }
+
+        else
+
+        cout << "Unable to open " << input_file_name;
+
+    }
+
+    else
+
+        cout << "Valor escolhido na selecao nao e valido";
+
+}  
+
 
 //Função que atráves da utilização do switch, acessa a função escolhida atráves do menu na classe do grafo, essa implementação funciona para a Segunda Parte _ Recebe como parâmetro o valor inserido no menu, o grafo, o arquivo de saída, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não
 void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsigned semente, bool direcionado, bool peso_aresta, bool peso_no){
 
-    switch(selecao){
+    int sel;
+    float alfa;
+    
+    //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso 
+    if(selecao == 1){
 
-        //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso 
-       case 1:{
+        //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso
 
             grafo1->gulosoConstrutivo(output_file);
 
             //Verificação da continuação do programa
-                int sel;
-                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
-                cout << "Digite a opcao desejada: ";
-                cin >> sel;
+            cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+            cout << "Digite a opcao desejada: ";
+            cin >> sel;
 
-                if(sel==2){//Caso o usuário opte por finalizar o programa
+            if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                    cout << "\nPrograma Finalizado!";
-                    exit(0);
+                cout << "\nPrograma Finalizado!";
+                exit(0);
 
-                }
+            }
 
-            break;
+    }
 
-        }
+    //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado e Adaptativo
+    else if(selecao == 2){
 
-        //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado e Adaptativo
-        case 2:{
+        grafo1->gulosoRandomizadoAdaptativo(semente);
 
-            grafo1->gulosoRandomizadoAdaptativo(semente);
-
-            //Verificação da continuação do programa
-                int sel;
-                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
-                cout << "Digite a opcao desejada: ";
-                cin >> sel;
-
-                if(sel==2){//Caso o usuário opte por finalizar o programa
-
-                    cout << "\nPrograma Finalizado!\n";
-                    exit(0);
-
-                }
-
-            break;
+        //Verificação da continuação do programa
             
+        cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+        cout << "Digite a opcao desejada: ";
+        cin >> sel;
+
+        if(sel==2){//Caso o usuário opte por finalizar o programa
+
+            cout << "\nPrograma Finalizado!\n";
+            exit(0);
+
         }
+            
+    }
 
-        //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado Reativo
-        case 3:{
+    //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado
+    else if(selecao == 3){
 
-            float alfa;
+        //Pegando o valor de alfa
+        cout << "Para funcionamento do Algoritmo Guloso Randomizado eh necessario informar um valor de alfa." << endl;
+        cout << "alfa = [0.15 ; 0.30 ; 0.50]" << endl;
+        cout << "Informe um valor valido de alfa: ";
+        cin >> alfa;
 
-            //Pegando o valor de alfa
-            cout << "Para funcionamento do Algoritmo Guloso Randomizado eh necessario informar um valor de alfa." << endl;
-            cout << "alfa = [0.15 ; 0.30 ; 0.50]" << endl;
-            cout << "Informe um valor valido de alfa: ";
-            cin >> alfa;
+        grafo1->gulosoRandomizadoReativo(alfa,semente,output_file);
 
-            grafo1->gulosoRandomizadoReativo(alfa,semente,output_file);
+        //Verificação da continuação do programa
+            
+        cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
+        cout << "Digite a opcao desejada: ";
+        cin >> sel;
 
-            //Verificação da continuação do programa
-                int sel;
-                cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
-                cout << "Digite a opcao desejada: ";
-                cin >> sel;
+        if(sel==2){//Caso o usuário opte por finalizar o programa
 
-                if(sel==2){//Caso o usuário opte por finalizar o programa
-
-                    cout << "\nPrograma Finalizado!\n";
-                    exit(0);
-
-                }
-
-            break;
+            cout << "\nPrograma Finalizado!\n";
+            exit(0);
 
         }
 
     }
 
+    else 
+
+        cout << "Valor escolhido na selecao nao e valido" ;
+        
 }
+
 
 //Menu principal para a implementação da Primeira Parte _ Recebe como parâmetro o arquivo de saída, o grafo gerado a partir da leitura, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não 
 int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool peso_aresta, bool peso_no){

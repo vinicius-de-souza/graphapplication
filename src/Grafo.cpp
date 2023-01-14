@@ -44,6 +44,8 @@ int atualizaAlfa(vector<float>prob, int aleatorio){
     else if((aleatorio > ((prob[0] + prob[1] + prob[2] + prob[3]) * 1000)) && (aleatorio < 1000))
             return 4;
 
+    return 257;
+
 }
 
 int partition(vector<No*> &arr, int low, int high){
@@ -343,6 +345,8 @@ float Grafo::getAresta(int idSaida, int idAlvo){
                  
         }
     }
+
+    return 473;
 
 }
 
