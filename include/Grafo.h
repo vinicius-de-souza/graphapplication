@@ -66,7 +66,6 @@ public:
     void intersecao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
     void diferenca(ofstream &output_file, Grafo* grafo2,bool direcionado, bool peso_aresta, bool peso_no);
     void uniao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
-    void redePert();
 
     //Parte 2 _ Algoritmos Gulosos
     void gulosoConstrutivo(ofstream &output_file);

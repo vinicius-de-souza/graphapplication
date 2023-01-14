@@ -31,14 +31,6 @@
 
 using namespace std;
 
-/*void swapA(vector<No*> &arr, int a, int b)
-{
-    No* t = arr[a];
-    arr[a] = arr[b];
-    arr[b] = t;
-}
-*/
-
 int atualizaAlfa(vector<float>prob, int aleatorio){
 
     if(aleatorio <= prob[0]*1000)
@@ -616,30 +608,6 @@ void Grafo::uniao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool p
 
 }
 
-// Função de criação da Rede Pert de um grafo direcionado _ Não necessita receber nada como parâmetro   
-void Grafo::redePert(){ 
-
-    if(!this->direcionado){ //Para que seja possível realizar a análise de Rede Pert, o grafo deve ser direcionado
-
-        cout << "Para a realizacao da Rede Pert o grafo inserido deve ser direcionado!";
-        return;
-
-    }
-
-    //Etapa de verificação do início e fim da Rede Pert _ É possível que o primeiro nó inserido não seja referente a primeira etapa da Rede Pert
-    int id_inicio;
-    int id_fim;
-
-    cout << "Para iniciar a Funcao de Rede Pert, indique o id no de inicio (id correspondente a primeira etapa): " ;
-    cin >> id_inicio;
-    No *inicio = new No(id_inicio);
-
-    cout << "Indique o id do no de fim (id correspondente a ultima etapa): ";
-    cin >> id_fim;
-    No *fim = new No(id_fim);
-
-
-}
 
 //Função que tem como objetivo geração do arquivo de saída da Parte I do trabalho
 void Grafo::geraSaidaParteI(ofstream &output_file){
@@ -652,7 +620,7 @@ void Grafo::geraSaidaParteI(ofstream &output_file){
 //Implementações Parte II
 
 
-// Função de implementação do algoritmo Guloso Construtivo _ A heurística utilizada foi adicionar ao conjunto solução o vértice de maior grau entre aqueles disponíveis 
+// Função de implementação do algoritmo Guloso Construtivo: a heurística utilizada foi ordenar a lista de candidatos (lista dos nós) de forma crescente a partir da relação peso/grau de cada nó, com essa ordenação foi possível estabelecer os vértices que devem entrar na solução (sempre os primeiros da lista). Após cada vértice ser inserido no conjunto solução ele e seus adjacentes saem da lista de candidatos. Essa iteração ocorre até que o conjunto solução seja dominante.
 void Grafo::gulosoConstrutivo(ofstream &output_file){ 
 
     if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
@@ -664,65 +632,63 @@ void Grafo::gulosoConstrutivo(ofstream &output_file){
     time_t start, end; //Utilizado para contagem de tempo da função 
     time(&start);
 
-    list<int> solucao; //Criação da lista dos vértices de solução (inicalmente vazia) 
-    list<int> vertices; //Criação da lista de todos os vértices do grafo em questão 
+    vector<int> solucao; //Criação da lista dos vértices de solução (inicalmente vazia) _ Armazena os ids dos vértices 
+    vector<No*> listaCandidatos; //Criação da lista de todos os vértices do grafo 
 
-    int peso_total = 0; 
+    float  peso_total = 0;//Variável que armazena os valores dos pesos para análise 
 
+    float melhor_peso; //Variável que armazena a melhor solução do problema 
+
+    //É necessário preencher o vetor de candidatos com todos os vértices do grafo
     No* aux = this->getPrimeiroNo();  
+    for(aux; aux != nullptr; aux = aux->getProxNo()){ 
 
-    int maior_grau = aux->getGrau(); //Nova heurística 
-
-    No* noMaiorGrau = this->getPrimeiroNo(); 
-
-    for(aux; aux != nullptr; aux = aux->getProxNo()){ //Percorre todos os nós do grafo
-
-        if(aux->getGrau() > maior_grau){ // Caso o nó em questao tenha um grau maior que o último, esse passa a ser o nó de maior grau
-
-            maior_grau = aux->getGrau();
-            noMaiorGrau = aux; 
-
-        }
-
-        vertices.push_front(aux->getId()); // Conforme faço essa análise, já preencho o vetor de vertices com todos os nós do grafo
+        listaCandidatos.push_back(aux);
+        melhor_peso =  melhor_peso + aux->getPesoNo(); //Dessa forma eu inicializo o menor peso com a soma total dos pesos de todos os vértices (maior peso possível)
 
     }
 
-    //Enquanto minha lista de vertices estiver com vertices, eu faço a analise _ Pela heurística em algum momento essa lista estará vazia
-    while(vertices.size() != 0){ 
+    int size = listaCandidatos.size();
 
-        solucao.push_front(noMaiorGrau->getId()); // O vértice selecionado no looping entra na solução 
-        // -> push_front: função que adiciona no inicio da lista o valor passado como parametro _ aqui decidimos adicionar na solucao os id dos vertices como forma de identificação dos mesmos _ esses ids foram inseridos na leitura dos arquivos 
+    while(!ehDominante(solucao)){ //Iteração que ocorre até que o conjunto solução seja dominante 
 
-        peso_total = peso_total + noMaiorGrau->getPesoNo(); //Somando os pesos 
+        size = listaCandidatos.size(); // A cada iteração é necessário verificar o tamanho da lista de candidatos 
 
-        for(Aresta *aresta = noMaiorGrau->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){ //Lopping das arestas
+        quickSort(listaCandidatos,0,size-1); //A função quickSort é chamada para ordenar a lista de candidatos. É passado como parâmetro a lista, o index do primeiro nó e o index do último nó. O quickSort ordena de forma crescente os vértices a partir da relação peso/grau de cada nó. Como temos um problema de minimização, escolhemos o menor valor de peso/grau. 
 
-            vertices.remove(aresta->getAlvoId()); //Pela descrição do problema, a cada vértice selecionado, os seus vizinhos não precisam estar na solução
-            // -> vertices.remove(): função da classe que recebe como parâmetro um valor e percorre toda a lista para procurá-lo e excluí-lo quantas vezes o mesmo aparecer
+        solucao.push_back(listaCandidatos[0]->getId()); // O vértice selecionado no looping entra na solução _ No Algoritmo Guloso Construtivo sempre adicionamos na solução o vértice melhor rankeado de acordo com a heurística
+
+        peso_total = peso_total + listaCandidatos[0]->getPesoNo(); //Somando os pesos 
+
+        //Atualização da lista de candidatos _ Retiro da lista de candidatos o valor que acabou de entrar na solução e seus adjacentes 
+        auto it = listaCandidatos.begin();
+
+        No *noaRemover = this->getNo(listaCandidatos[0]->getId());
+
+        for(Aresta* aresta = noaRemover->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){ //Iteração para remover da lista atual de candidatos todos os vértices que são adjacentes ao vértice escolhido para entrar na solução
+            
+            int noRemover = aresta->getAlvoId();
+            
+            for(it; it != listaCandidatos.end(); it++){
+    
+                if((*it)->getId() == noRemover){
+
+                    listaCandidatos.erase(it);
+                    break;
+
+                }
+
+            }
 
         }
 
-        vertices.remove(noMaiorGrau->getId());//Removo da lista de vertices, o vertice de maior grau tmb
+        it = listaCandidatos.begin();
+            
+        for(it; it != listaCandidatos.end(); it++){//Removo da lista de candidatos o vértice que entrou na solução 
+            if((*it)->getId() == noaRemover->getId()){
 
-        if(vertices.size() == 0) //Pode ser que durante essa iteração, a lista fique vazia, caso isso ocorra paramos o while
-            break;
-
-        auto it = vertices.begin(); // Funcao para pegar o valor do primeiro item da lista de vertice (referência [1])
-
-        maior_grau = this->getNo(*it)->getGrau(); // A variável de maior grau recebe o valor do grau do primeiro vertice que esta na lista de vertices
-
-        noMaiorGrau = this->getNo(*it);
-
-
-        for (it; it !=vertices.end(); ++it){ // Iteração para descobrir o novo vertice de maior grau 
-
-            No* iteracao = this->getNo(*it);
-
-            if(iteracao->getGrau() > maior_grau){
-
-                maior_grau = iteracao->getGrau(); // Guardo o valor do grau
-                noMaiorGrau = iteracao;
+                listaCandidatos.erase(it);
+                break;
 
             }
 
@@ -732,11 +698,7 @@ void Grafo::gulosoConstrutivo(ofstream &output_file){
 
     time(&end); //Utilizado para contagem de tempo da função
     double time_taken = double(end - start);
-
-    this->saidaTelaGulosoConstrutivo(peso_total, time_taken); // A função para saída em tela é chamada 
     
-    cout << "\nFim do Algoritmo Guloso Construtivo!" << endl ;
-
     cout << "Conjunto dos Vertices Solucao: [";
 
     for(auto it = solucao.begin(); it !=solucao.end(); ++it)
@@ -748,13 +710,9 @@ void Grafo::gulosoConstrutivo(ofstream &output_file){
 
     cout << "\nArquivo de saida gerado." << endl;
 
-    //this->geraSaidaGulosoConstrutivo(output_file, solucao, peso_total); // A função para gerar o arquivo de saída é chamada _ Essa função recebe como parâmetro o arquivo de saída, a lista dos vértices de solução e o valor do peso total
-
-    cout << "\nArquivo de saida gerado." << endl;
-
 }
 
-// Função de implementação do Algoritmo Guloso Adaptativo _ A heurística utilizada foi ordenar a lista de candidatos de forma com que esse vetor contenha de forma crescente a função peso/grau para cada nó. Com esse critério escolhemos de forma aleatória (levando em conta as probabilidades) o valor de alfa e consequentemente um vértice na posição gerado aleatoriamente e o adicionamos no conjunto solução, após isso atualizamos a lista de candidatos, retirando apenas os vértices que entraram na solução e para todo adjacente de um vértice na solução o seu grau também é atualizado. E por fim, a cada iteração verificamos se o conjunto solução é dominante, quando isso ocorrer, o nosso código está finalizado.
+// Função de implementação do Algoritmo Guloso Adaptativo _ A heurística utilizada foi ordenar a lista de candidatos de forma com que esse vetor contenha de forma crescente a função peso/grau para cada nó. Com esse critério escolhemos de forma aleatória (levando em conta as probabilidades) o valor de alfa e consequentemente um vértice na posição gerada aleatoriamente e o adicionamos no conjunto solução, após isso atualizamos a lista de candidatos, retirando os vértices que entraram na solução seus adjacentes. E por fim, a cada iteração verificamos se o conjunto solução é dominante, quando isso ocorrer, o nosso código está finalizado.
 void Grafo::gulosoRandomizadoAdaptativo(unsigned semente){
 
     if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
@@ -767,7 +725,7 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente){
     time_t start, end; //Utilizado para contagem de tempo da função 
     time(&start);
 
-    int iteracoes = 100;
+    int iteracoes = 2500;
 
     float melhor_peso = 0; //Variável que armazena a melhor solução das iterações
     float peso = 0; //Variável que armazena o peso a cada iteração 
@@ -829,19 +787,15 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente){
 
     while(i<iteracoes){ //Processamento para controle do while
 
+
         if( i % bloco == 0){ //Caso isso ocorra, é momento de atualizar a lista de probabilidades do alfa 
 
             vector<double> q;
             q.push_back(powf((melhor_peso/medias[0]),10.0));
-            cout << "q[0]" << q[0] << endl;
             q.push_back(powf((melhor_peso/medias[1]),10.0));
-            cout << "q[1]" << q[1] << endl;
             q.push_back(powf((melhor_peso/medias[2]),10.0));
-            cout << "q[2]" << q[2] << endl;
             q.push_back(powf((melhor_peso/medias[3]),10.0));
-            cout << "q[3]" << q[3] << endl;
-            q.push_back(powf((melhor_peso/medias[4]),100.0));
-            cout << "q[4]" << q[4] << endl;
+            q.push_back(powf((melhor_peso/medias[4]),10.0));
 
             double sq = 0;
 
@@ -851,7 +805,6 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente){
 
             for (int d = 0; d< 5; d++) {
                 probabilidades[d] = q[d]/sq;
-                cout << "Prob [" << d << "] ->" << probabilidades[d];
             }
       
         }   
@@ -901,6 +854,25 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente){
             auto it = listaCandidatos.begin();
 
             No *noaRemover = this->getNo(listaCandidatos[kInt]->getId());
+
+            for(Aresta* aresta = noaRemover->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){ //Iteração para remover da lista atual de candidatos todos os vértices que são adjacentes ao vértice escolhido para entrar na solução
+            
+                int noRemover = aresta->getAlvoId();
+            
+                for(it; it != listaCandidatos.end(); it++){
+    
+                    if((*it)->getId() == noRemover){
+
+                        listaCandidatos.erase(it);
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            it = listaCandidatos.begin();
             
             for(it; it != listaCandidatos.end(); it++){//Removo da lista de candidatos o vértice da posição kInt (referente ao alfa)
     
@@ -928,6 +900,9 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente){
         }
     }
 
+    time(&end); //Utilizado para contagem de tempo da função
+    double time_taken = double(end - start);
+
     cout << "Conjunto dos Vertices Solucao: [";
 
     for(auto it = solucao.begin(); it !=solucao.end(); ++it)
@@ -936,6 +911,8 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente){
     cout << " ]" << endl;
 
     cout << "Com qualidade " << melhor_peso;
+
+    cout << "Com tempo "  << time_taken;
 
 }
 
@@ -1008,13 +985,31 @@ void Grafo::gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& out
             auto it = listaCandidatos.begin();
 
             No *noaRemover = this->getNo(listaCandidatos[kInt]->getId());
+
+            for(Aresta* aresta = noaRemover->getPrimeiraAresta(); aresta != nullptr; aresta = aresta->getProxAresta()){ //Iteração para remover da lista atual de candidatos todos os vértices que são adjacentes ao vértice escolhido para entrar na solução
+            
+                int noRemover = aresta->getAlvoId();
+            
+                for(it; it != listaCandidatos.end(); it++){
+    
+                    if((*it)->getId() == noRemover){
+
+                        listaCandidatos.erase(it);
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            it = listaCandidatos.begin();
             
             for(it; it != listaCandidatos.end(); it++){//Removo da lista de candidatos o vértice da posição kInt (referente ao alfa)
     
                 if((*it)->getId() == noaRemover->getId()){
 
                     listaCandidatos.erase(it);
-                    cout << "Estou apagando o no de id " << noaRemover->getId() << " na posicao " << kInt << endl;
                     break;
 
                 }
@@ -1144,47 +1139,3 @@ bool Grafo::ehDominante(vector<int> sol){
 }
 
 
-/*void Grafo::atualizaProbabilidadeDosAlfas(Alfa *alfas, int numeroDeAlfas, int melhorSolucaoGeral)
-{
-    float SomaQi = 0.0;
-    for(int j = 0; j < numeroDeAlfas; j++)  ///Primeiro, calculamos o Qi de cada Alfa
-    {
-        alfas[j].Qi = calculaQi(melhorSolucaoGeral, alfas[j].mediaSolucoes);
-
-        SomaQi += alfas[j].Qi;
-    }
-    //cout << "SomaQi: " << SomaQi << endl;
-
-    for(int j = 0; j < numeroDeAlfas; j++)  /// Agora calculamos a possibilidade de cada Alfa
-    {
-        float P = alfas[j].Qi/SomaQi*100;
-        alfas[j].probabilidadeDeSerEscolhido = P;
-        //cout << "DEPOIS DE ATUALIZAR:Probabilidade do alfa "<< j << ": " << alfas[j].probabilidadeDeSerEscolhido << endl;
-    }
-}*/
-
-
-/*alfa ; medias 
----------------------------------
-  0  |   1  |   2  |  3   |  4
----------------------------------
-0.05 | 0.10 | 0.15 | 0.30 | 0.50
-
-0,20 (200)| 0,20 (400) | 0,20 (600)| 0,20 (800)| 0,20 (1000) 
-
-escolhe alfa 
-
-gera num aleatorio = 100
-
-if(aleatorio <= prob[0]*1000)
-        return 0;
-else if((aleatorio > (prob[0] * 1000)) && (aleatorio < ((prob[0] +prob[1]) * 1000)))
-        return 1;
-else if((aleatorio > ((prob[0] + prob[1]) * 1000)) && (aleatorio < ((prob[0] + prob[1] + prob[2]) * 1000)))
-        return 2;
-else if((aleatorio > ((prob[0] + prob[1] + prob[2]) * 1000)) && (aleatorio < ((prob[0] + prob[1] + prob[2] + prob[3]) * 1000)))
-        return 3;
-else if((aleatorio > ((prob[0] + prob[1] + prob[2] + prob[3]) * 1000)) && (aleatorio < 1000))
-        return 4;
-
-200  | 500  | 600  | 520  | 230*/

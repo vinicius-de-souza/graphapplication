@@ -201,7 +201,6 @@ int menuParteI(){
     cout << "[1] Grafo Intersecao" << endl;
     cout << "[2] Grafo Diferenca" << endl;
     cout << "[3] Grafo Uniao" << endl;
-    cout << "[4] Rede Pert" << endl;
 
     cout << "[0] Sair\n";
 
@@ -455,17 +454,6 @@ void selecionarParteI(int selecao, Grafo* grafo1,  ofstream& output_file, bool d
 
         }
 
-        //Rede Pert
-        case 4:{
-
-            cout << "--------------------------------------------------------" << endl;
-            cout << "A opcao escolhida foi a Rede Pert!" << endl;
-
-            grafo1->redePert();
-
-            break;
-        }
-
     }
 
 }
@@ -560,7 +548,7 @@ int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool p
 
     while(selecao != 0){ //O menu retorna após a utilização de uma função 
 
-        if(selecao >=1 && selecao<=4){ //Verifica se o valor informado é uma opção do menu 
+        if(selecao >=1 && selecao<=3){ //Verifica se o valor informado é uma opção do menu 
 
             selecao = menuParteI(); //Chama a função do Menu 
 
@@ -671,7 +659,7 @@ int main(int argc, char const *argv[]) {
         cin >> peso_aresta;
 
         ifstream arq_grafo; //Rotina para abertura do arquivo 
-        arq_grafo.open("input_parteII/Problem_50_50_3.dat", ios::in); //  abertura do arquivo de teste 
+        arq_grafo.open("input_parteII/Problem_50_250_3.dat", ios::in); //  abertura do arquivo de teste 
         ofstream output_file;
         output_file.open("arquivo_saida.txt", ios::out | ios::trunc);
     
@@ -757,7 +745,7 @@ int main(int argc, char const *argv[]) {
 
         //Esse MENU foi implementado pois a leitura do arquivo é feita de formas diferentes para a Primeira Parte e a Segunda Parte do Trabalho
         cout << "--------------------------------------------------------" << endl;
-        cout << "MENU" << endl;
+        cout << "                          MENU                           "  << endl;
         cout << "--------------------------------------------------------" << endl;
         cout << "\n";
         cout << "Para acessar funcionalidades da Primeira Parte do Trabalho Pratico digite [1]" << endl;
