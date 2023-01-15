@@ -1,4 +1,4 @@
-# graphapplication
+# Graph Application
 
 📄 Trabalho de Introdução à Teoria dos Grafos
     
