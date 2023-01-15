@@ -1,3 +1,0 @@
-C:/Users/vinib/Desktop/Trabalho/cmake-build-debug/CMakeFiles/Trabalho.dir
-C:/Users/vinib/Desktop/Trabalho/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/vinib/Desktop/Trabalho/cmake-build-debug/CMakeFiles/rebuild_cache.dir

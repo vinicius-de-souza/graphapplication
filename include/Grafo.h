@@ -68,20 +68,10 @@ public:
     void uniao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
 
     //Parte 2 _ Algoritmos Gulosos
-    void gulosoConstrutivo(ofstream &output_file);
-    void gulosoRandomizadoAdaptativo(unsigned semente);
+    void gulosoConstrutivo(ofstream &output_file, unsigned semente);
+    void gulosoRandomizadoAdaptativo(unsigned semente, ofstream& output_file);
     void gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& output_file);
 
-    //Geração do Arquivo de Saída _ Parte I
-    void geraSaidaParteI(ofstream&output_file);
-
-    //Geração do Arquivo de Saida _ Guloso Construtivo
-    void geraSaidaGulosoConstrutivo(ofstream &output_file, list<int> solucao, int peso_total);
-    void saidaTelaGulosoConstrutivo(int peso_total, double tempo);
-
-    //Geração do Arquivo de Saida _ Guloso Randomizado
-    void geraSaidaGulosoRandomizado(ofstream &output_file, vector<int> solucao, int peso_total);
-    void saidaTelaGulosoRandomizado(int peso_total, double tempo, int semente);
 };
 
 #endif //TRABALHO_GRAFO_H
