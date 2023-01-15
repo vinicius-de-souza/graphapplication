@@ -4,8 +4,8 @@
     
     > Discentes: Maria Eduarda Simonassi e Vinicius de Souza (Grupo 20);
     > Docente: Stênio Sã;
-    > Universidade Federal de Juiz de Fora, período 2022.2.
-    > Ambiente de desenvolvimento: Windows 11, Visual Studio Code 1.74, usando Live Share em maior parte para colaboração em tempo real no projeto.
+    > Universidade Federal de Juiz de Fora, período 2022.2;
+    > Ambiente de desenvolvimento: Windows 11, Visual Studio Code 1.74, usando Live Share em maior parte para colaboração em tempo real.
     
 📄 Implementações
 
