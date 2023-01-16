@@ -739,7 +739,7 @@ bool Grafo::ehDominante(vector<int> sol){ //Função que verifica se um subconju
 }
 
 // Função de implementação do algoritmo Guloso Construtivo: a heurística utilizada foi ordenar a lista de candidatos (lista dos nós) de forma crescente a partir da relação peso/grau de cada nó, com essa ordenação foi possível estabelecer os vértices que devem entrar na solução (sempre os primeiros da lista). Após cada vértice ser inserido no conjunto solução ele e seus adjacentes saem da lista de candidatos. Essa iteração ocorre até que o conjunto solução seja dominante (essa condição é verificada pela função ehDominante())
-void Grafo::gulosoConstrutivo(ofstream& output_file, unsigned semente){  
+void Grafo::gulosoConstrutivo(ofstream& output_file){  
 
     if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
         cout << "Para a analise do problema do Subconjunto Dominante Ponderado o grafo deve ser nao direcionado.\n";
@@ -824,8 +824,6 @@ void Grafo::gulosoConstrutivo(ofstream& output_file, unsigned semente){
 
     cout << "\nTempo de processamento: " << time_taken << "s" << endl;
 
-    cout << "\nSemente de randomizacao: " << semente << endl;
-
     cout << "\nO conjunto solucao encontrado sempre eh viavel pois pela heuristica sempre entregamos um conjunto dominante" << endl;
 
     cout << "---------------------------------------------------------------------------------------------------------------------" <<endl;
@@ -848,7 +846,10 @@ void Grafo::gulosoConstrutivo(ofstream& output_file, unsigned semente){
 }
 
 // Função de implementação do Algoritmo Guloso Adaptativo _ A heurística utilizada foi ordenar a lista de candidatos de forma com que esse vetor contenha de forma crescente a função peso/grau para cada nó. Com esse critério escolhemos de forma aleatória (levando em conta as probabilidades) o valor de alfa e consequentemente um vértice na posição gerada aleatoriamente e o adicionamos no conjunto solução, após isso atualizamos a lista de candidatos, retirando os vértices que entraram na solução E seus adjacentes. E por fim, a cada iteração verificamos se o conjunto solução é dominante, quando isso ocorrer, o nosso código está finalizado (para aquela iteração).
-void Grafo::gulosoRandomizadoAdaptativo(unsigned semente, ofstream& output_file){ 
+void Grafo::gulosoRandomizadoAdaptativo(ofstream& output_file){ 
+
+    unsigned seed = static_cast <unsigned> (time(0)); //Será utilizado para geração de números aleatório dentro da construção dos Algoritmos Gulosos 
+    srand(seed); 
 
     if(this->direcionado){ //Para o problema do Subconjuento Dominante Ponderado, por definição, o grafo deve ser não direcionado
 
@@ -1057,7 +1058,7 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente, ofstream& output_file)
 
     cout << "\nTempo de processamento: " << time_taken << "s" << endl;
 
-    cout << "\nSemente de randomizacao: " << semente << endl;
+    cout << "\nSemente de randomizacao: " << seed << endl;
 
     cout << "\nO conjunto solucao encontrado sempre eh viavel pois pela heuristica sempre entregamos um conjunto dominante" << endl;
 
@@ -1080,7 +1081,10 @@ void Grafo::gulosoRandomizadoAdaptativo(unsigned semente, ofstream& output_file)
 }
 
 // Função de implementação do Algoritmo Guloso Randomizado Reativo _ A heurística utilizada foi ordenar a lista de candidatos de forma com que esse vetor contenha de forma crescente a função peso/grau para cada nó. Com esse critério escolhemos de forma aleatória(de acordo com o valor de alfa)um vértice e o adicionamos no conjunto solução, após isso atualizamos a lista de candidatos, retirando os vértices que entraram na solução e seus adjacentes. E por fim, a cada iteração verificamos se o conjunto solução é dominante, quando isso ocorrer, o nosso código está finalizado. 
-void Grafo::gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& output_file){ 
+void Grafo::gulosoRandomizadoReativo(float alfa, ofstream& output_file){ 
+
+    unsigned seed = static_cast <unsigned> (time(0)); //Será utilizado para geração de números aleatório dentro da construção dos Algoritmos Gulosos 
+    srand(seed); 
 
     if(this->direcionado){ //Para o problema do Subconjunto Dominante Ponderado, por definição, o grafo deve ser não direcionado
 
@@ -1194,7 +1198,7 @@ void Grafo::gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& out
 
     cout << "\nTempo de processamento: " << time_taken << "s" << endl;
 
-    cout << "\nSemente de randomizacao: " << semente << endl;
+    cout << "\nSemente de randomizacao: " << seed<< endl;
 
     cout << "\nO conjunto solucao encontrado sempre eh viavel pois pela heuristica sempre entregamos um conjunto dominante" << endl;
 

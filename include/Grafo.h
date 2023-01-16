@@ -68,9 +68,9 @@ public:
     void uniao(ofstream &output_file, Grafo *grafo2, bool direcionado, bool peso_aresta, bool peso_no);
 
     //Parte 2 _ Algoritmos Gulosos
-    void gulosoConstrutivo(ofstream &output_file, unsigned semente);
-    void gulosoRandomizadoAdaptativo(unsigned semente, ofstream& output_file);
-    void gulosoRandomizadoReativo(float alfa, unsigned semente, ofstream& output_file);
+    void gulosoConstrutivo(ofstream &output_file);
+    void gulosoRandomizadoAdaptativo(ofstream& output_file);
+    void gulosoRandomizadoReativo(float alfa, ofstream& output_file);
 
 };
 

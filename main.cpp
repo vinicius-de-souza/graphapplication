@@ -461,7 +461,7 @@ void selecionarParteI(int selecao, Grafo* grafo1,  ofstream& output_file, bool d
 }  
 
 //Função que atráves da utilização do switch, acessa a função escolhida atráves do menu na classe do grafo, essa implementação funciona para a Segunda Parte _ Recebe como parâmetro o valor inserido no menu, o grafo, o arquivo de saída, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não
-void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsigned semente, bool direcionado, bool peso_aresta, bool peso_no){
+void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, bool direcionado, bool peso_aresta, bool peso_no){
 
     int sel;
     float alfa;
@@ -470,7 +470,7 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsign
     if(selecao == 1){
 
         //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso
-            grafo1->gulosoConstrutivo(output_file, semente);
+            grafo1->gulosoConstrutivo(output_file);
 
             //Verificação da continuação do programa
             cout << "\nDeseja realizar mais operacoes?\n\n[1] Sim \n[2] Nao\n\n";
@@ -489,7 +489,7 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsign
     //Problema do Subconjunto Dominante Ponderado: Algoritmo Construtivo Guloso Randomizado e Adaptativo
     else if(selecao == 2){
 
-        grafo1->gulosoRandomizadoAdaptativo(semente,output_file);
+        grafo1->gulosoRandomizadoAdaptativo(output_file);
 
         //Verificação da continuação do programa
             
@@ -515,7 +515,7 @@ void selecionarParteII(int selecao, Grafo* grafo1, ofstream& output_file, unsign
         cout << "\n Informe um valor valido de alfa: ";
         cin >> alfa;
 
-        grafo1->gulosoRandomizadoReativo(alfa,semente,output_file);
+        grafo1->gulosoRandomizadoReativo(alfa,output_file);
 
         //Verificação da continuação do programa
             
@@ -586,7 +586,7 @@ int mainMenuParteI(ofstream& output_file, Grafo* grafo, bool direcionado, bool p
 }
 
 //Menu principal para a implementação da Segunda Parte _ Recebe como parâmetro o arquivo de saída, o grafo gerado a partir da leitura, se é direcionado ou não, se tem peso na aresta ou não e se tem peso no nó ou não 
-int mainMenuParteII(ofstream& output_file, Grafo* grafo, unsigned semente, bool direcionado, bool peso_aresta, bool peso_no){
+int mainMenuParteII(ofstream& output_file, Grafo* grafo, bool direcionado, bool peso_aresta, bool peso_no){
 
     int selecao = 1;
 
@@ -598,7 +598,7 @@ int mainMenuParteII(ofstream& output_file, Grafo* grafo, unsigned semente, bool 
 
             if(output_file.is_open()){
 
-               selecionarParteII(selecao, grafo, output_file, semente, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
+               selecionarParteII(selecao, grafo, output_file, direcionado, peso_aresta, peso_no); //Função que leva para as funções dentro da classe grafo
             }
 
             else
@@ -617,7 +617,7 @@ int mainMenuParteII(ofstream& output_file, Grafo* grafo, unsigned semente, bool 
 
             if(output_file.is_open())
 
-               selecionarParteII(selecao, grafo, output_file, semente, direcionado, peso_aresta, peso_no);
+               selecionarParteII(selecao, grafo, output_file, direcionado, peso_aresta, peso_no);
 
             else
 
@@ -635,9 +635,6 @@ int mainMenuParteII(ofstream& output_file, Grafo* grafo, unsigned semente, bool 
 
 //Main do programa 
 int main(int argc, char const *argv[]) {
-
-    unsigned seed = static_cast <unsigned> (time(0)); //Será utilizado para geração de números aleatório dentro da construção dos Algoritmos Gulosos 
-    srand(seed); 
 
     //Verificação se todos os parâmetros do programa foram corretamente inseridos 
     //Na ordem esses parâmetros são: int argc _ quantidade de argumentos (devem ser 6) ; char const *argv[] _ nome do programa _ nome do arquivo de entrada _ nome do arquivo de saída _ se é direcionado (bool) _ se tem peso nas arestas (bool) _ se tem peso no nó (bool)
@@ -695,7 +692,7 @@ int main(int argc, char const *argv[]) {
             if(sel==2){ //Implementação para a Segunda Parte do Trabalho 
 
                 grafo = leituraParteII(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5])); //atoi _ função que converte string em números inteiros
-                mainMenuParteII(output_file, grafo, seed, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+                mainMenuParteII(output_file, grafo, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
 
             }          
 
